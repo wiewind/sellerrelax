@@ -1,0 +1,10 @@
+2018-05-28 15:53:16 Error: Fatal Error (1): Call to a member function getDataSource() on null in [C:\project\php\sellerrelax\api\Controller\SystemController.php, line 165]
+2018-05-28 15:53:16 Error: [FatalErrorException] Call to a member function getDataSource() on null
+Request URL: /api/system/json/import
+Stack Trace:
+#0 C:\project\php\sellerrelax\lib\cake\Cake\Error\ErrorHandler.php(212): ErrorHandler::handleFatalError(1, 'Call to a membe...', 'C:\\project\\php\\...', 165)
+#1 [internal function]: ErrorHandler::handleError(1, 'Call to a membe...', 'C:\\project\\php\\...', 165, Array)
+#2 C:\project\php\sellerrelax\lib\cake\Cake\Core\App.php(970): call_user_func('ErrorHandler::h...', 1, 'Call to a membe...', 'C:\\project\\php\\...', 165, Array)
+#3 C:\project\php\sellerrelax\lib\cake\Cake\Core\App.php(943): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}

@@ -1,0 +1,36 @@
+.img-responsive {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #333333;
+    background-color: #ffffff;
+}
+a:hover,
+a:focus {
+    color: #2a6496;
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.testform {
+    margin: 20px;
+    padding: 20px;
+}
+
+.resdiv {
+    margin-top: 20px;
+    border-top: 1px solid #cccccc;
+    padding-top: 10px;
+    height: 400px;
+    overflow: auto;
+}
