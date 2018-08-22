@@ -292,9 +292,6 @@ class GlbF {
         return $is_mobile;
     }
 
-
-
-
     // zum test
     public static function printArray ($arr) {
         echo '<pre>';
