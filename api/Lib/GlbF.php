@@ -78,6 +78,22 @@ class GlbF {
         return Configure::read('system.version');
     }
 
+    public static function strStartsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
+    }
+
+    public static function strEndsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
+
+        return (substr($haystack, -$length) === $needle);
+    }
+
     public static function getWeekdayname ($weekday, $willshotname=false, $lang='cn') {
         if ($weekday > 6) $weekday = $weekday % 7;
         if ($lang == 'cn') {

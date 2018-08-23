@@ -23,7 +23,6 @@ class TestController extends AppController
         if (!$fn) {
             return "Error";
         }
-        if ($fn === 'rest/login') return $this->Rest->login();
 
         $params = (isset($this->request->data['params'])) ?  $this->request->data['params'] : [];
 
@@ -34,6 +33,13 @@ class TestController extends AppController
 
             $params['page'] = (isset($this->request->data['page'])) ?  strtoupper($this->request->data['page']) : 1;
         }
+
+        if (GlbF::strStartsWith($fn, 'rest/login')) {
+            $username = isset($params['username']) ? $params['username'] : '';
+            $password = isset($params['password']) ? $params['password'] : '';
+            return $this->Rest->login($username, $password);
+        }
+
         return $this->Rest->callAPI($methode, $fn, $params);
     }
 }

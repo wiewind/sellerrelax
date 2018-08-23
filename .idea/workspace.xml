@@ -2,11 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76cf45f5-caeb-4c3b-84c5-1f5da908d1fa" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/Lib/Barcode.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/main.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGenerator.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGeneratorHTML.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGeneratorJPG.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGeneratorPNG.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGeneratorSVG.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/Exceptions/BarcodeException.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/Exceptions/InvalidCharacterException.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/Exceptions/InvalidCheckDigitException.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/Exceptions/InvalidFormatException.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/Exceptions/InvalidLengthException.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/Exceptions/UnknownTypeException.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/Config/bootstrap.php" afterPath="$PROJECT_DIR$/api/Config/bootstrap.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/Controller/ZoController.php" afterPath="$PROJECT_DIR$/api/Controller/ZoController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/Lib/GlbF.php" afterPath="$PROJECT_DIR$/api/Lib/GlbF.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php" afterPath="$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/Plugin/Rest/Controller/ImportController.php" afterPath="$PROJECT_DIR$/api/Plugin/Rest/Controller/ImportController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php" afterPath="$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php" />
     </list>
     <ignored path="sellerrelax.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,8 +53,28 @@
       <file leaf-file-name="RestComponent.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="13" selection-start-line="36" selection-start-column="71" selection-end-line="36" selection-end-column="76" />
+            <state relative-caret-position="484">
+              <caret line="81" column="47" selection-start-line="81" selection-start-column="47" selection-end-line="81" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config_default.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/Config/config_default.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="493">
+              <caret line="33" column="58" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="36" column="53" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -48,21 +83,13 @@
       <file leaf-file-name="ImportController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/ImportController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="136" column="53" selection-start-line="136" selection-start-column="53" selection-end-line="136" selection-end-column="53" />
+            <state relative-caret-position="610">
+              <caret line="578" column="20" selection-start-line="578" selection-start-column="20" selection-end-line="578" selection-end-column="20" />
               <folding>
                 <element signature="n#makeNewImport#0;n#ImportController#0;n#!!top" expanded="false" />
+                <marker date="1535009747133" expanded="true" signature="21543:21555" ph="..." />
+                <marker date="1535009747133" expanded="true" signature="22052:22064" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ZoController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/Controller/ZoController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="35" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -125,13 +152,15 @@
         <option value="$PROJECT_DIR$/page/vue/index.php" />
         <option value="$PROJECT_DIR$/page/bootstrap/js/bs.js" />
         <option value="$PROJECT_DIR$/page/bootstrap/index.php" />
-        <option value="$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php" />
-        <option value="$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php" />
         <option value="$PROJECT_DIR$/api/Config/config_default.php" />
-        <option value="$PROJECT_DIR$/api/Config/bootstrap.php" />
         <option value="$PROJECT_DIR$/api/Model/Datasource/MysqlPro.php" />
+        <option value="C:/downloads/BarcodeGenerator/generate-verified-files.php" />
+        <option value="$PROJECT_DIR$/api/Config/bootstrap.php" />
+        <option value="$PROJECT_DIR$/api/Lib/Barcode.php" />
         <option value="$PROJECT_DIR$/api/Controller/ZoController.php" />
         <option value="$PROJECT_DIR$/api/Lib/GlbF.php" />
+        <option value="$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php" />
+        <option value="$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php" />
         <option value="$PROJECT_DIR$/api/Plugin/Rest/Controller/ImportController.php" />
       </list>
     </option>
@@ -222,7 +251,81 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Plugin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Rest" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controller" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sellerrelax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sellerrelax" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Plugin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Rest" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controller" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Component" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sellerrelax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sellerrelax" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Lib" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sellerrelax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sellerrelax" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Config" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -242,17 +345,18 @@
     <property name="list.type.of.created.stylesheet" value="CSS" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\project\php\sellerrelax\lib\cake\vendors" />
+      <recent name="C:\project\php\sellerrelax\page\vue" />
+      <recent name="C:\project\php\sellerrelax\api\Plugin\Rest\Controller" />
+      <recent name="C:\project\php\sellerrelax\api\Plugin\Rest" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\project\php\sellerrelax\api\Lib" />
       <recent name="C:\project\php\sellerrelax\api\Plugin\Rest\Controller" />
       <recent name="C:\project\php\sellerrelax\srx\images" />
       <recent name="C:\project\php\sellerrelax\srx" />
       <recent name="C:\project\php\sellerrelax\srx\webroot" />
-      <recent name="C:\project\php\sellerrelax\api\Config" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\project\php\sellerrelax\page\vue" />
-      <recent name="C:\project\php\sellerrelax\api\Plugin\Rest\Controller" />
-      <recent name="C:\project\php\sellerrelax\api\Plugin\Rest" />
     </key>
   </component>
   <component name="RunManager">
@@ -357,23 +461,26 @@
       <workItem from="1534744887679" duration="24437000" />
       <workItem from="1534831027798" duration="22742000" />
       <workItem from="1534917809049" duration="4007000" />
+      <workItem from="1534936898021" duration="2495000" />
+      <workItem from="1534939466109" duration="3292000" />
+      <workItem from="1535004342409" duration="8736000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245383000" />
+    <option name="totallyTimeSpent" value="259906000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37153518" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38432837" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -427,50 +534,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/api/View/Emails/text/default.ctp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/webroot/css/cake.generic.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-69">
-          <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/Controller/Component/MyCookieComponent.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/Model/AppModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/cake/Cake/Console/Templates/skel/Config/core.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="97" column="24" selection-start-line="97" selection-start-column="24" selection-end-line="97" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/Model/EmptyModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srx/webroot/.htaccess" />
-    <entry file="file://$PROJECT_DIR$/srx/.htaccess" />
     <entry file="file://$PROJECT_DIR$/srx/webroot/index.php" />
     <entry file="file://$PROJECT_DIR$/api/Controller/Component/MySessionComponent.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -612,7 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
           <caret line="145" column="38" selection-start-line="144" selection-start-column="42" selection-end-line="145" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -634,14 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="395">
           <caret line="48" column="70" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="70" />
-          <folding>
-            <marker date="1528120365778" expanded="true" signature="795:871" ph="SELECT table... TABLES" />
-            <marker date="1528120365778" expanded="true" signature="965:1394" ph="CREATE TABLE... imports" />
-            <marker date="1528120365778" expanded="true" signature="1480:1502" ph="create table... imports" />
-            <marker date="1528120365778" expanded="true" signature="6737:6760" ph="ALTER TABLE `${{$tName}}`... " />
-            <marker date="1528120365778" expanded="true" signature="7013:7085" ph="create table... ${{$tName}}" />
-            <marker date="1528120365778" expanded="true" signature="7514:7543" ph="create table... ${$tName}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -673,13 +727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/cake/Cake/Log/CakeLog.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -687,24 +734,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/Config/config_default.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="37" column="14" selection-start-line="37" selection-start-column="14" selection-end-line="37" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/Config/database.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="267">
           <caret line="74" column="6" selection-start-line="65" selection-start-column="10" selection-end-line="74" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/Config/bootstrap.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="177" column="20" selection-start-line="177" selection-start-column="20" selection-end-line="177" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -719,7 +752,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="4" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -727,48 +759,112 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding>
-            <marker date="1525685551429" expanded="true" signature="0:169" ph="&lt;IfModule mod_rewrite.c&gt;" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_php-barcode-generator-master.zip/php-barcode-generator-master/generate-verified-files.php" />
+    <entry file="file://C:/downloads/BarcodeGenerator/generate-verified-files.php" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_php-barcode-generator-master.zip/php-barcode-generator-master/src/BarcodeGenerator.php" />
+    <entry file="file://$PROJECT_DIR$/lib/cake/vendors/Currency/simple_html_dom.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/cake/vendors/Currency/Currency.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGenerator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-408">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/Config/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="50" column="18" selection-start-line="50" selection-start-column="18" selection-end-line="50" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/Controller/ZoController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="35" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
+        <state relative-caret-position="272">
+          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php">
+    <entry file="file://$PROJECT_DIR$/api/Lib/Barcode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="13" selection-start-line="36" selection-start-column="71" selection-end-line="36" selection-end-column="76" />
+        <state relative-caret-position="231">
+          <caret line="44" column="37" selection-start-line="44" selection-start-column="27" selection-end-line="44" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/cake/vendors/BarcodeGenerator/src/BarcodeGeneratorPNG.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/Lib/GlbF.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="292" column="5" selection-start-line="292" selection-start-column="5" selection-end-line="292" selection-end-column="5" />
+        <state relative-caret-position="340">
+          <caret line="86" column="31" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/TestController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="36" column="53" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/Config/config_default.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="33" column="58" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/Component/RestComponent.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="81" column="47" selection-start-line="81" selection-start-column="47" selection-end-line="81" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/Plugin/Rest/Controller/ImportController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="136" column="53" selection-start-line="136" selection-start-column="53" selection-end-line="136" selection-end-column="53" />
+        <state relative-caret-position="610">
+          <caret line="578" column="20" selection-start-line="578" selection-start-column="20" selection-end-line="578" selection-end-column="20" />
           <folding>
             <element signature="n#makeNewImport#0;n#ImportController#0;n#!!top" expanded="false" />
+            <marker date="1535009747133" expanded="true" signature="21543:21555" ph="..." />
+            <marker date="1535009747133" expanded="true" signature="22052:22064" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
   </component>
   <component name="webServersAuthStorage">
-    <data>AAAAwGCnoBY0iEW8UHaM7rkdadFXNEkGea9MwhrCKOtSY6hZvhJRaW0jWMRODyLsaCnjg7NsRqH8m+eesISIyE3xN6h25Mm9wJ04cdJoYOb/epHreZj83KLGkHr5Kqkju8gQ7AXoEkUJVTBknFu1rCN23rVso2xnuj8ZM+rcCD6DQaPwi++5r6kNnvRBkWgSJY3JpAoB49TqGdGFDLkOrE19OaCkFgq/xBCobPbK7GFY20lRmoRxXpx3aFlYud3979EODjZLbp9A+IF3CkTNyfodjj4=</data>
+    <data>AAAAwLkBauHe94rfs3xGoKH974htaumrCOYseiJ6HKon0TL34DhZLh0D4HbSmh1BTAdrTRTri7hgvdN9fdOoVN3p/jXlhzncrY4d42Yd8mmwNRg8Q7cYGoHoalIOOOzwGjPxrcC5RqjdEVVDrMeRjXx7D1Q+tmGt9b1gHzdHaEY3dvf2rKdwl6Cq9iviKY/iu0KjPTz/Z6wt9KFpqSB/w1gvg5LC9XwnmVSPFlj8qoEbr9qhnvW+8BEG3hNRPMH3w78PIsuLybxoBtF/yP0tDz5RxfU=</data>
   </component>
 </project>

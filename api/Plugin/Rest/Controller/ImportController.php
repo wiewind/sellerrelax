@@ -8,7 +8,17 @@
  */
 class ImportController extends AppController
 {
-    var $uses = ['Import', 'Order', 'Item', 'OrderItem', 'RestToken', 'Unit', 'ItemsVariation', 'ItemsVariationsBarcode'];
+    var $uses = [
+        'Import',
+        'Order',
+        'Item',
+        'OrderItem',
+        'RestToken',
+        'Unit',
+        'ItemsVariation',
+        'ItemsVariationsBarcode',
+        'BarcodeType'
+    ];
     var $components = ['MySession', 'MyCookie', 'Rest.Rest'];
 
     var $version = '1.01';
@@ -16,8 +26,9 @@ class ImportController extends AppController
     var $restAdress = [
         'orders' => 'rest/orders/?with[]=orderItems.variation&with[]=orderItems.variationBarcodes',
         'items' => 'rest/items',
-        'variations' => 'rest/items/variations?with=variationBarcodes',
-        'units' => 'rest/items/units'
+        'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices',
+        'units' => 'rest/items/units',
+        'barcode_types' => 'rest/items/barcodes'
     ];
 
     function makeNewImport ($type = 'orders', $importId = 0) {
@@ -317,7 +328,7 @@ class ImportController extends AppController
         ];
         $this->Import->create();
         $this->Import->save($importData);
-        $saveImportId = $this->Import->getLastInsertID();
+        $importData['id'] = $this->Import->getLastInsertID();
 
         $data = $this->Rest->callAPI('GET', $this->restAdress['items'], $params);
 
@@ -348,15 +359,14 @@ class ImportController extends AppController
             CakeLog::write('import', $logStr);
         }
 
-        $importData = [
-            'id' => $saveImportId,
+        $importData = array_merge($importData, [
             'menge' => $mengeOfPage,
             'is_last_page' => $data->isLastPage,
             'last_page_no' => $data->lastPageNumber,
             'total' => $data->totalsCount,
             'errors' => json_encode($errorOrders),
             'import_end' => date('Y-m-d H:i:s')
-        ];
+        ]);
         $this->Import->save($importData);
 
         CakeLog::write('import', "Import items end with $mengeOfPage record(s)!");
@@ -452,7 +462,7 @@ class ImportController extends AppController
 
         $this->Import->create();
         $this->Import->save($importData);
-        $saveImportId = $this->Import->getLastInsertID();
+        $importData['id'] = $this->Import->getLastInsertID();
 
         $data = $this->Rest->callAPI('GET', $this->restAdress['variations'], $params);
 
@@ -483,15 +493,14 @@ class ImportController extends AppController
             CakeLog::write('import', $logStr);
         }
 
-        $importData = [
-            'id' => $saveImportId,
+        $importData = array_merge($importData, [
             'menge' => $mengeOfPage,
             'is_last_page' => $data->isLastPage,
             'last_page_no' => $data->lastPageNumber,
             'total' => $data->totalsCount,
             'errors' => json_encode($errorOrders),
             'import_end' => date('Y-m-d H:i:s')
-        ];
+        ]);
         $this->Import->save($importData);
 
         CakeLog::write('import', "Import variations end with $mengeOfPage record(s)!");
@@ -524,7 +533,7 @@ class ImportController extends AppController
         foreach ($var->variationBarcodes as $barcode) {
             $bcd = [
                 'variation_id' => $barcode->variationId ? $barcode->variationId + 0 : $var->id + 0,
-                'barcode_id' => $barcode->barcodeId + 0,
+                'barcode_type_id' => $barcode->barcodeId + 0,
                 'code' => $barcode->code,
             ];
             $this->ItemsVariationsBarcode->create();
@@ -549,6 +558,12 @@ class ImportController extends AppController
         do {
             $data = $this->importItems();
             $sum += $data['menge'];
+            echo "Page {$data['page']} with {$data['menge']} items.";
+            if ($data['is_last_page']) {
+                echo '<p style="color: green">All items are finished!</p>';
+            } else {
+                echo " continue...<br>";
+            }
         } while (!$data['is_last_page']);
         return "import summe: " . $sum;
     }
@@ -558,6 +573,12 @@ class ImportController extends AppController
         do {
             $data = $this->importVariations();
             $sum += $data['menge'];
+            echo "Page {$data['page']} with {$data['menge']} variations.";
+            if ($data['is_last_page']) {
+                echo '<p style="color: green">All variations are finished!</p>';
+            } else {
+                echo " continue...<br>";
+            }
         } while (!$data['is_last_page']);
         return "import summe: " . $sum;
     }
@@ -597,5 +618,31 @@ class ImportController extends AppController
         }
         $menge = ($data->lastOnPage) ? $data->lastOnPage - $data->firstOnPage + 1 : 0;
         CakeLog::write('import', "Import Units end with $menge record(s)!");
+    }
+
+    function importBarcodeTypes () {
+        $this->autoRender = false;
+        $this->Unit->query('TRUNCATE TABLE barcode_types;');
+        CakeLog::write('import', "Import Barcode Types beginn...");
+        $params = [
+            'page' => 1,
+            'itemsPerPage' => 1000
+        ];
+        $data = $this->Rest->callAPI('GET', $this->restAdress['barcode_types'], $params);
+        $data = json_decode($data);
+        $recs = $data->entries;
+        $now = date('Y-m-d H:i:s');
+        foreach ($recs as $u) {
+            $d = [
+                'id' => $u->id,
+                'name' => $u->name,
+                'type' => $u->type,
+                'imported' => $now
+            ];
+            $this->BarcodeType->create();
+            $this->BarcodeType->save($d);
+        }
+        $menge = ($data->lastOnPage) ? $data->lastOnPage - $data->firstOnPage + 1 : 0;
+        CakeLog::write('import', "Import Barcode Types end with $menge record(s)!");
     }
 }

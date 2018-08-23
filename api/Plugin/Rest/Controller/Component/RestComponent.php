@@ -16,7 +16,15 @@ class RestComponent extends Component
 
         $curl = curl_init();
 
-        switch ($method)
+        $authorization ='Bearer';
+        if ($path !== 'rest/login') {
+            $token = $this->getToken();
+            $authorization .= " ".$token;
+        } else {
+            $method = 'POST';
+        }
+
+        switch (strtoupper($method))
         {
             case "POST":
                 curl_setopt($curl, CURLOPT_POST, 1);
@@ -39,12 +47,6 @@ class RestComponent extends Component
                 }
         }
 
-        $authorization ='Bearer';
-        if ($path !== 'rest/login') {
-            $token = $this->getToken();
-            $authorization .= " ".$token;
-        }
-
         curl_setopt($curl, CURLOPT_HTTPHEADER,['Authorization: ' . $authorization]);
 
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -57,26 +59,40 @@ class RestComponent extends Component
         return $result;
     }
 
-    function login () {
-        $rest = $this->post('rest/login', [
-            'username' => Configure::read('system.rest.username'),
-            'password' => Configure::read('system.rest.password')
+    function login ($username="", $password="") {
+        $extern = false;
+        if (!$username) {
+            $username = Configure::read('system.rest.username');
+            $extern = true;
+        }
+        if (!$password) {
+            $password = Configure::read('system.rest.password');
+            $extern = true;
+        }
+
+        $resp = $this->post('rest/login', [
+            'username' => $username,
+            'password' => $password
         ]);
 
-        if ($rest) {
-            $rest = json_decode($rest);
+        if ($resp) {
+            $rest = json_decode($resp);
+            if (isset($rest->token_type)) {
+                if (!$extern) {
+                    $now = date('Y-m-d H:i:s');
+                    $model = ClassRegistry::init('RestToken');
 
-            $now = date('Y-m-d H:i:s');
-            $model = ClassRegistry::init('RestToken');
-
-            $model->save([
-                'token_type' => $rest->token_type,
-                'expires_in' => $rest->expires_in,
-                'access_token' => $rest->access_token,
-                'refresh_token' => $rest->refresh_token,
-                'created' => $now
-            ]);
+                    $model->save([
+                        'token_type' => $rest->token_type,
+                        'expires_in' => $rest->expires_in,
+                        'access_token' => $rest->access_token,
+                        'refresh_token' => $rest->refresh_token,
+                        'created' => $now
+                    ]);
+                }
+            }
         }
+        return $resp;
     }
 
     function getToken () {

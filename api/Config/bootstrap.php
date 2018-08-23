@@ -28,6 +28,9 @@ Cache::config('default', array('engine' => 'File'));
 
 // define application-wide constants
 require_once 'config_default.php';
+
+//require_once '/Lib/BarcodeGenerator/main.php';
+
 Configure::write($config);
 unset($config);
 
@@ -45,6 +48,7 @@ App::uses('FireDebug', 'Lib');
 App::uses('ErrorCode', 'Lib');
 // load WWS-Global functions
 App::uses('GlbF', 'Lib');
+App::uses('Barcode', 'Lib');
 
 
 /**
