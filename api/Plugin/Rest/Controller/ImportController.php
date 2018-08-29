@@ -125,7 +125,9 @@ class ImportController extends AppController
             'update_to' => $newImport['to'],
             'page' =>  $newImport['page'],
             'import_beginn' => $now,
-            'version' => $this->version
+            'version' => $this->version,
+            'url' => $_SERVER['SCRIPT_URI'],
+            'ip' => $_SERVER['REMOTE_ADDR']
         ];
         $this->Import->create();
         $this->Import->save($importData);
