@@ -451,7 +451,7 @@
          * List of items in the CACHE MANIFEST section
          */
         "cache": [
-            "index.html"
+            "index.php"
         ],
         /**
          * List of items in the NETWORK section

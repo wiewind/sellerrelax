@@ -19,8 +19,8 @@ $config['system']['app']['dirname']             = 'page';
 $config['system']['import']['dirname']          = '__import__';
 $config['system']['import']['tmp']['dirname']   = '__tmp__';
 
-$config['system']['image']['dirname']           = 'img';
-$config['system']['image']['logoFile']          = 'logo_22_16.png';
+$config['system']['image']['dirname']           = 'resources/images';
+$config['system']['image']['logoFile']          = 'logo/logo.png';
 
 $config['system']['css']['dirname']             = 'css';
 

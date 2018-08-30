@@ -130,6 +130,8 @@ Inflector::rules('plural', array(
 
 CakePlugin::load('Rest'); //Loads a single plugin named Rest
 
+CakePlugin::load('ViaExport'); //Loads a single plugin named Rest
+
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
  *

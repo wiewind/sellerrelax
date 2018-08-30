@@ -1,11 +1,20 @@
-<!DOCTYPE HTML>
+<?php
+
+require_once '../api/Config/config_default.php';
+
+?><!DOCTYPE HTML>
 <html manifest="">
 <head>
+    <script type="text/javascript">
+        var Cake = Cake || <?= json_encode($config['system']) ?>;
+    </script>
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
 
     <title>SRX</title>
+
 
     <script type="text/javascript">
         var Ext = Ext || {}; // Ext namespace won't be defined yet...

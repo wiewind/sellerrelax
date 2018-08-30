@@ -33,11 +33,11 @@ Ext.define('SRX.view.main.Main', {
         },
         title: {
             bind: {
-                text: '{name}'
+                text: '<img src="'+Cake.image.logo+'" />'
             },
-            flex: 0
+            // flex: 0
         },
-        iconCls: 'fa-th-list'
+        // icon: 'web-title-logo'
     },
 
     tabBar: {
@@ -53,7 +53,7 @@ Ext.define('SRX.view.main.Main', {
             headerPosition: 'top'
         },
         wide: {
-            headerPosition: 'left'
+            headerPosition: 'top'
         }
     },
 

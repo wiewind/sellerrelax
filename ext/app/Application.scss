@@ -3,3 +3,47 @@
  *  styling should be located the view's corresponding scss file.
  */
 $enable-font-awesome: dynamic(true);
+
+.requiredAfterLabel {
+  color: #AE0000;
+  font-weight: bold;
+  margin: 0 2px;
+}
+
+.rightFloat {
+  float: right;
+}
+
+.x-mask-msg {
+  background: #cacfd3;
+}
+
+.fm_public_folder {
+  color: #0066CC;
+}
+
+
+.red {
+  color: red;
+}
+.green {
+  color: green;
+},
+.yellow {
+  color: yellow;
+}
+.blue {
+  color: blue;
+}
+.black {
+  color: black;
+}
+.grey {
+  color: gray;
+},
+.orange {
+  color: orange;
+}
+.lightblue {
+  color: lightskyblue;
+}
