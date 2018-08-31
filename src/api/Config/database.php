@@ -60,9 +60,6 @@
  * For Sql Server : http://msdn.microsoft.com/en-us/library/ms190356.aspx
  */
 class DATABASE_CONFIG {
-
-
-
 	public $default = array(
         'datasource' => 'MysqlPro',
 		'persistent' => false,
@@ -73,17 +70,4 @@ class DATABASE_CONFIG {
 		'prefix' => '',
 		'encoding' => 'utf8',
 	);
-
-//	public $default = array(
-//		'datasource' => 'MysqlPro',
-//		'persistent' => false,
-//		'host' => 'mysql5.mextronic.de',
-//		'login' => 'db180067_12',
-//		'password' => 'wUsgE+wgfd5n',
-//		'database' => 'db180067_12',
-//		'prefix' => '',
-//		'encoding' => 'utf8',
-//	);
-
-
 }

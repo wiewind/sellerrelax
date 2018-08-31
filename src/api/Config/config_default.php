@@ -14,7 +14,7 @@ $config['system']['domain'] = 'daheim-outlet.de';
 $config['system']['path'] = '';
 
 $config['system']['api']['dirname']             = 'api/index.php/';
-$config['system']['app']['dirname']             = 'page';
+$config['system']['app']['dirname']             = 'ext';
 
 $config['system']['import']['dirname']          = '__import__';
 $config['system']['import']['tmp']['dirname']   = '__tmp__';
@@ -22,17 +22,16 @@ $config['system']['import']['tmp']['dirname']   = '__tmp__';
 $config['system']['image']['dirname']           = 'resources/images';
 $config['system']['image']['logoFile']          = 'logo/logo.png';
 
-$config['system']['css']['dirname']             = 'css';
+$config['system']['css']['dirname']             = 'resources/css';
 
-$config['system']['js']['dirname']              = 'js';
+$config['system']['js']['dirname']              = 'resources/js';
 
 $config['auth']['key'] = 'sellerrelax.com2u';
 
-
-$config['system']['rest']['url']            = 'https://www.delychi-group.de/';
-$config['system']['rest']['username']       = 'SOAP_API_01';
-$config['system']['rest']['password']       = 'De45892123!';
+$config['system']['rest']['url']            = '';
+$config['system']['rest']['username']       = '';
+$config['system']['rest']['password']       = '';
 $config['system']['rest']['limitPerImport'] = 2000;
 
-//include_once 'config_private.php';
+include_once 'config_private.php';
 include_once 'config_combi.php';
