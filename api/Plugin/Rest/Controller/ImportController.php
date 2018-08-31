@@ -21,7 +21,7 @@ class ImportController extends AppController
     ];
     var $components = ['MySession', 'MyCookie', 'Rest.Rest'];
 
-    var $version = '1.01';
+    var $version = '1.02';
 
     var $restAdress = [
         'orders' => 'rest/orders/?with[]=orderItems.variation&with[]=orderItems.variationBarcodes',
@@ -185,6 +185,9 @@ class ImportController extends AppController
                             case 7:
                                 $oData['payment_due_date'] = GlbF::iso2Date($od->date);
                                 break;
+                            case 8:
+                                $oData['shipping_date'] = GlbF::iso2Date($od->date);
+                                break;
                         }
                     }
                 }
@@ -192,10 +195,10 @@ class ImportController extends AppController
                     foreach ($order->addressRelations as $ar) {
                         switch ($ar->typeId) {
                             case 1:
-                                $oData['billing_address_id'] = GlbF::iso2Date($od->addressId);
+                                $oData['billing_address_id'] = $ar->addressId;
                                 break;
                             case 2:
-                                $oData['delivery_address_id'] = GlbF::iso2Date($od->addressId);
+                                $oData['delivery_address_id'] = $ar->addressId;
                                 break;
                         }
                     }
@@ -544,7 +547,7 @@ class ImportController extends AppController
 
     }
 
-    function importOrdersAll () {
+    function importOrdersFull () {
         $importStep = 0;
         $sum = 0;
         do {

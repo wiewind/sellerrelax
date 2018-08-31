@@ -63,12 +63,15 @@ class RestComponent extends Component
         $extern = false;
         if (!$username) {
             $username = Configure::read('system.rest.username');
+        } else {
             $extern = true;
         }
         if (!$password) {
             $password = Configure::read('system.rest.password');
+        } else {
             $extern = true;
         }
+        CakeLog::write('import',  (($extern) ? "extern " : "") . "user {$username} want to login ...");
 
         $resp = $this->post('rest/login', [
             'username' => $username,
@@ -81,7 +84,6 @@ class RestComponent extends Component
                 if (!$extern) {
                     $now = date('Y-m-d H:i:s');
                     $model = ClassRegistry::init('RestToken');
-
                     $model->save([
                         'token_type' => $rest->token_type,
                         'expires_in' => $rest->expires_in,
@@ -92,6 +94,7 @@ class RestComponent extends Component
                 }
             }
         }
+        CakeLog::write('import',  "{$username} logged in ...");
         return $resp;
     }
 
