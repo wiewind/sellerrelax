@@ -153,6 +153,7 @@ class ImportController extends AppController
                     'owner_id'      => ($order->ownerId) ? $order->ownerId : 0,
                     'type_id'       => ($order->typeId) ? $order->typeId : 0,
                     'status_id'     => ($order->statusId) ? $order->statusId : 0,
+                    'created'       => GlbF::iso2Date($order->createdAt),
                     'deleted'       => $order->deletedDate > 0,
                     'updated'       => GlbF::iso2Date($order->updatedAt),
                     'imported'      => $now

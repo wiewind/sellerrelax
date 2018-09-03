@@ -8,6 +8,15 @@ Ext.define('SRX.Application', {
 
     name: 'SRX',
 
+    requires: [
+        'SRX.utils.*',
+        'SRX.model.*',
+        'SRX.store.*',
+        'SRX.ux.*',
+
+        'SRX.view.main.Main'
+    ],
+
     quickTips: false,
     platformConfig: {
         desktop: {
@@ -16,12 +25,6 @@ Ext.define('SRX.Application', {
     },
 
     onAppUpdate: function () {
-        Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
-            function (choice) {
-                if (choice === 'yes') {
-                    window.location.reload();
-                }
-            }
-        );
+        window.location.reload();
     }
 });

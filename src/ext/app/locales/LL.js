@@ -3,7 +3,8 @@
  */
 LL = {
     getLanguage: function() {
-        var lang = SSD.data.appLanguage.cake_code;
+        // var lang = SSD.data.appLanguage.cake_code;
+        var lang = 'zho';
         if (!lang) {
             lang = 'zho';
         }

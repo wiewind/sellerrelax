@@ -13,7 +13,19 @@ require_once '../api/Config/config_default.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
 
-    <title>SRX</title>
+    <meta name="author" content="<?= $config['system']['author'] ?>"/>
+    <meta name="description" content="<?= $config['system']['name'] ?>"/>
+    <meta name="keywords" content="<?= $config['system']['name'] ?>"/>
+    <meta name="publisher" content="<?= $config['system']['author'] ?>"/>
+    <meta name="copyright" content="<?= $config['system']['author'] ?>"/>
+    <meta http-equiv="expires" content="0"/>
+    <link rel="shortcut icon" href="<?= $config['system']['image']['logo'] ?>" >
+
+    <script type="text/javascript" src="../lib/jquery/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../lib/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="../lib/ckeditor/ckfinder/ckfinder.js"></script>
+
+    <title><?= $config['system']['name'] ?></title>
 
 
     <script type="text/javascript">

@@ -53,6 +53,12 @@ class AppController extends Controller {
 
     public $logged = false;
 
+    function checkLogin () {
+        if (!$this->logged) {
+            ErrorCode::throwExceptionCode(ErrorCode::ErrorCodeUserDenied);
+        }
+    }
+
     function beforeFilter () {
 
         $this->__setPageLanguage();

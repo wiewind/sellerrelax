@@ -12,8 +12,10 @@ $config['system']['appName'] = 'SRX';
 $config['system']['author'] = 'Wiewind Studio';
 $config['system']['domain'] = 'daheim-outlet.de';
 $config['system']['path'] = '';
+$config['system']['classic']['maxPageSize'] = 30;
+$config['system']['modern']['maxPageSize'] = 10;
 
-$config['system']['api']['dirname']             = 'api/index.php/';
+$config['system']['api']['dirname']             = 'api/index.php';
 $config['system']['app']['dirname']             = 'ext';
 
 $config['system']['import']['dirname']          = '__import__';

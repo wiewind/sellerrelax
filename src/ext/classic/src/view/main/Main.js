@@ -10,16 +10,12 @@ Ext.define('SRX.view.main.Main', {
     xtype: 'app-main',
 
     requires: [
+        'Ext.chart.*',
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
 
-        'SRX.view.main.MainController',
-        'SRX.view.main.MainModel',
-        'SRX.view.main.List'
+        'SRX.view.article.Grid'
     ],
-
-    controller: 'main',
-    viewModel: 'main',
 
     ui: 'navigation',
 
@@ -32,16 +28,11 @@ Ext.define('SRX.view.main.Main', {
             align: 'stretchmax'
         },
         title: {
-            bind: {
-                text: '<img src="'+Cake.image.logo+'" />'
-            },
-            // flex: 0
-        },
-        // icon: 'web-title-logo'
+            text: '<img src="'+Cake.image.logo+'" />'
+        }
     },
 
     tabBar: {
-        flex: 1,
         layout: {
             align: 'stretch',
             overflowHandler: 'none'
@@ -75,30 +66,34 @@ Ext.define('SRX.view.main.Main', {
         }
     },
 
-    items: [{
-        title: 'Home',
-        iconCls: 'fa-home',
-        // The following grid shares a store with the classic version's grid as well!
-        items: [{
-            xtype: 'mainlist'
-        }]
-    }, {
-        title: 'Users',
-        iconCls: 'fa-user',
-        bind: {
-            html: '{loremIpsum}'
+    items: [
+        // {
+        //     title: T.__('Home'),
+        //     iconCls: 'fa-home'
+        // },
+        {
+            title: T.__('Articles'),
+            iconCls: 'fa-cube',
+            scrollable: true,
+            items: [
+                {
+                    xtype: 'articlegrid'
+                }
+            ]
+        },
+        {
+            title: T.__('Orders'),
+            iconCls: 'fa-file-text-o',
+            // bind: {
+            //     html: '{loremIpsum}'
+            // }
+        },
+        {
+            title: 'Settings',
+            iconCls: 'fa-cog',
+            // bind: {
+            //     html: '{loremIpsum}'
+            // }
         }
-    }, {
-        title: 'Groups',
-        iconCls: 'fa-users',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }, {
-        title: 'Settings',
-        iconCls: 'fa-cog',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }]
+    ]
 });

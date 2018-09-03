@@ -8,12 +8,11 @@ Ext.define('SRX.view.main.Main', {
     xtype: 'app-main',
 
     requires: [
-        'Ext.MessageBox',
-        'Ext.layout.Fit'
+        'Ext.MessageBox'
     ],
 
-    controller: 'main',
-    viewModel: 'main',
+    // controller: 'main',
+    // viewModel: 'main',
 
     defaults: {
         tab: {
@@ -30,27 +29,27 @@ Ext.define('SRX.view.main.Main', {
             iconCls: 'x-fa fa-home',
             layout: 'fit',
             // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'mainlist'
-            }]
+            // items: [{
+            //     xtype: 'mainlist'
+            // }]
         },{
             title: 'Users',
             iconCls: 'x-fa fa-user',
-            bind: {
-                html: '{loremIpsum}'
-            }
+            // bind: {
+            //     html: '{loremIpsum}'
+            // }
         },{
             title: 'Groups',
             iconCls: 'x-fa fa-users',
-            bind: {
-                html: '{loremIpsum}'
-            }
+            // bind: {
+            //     html: '{loremIpsum}'
+            // }
         },{
             title: 'Settings',
             iconCls: 'x-fa fa-cog',
-            bind: {
-                html: '{loremIpsum}'
-            }
+            // bind: {
+            //     html: '{loremIpsum}'
+            // }
         }
     ]
 });
