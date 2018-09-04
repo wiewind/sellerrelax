@@ -216,11 +216,11 @@
 
         {	"path": "../resources/js/wiewindtools.js" },
 
-//        {
-//            "path": "../api/system/initApp",
-//            "remote": true,
-//            "includeInBundle": false
-//        },
+        {
+            "path": "../api/index.php/system/initApp",
+            "remote": true,
+            "includeInBundle": false
+        },
 
         {
             "path": "app.js",

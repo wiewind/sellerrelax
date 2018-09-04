@@ -24,6 +24,32 @@ Ext.define('SRX.Application', {
         }
     },
 
+    launch: function () {
+        // Ext.tip.QuickTipManager.init();
+        // WWS.currentLocale = 'de';
+
+
+        Ext.History.init();
+        Ext.History.on('change', Glb.History.onChange);
+
+        $('#welcome_box').html('');
+        $('#welcome_box').hide();
+
+
+        // if (Glb.common.checkLogin()) {
+        //     var timerId = null;
+        //
+        //     timerId = window.setInterval(function () {
+        //         if (SSD) {
+        //             Glb.Ajax({
+        //                 url: Cake.api.path + '/system/json/keeplive',
+        //                 timerId: timerId
+        //             });
+        //         }
+        //     }, 60000);
+        // }
+    },
+
     onAppUpdate: function () {
         window.location.reload();
     }

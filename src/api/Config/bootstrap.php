@@ -187,30 +187,30 @@ CakeLog::config('SQL', array(
     'file' => 'error_sql',
 ));
 
-//try {
-//
-//	// check if request is coming from shell level
-//	if (php_sapi_name() === 'cli') {
-//		$isShell = true;
-//	}
-//	else {
-//		$isShell = false;
-//	}
-//
-//	// path correction for include of application specific configuration files
-//    if ($isShell === false) {
-//        $configPathPrefix = '../';
-//    }
-//	else {
-//		$configPathPrefix = '';
-//	}
-//
-//	// set configuration for default INI reader
-//	Configure::config('default', new IniReader($configPathPrefix . 'Config/'));
-//
-//	// load default application configuration
-//	Configure::load('app_default');
-//}
-//catch (Exception $e) {
-//	// implement catch for exception here
-//}
+try {
+
+	// check if request is coming from shell level
+	if (php_sapi_name() === 'cli') {
+		$isShell = true;
+	}
+	else {
+		$isShell = false;
+	}
+
+	// path correction for include of application specific configuration files
+    if ($isShell === false) {
+        $configPathPrefix = '../';
+    }
+	else {
+		$configPathPrefix = '';
+	}
+
+	// set configuration for default INI reader
+	Configure::config('default', new IniReader($configPathPrefix . 'Config/'));
+
+	// load default application configuration
+	Configure::load('app_default');
+}
+catch (Exception $e) {
+	// implement catch for exception here
+}

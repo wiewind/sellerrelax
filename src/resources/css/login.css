@@ -1,0 +1,12 @@
+.login-foot {
+    float: right;
+    margin-top: 50px;
+    margin-right: 10px;
+    color: #666;
+    font-size: small;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}

@@ -14,7 +14,9 @@ Ext.define('SRX.view.main.Main', {
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
 
-        'SRX.view.article.Grid'
+        'SRX.view.article.Grid',
+        'SRX.view.export.MainPanel',
+        'SRX.view.settings.MainPanel'
     ],
 
     ui: 'navigation',
@@ -28,7 +30,7 @@ Ext.define('SRX.view.main.Main', {
             align: 'stretchmax'
         },
         title: {
-            text: '<img src="'+Cake.image.logo+'" />'
+            text: '<img src="'+Cake.image.logo+'" style="position: absolute; left: 0; top: -18px;" />'
         }
     },
 
@@ -50,6 +52,7 @@ Ext.define('SRX.view.main.Main', {
 
     defaults: {
         bodyPadding: 20,
+        scrollable: true,
         tabConfig: {
             plugins: 'responsive',
             responsiveConfig: {
@@ -67,14 +70,18 @@ Ext.define('SRX.view.main.Main', {
     },
 
     items: [
-        // {
-        //     title: T.__('Home'),
-        //     iconCls: 'fa-home'
-        // },
+        {
+            title: T.__('Export'),
+            iconCls: 'fa-ge',
+            items: [
+                {
+                    xtype: 'exportmainpanel'
+                }
+            ]
+        },
         {
             title: T.__('Articles'),
             iconCls: 'fa-cube',
-            scrollable: true,
             items: [
                 {
                     xtype: 'articlegrid'
@@ -91,9 +98,11 @@ Ext.define('SRX.view.main.Main', {
         {
             title: 'Settings',
             iconCls: 'fa-cog',
-            // bind: {
-            //     html: '{loremIpsum}'
-            // }
+            items: [
+                {
+                    xtype: 'settingstmainpanel'
+                }
+            ]
         }
     ]
 });

@@ -34,9 +34,9 @@
 /**
  * ...and connect the rest of 'login' & 'logout' controller's URLs.
  */
-    Router::connect('/login', array('controller' => 'login', 'action' => 'login'));
+    Router::connect('/login', array('controller' => 'system', 'action' => 'login'));
     // logout turn to login too, because session are deleted only in login
-    Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
+    Router::connect('/logout', array('controller' => 'system', 'action' => 'logout'));
 
     Router::parseExtensions('js', 'json', 'xml', 'pdf');
 

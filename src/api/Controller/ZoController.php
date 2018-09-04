@@ -8,10 +8,18 @@
  */
 class ZoController extends AppController
 {
-    var $uses = ['EmptyModel', 'Import', 'Order', 'Item', 'OrderStatus', 'propertyType', 'dateType'];
+    var $uses = ['TestJob'];
 
     function test () {
         $this->autoRender = false;
-        echo Barcode::getHtmlImg('081231723897', Barcode::TYPE_CODE_128);
+        $importData = [
+            'url' => $_SERVER['SCRIPT_URI'],
+            'ip' => $_SERVER['REMOTE_ADDR']
+        ];
+
+//        GlbF::printArray($_SERVER);
+
+        $this->TestJob->create();
+        $this->TestJob->save($importData);
     }
 }

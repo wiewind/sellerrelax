@@ -60,6 +60,11 @@ class AppController extends Controller {
     }
 
     function beforeFilter () {
+        if ($this->Login->checkLogin()) {
+            $this->logged = true;
+            $this->username = intval($this->MySession->read('user.username'));
+            $this->set('username', $this->username);
+        }
 
         $this->__setPageLanguage();
 

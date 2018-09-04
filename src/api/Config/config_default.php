@@ -11,6 +11,7 @@ $config['system']['name'] = 'SellerRelax';
 $config['system']['appName'] = 'SRX';
 $config['system']['author'] = 'Wiewind Studio';
 $config['system']['domain'] = 'daheim-outlet.de';
+$config['system']['defaultLanguage']['id'] = 1;
 $config['system']['path'] = '';
 $config['system']['classic']['maxPageSize'] = 30;
 $config['system']['modern']['maxPageSize'] = 10;

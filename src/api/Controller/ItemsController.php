@@ -9,7 +9,6 @@
 class ItemsController extends AppController
 {
     var $uses = [
-        'Import',
         'Order',
         'Item',
         'OrderItem',
@@ -21,6 +20,8 @@ class ItemsController extends AppController
     ];
 
     public function listItems () {
+        $this->checkLogin();
+
         $params = $this->request->data;
         $total = $this->Item->find('count');
 
@@ -37,11 +38,11 @@ class ItemsController extends AppController
             "ifnull(ItemOrderCount.sum_price_net, 0) as Item__sum_price_net " .
             "from items Item ".
             "left join ( ".
-                "select OrderItem.item_id, OrderItem.currency, count(OrderItem.order_id) as count_orders, sum(OrderItem.quantity) as sum_quantity, sum(OrderItem.price_net) as sum_price_net " .
+                "select OrderItem.item_id, 'EUR' as currency, count(OrderItem.order_id) as count_orders, sum(OrderItem.quantity) as sum_quantity, sum(OrderItem.price_net * OrderItem.exchange_rate) as sum_price_net " .
                 "from order_items OrderItem ".
                 "where OrderItem.type_id = 1 ".
                 "and OrderItem.order_id in ( ".
-                    "select `Order`.extern_id from orders `Order` where `Order`.type_id = 1 and `Order`.deleted = 0 and `Order`.enty_date >= '".date('Y-m-d 00:00:00', strtotime("-".$searchDays." day"))."' ".
+                    "select `Order`.extern_id from orders `Order` where `Order`.type_id = 1 and `Order`.deleted = 0 and `Order`.enty_date >= DATE_SUB(CURDATE(), INTERVAL ".$searchDays." DAY) ".
                 ") " .
                 "group by OrderItem.item_id ".
             ") ItemOrderCount on ItemOrderCount.item_id = Item.extern_id ";
@@ -51,7 +52,7 @@ class ItemsController extends AppController
         $sql .= "order by {$sortColum} {$sortDirection} " .
             "limit " . ($params['limit'] * ($params['page'] - 1)) . ", " . $params['limit'];
 
-        $this->Item->virtualFields['currency'] = 'ItemOrderCount.currency';
+        $this->Item->virtualFields['currency'] = 'EUR';
         $this->Item->virtualFields['count_orders'] = 'ItemOrderCount.count_orders';
         $this->Item->virtualFields['sum_quantity'] = 'ItemOrderCount.sum_quantity';
         $this->Item->virtualFields['sum_price_net'] = 'ItemOrderCount.sum_price_net';
@@ -61,11 +62,5 @@ class ItemsController extends AppController
             'data' => $data,
             'total' => $total
         ];
-    }
-
-    function test () {
-        echo "alle";
-        GlbF::printArray(Configure::read('system.jquery'));
-        echo strtotime('now');
     }
 }

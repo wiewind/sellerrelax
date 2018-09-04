@@ -85,7 +85,7 @@ class ImportController extends AppController
         ];
     }
 
-    function importOrders () {
+    function importOrdersOnce () {
         $this->autoRender = false;
         ini_set("memory_limit","1024M");
         $newImport = $this->makeNewImport('orders');
@@ -186,7 +186,7 @@ class ImportController extends AppController
                             case 7:
                                 $oData['payment_due_date'] = GlbF::iso2Date($od->date);
                                 break;
-                            case 8:
+                            case 5:
                                 $oData['shipping_date'] = GlbF::iso2Date($od->date);
                                 break;
                         }
@@ -552,7 +552,7 @@ class ImportController extends AppController
         $importStep = 0;
         $sum = 0;
         do {
-            $data = $this->importOrders();
+            $data = $this->importOrdersOnce();
             $sum += $data['menge'];
             $importStep++;
         } while ($importStep < 2 && !$data['is_last_page']);

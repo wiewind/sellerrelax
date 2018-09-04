@@ -10,7 +10,7 @@
 class TestController extends AppController
 {
     var $uses = ['Import', 'Order', 'Item', 'RestToken'];
-    var $components = ['MySession', 'MyCookie', 'Rest.Rest'];
+    var $components = ['MySession', 'MyCookie', 'Rest'];
 
     function beforeFilter () {
         $this->autoRender = false;

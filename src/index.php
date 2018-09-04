@@ -6,4 +6,4 @@
  * Time: 11:05
  */
 
-//require 'api' . DIRECTORY_SEPARATOR . 'index.php';
+header('Location: ext/index.php');

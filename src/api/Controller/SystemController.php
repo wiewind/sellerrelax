@@ -14,7 +14,11 @@ class SystemController extends AppController
         'MyCookie'
     );
 
-    var $uses = ['EmptyModel', 'Import', 'Order', 'Item'];
+    public $uses = array(
+//        'Version',
+//        'UserEvent',
+        'Language'
+    );
 
     public function initApp () {
         // NOTICE: To be safe, we don`t cache here regarding IE9 issue
@@ -22,45 +26,70 @@ class SystemController extends AppController
 
         if ($this->logged) {
             $username = $this->MySession->read('user.username');
-            $userModel = ClassRegistry::init('User');
-            $userModel->bindModel([
-                'belongsTo' => [
-                    'Customer' => [
-                        'className' => 'Customer',
-                        'foreignKey' => 'customer_id'
-                    ]
-                ]
-            ]);
-            $udata = $userModel->find('first', [
-                'conditions' => [
-                    'username' => $username,
-                    'active' => 1
-                ]
-            ]);
-            $this->Login->fillSession($udata);
         }
 
-        // setVersion
-        $version = $this->getVersion();
-        $this->MySession->writeConfig('version', $version);
-
         $this->__setLanguage1();
-        $this->__setModules();
 
         if ($this->MySession->checkAll()) {
             $res['session'] = $this->MySession->readAll();
         }
-
-        $res['errorCode'] = $this->__setErrorCode();
-
         $localeSript = sprintf("../resources/js/locale/ext-locale-%s.js", $this->MySession->read('appLanguage.ext_localname'));
         $this->set('localeSript', $localeSript);
+
+        $res['errorCode'] = $this->__setErrorCode();
         $this->set('session', $res['session']);
         $this->set('errorCode', $res['errorCode']);
 
         $this->layout = 'ajax';
     }
 
+    private function __setLanguage1 () {
+        $this->MySession->deleteConfig('languages');
+        $this->MySession->delete('appLanguage');
+
+        $app_language = Configure::read('Config.language');
+        $app_language_id = 1;
+
+        $langs = $this->Language->find('all', [
+            'order' => 'id'
+        ]);
+        $languages = [];
+        foreach($langs as $l) {
+            $languages[$l['Language']['id']] = $l['Language'];
+            if ($l['Language']['cake_code'] === $app_language) {
+                $app_language_id = $l['Language']['id'];
+            }
+        }
+
+        $this->MySession->writeConfig('languages', $languages);
+        $this->MySession->write('appLanguage', $languages[$app_language_id]);
+    }
+
+
+    private function __setErrorCode () {
+        $errorCodeClass = new ReflectionClass('ErrorCode');
+        $codes = $errorCodeClass->getConstants();
+        $msgs[0] = ErrorCode::getExceptionMessage(0);
+        foreach ($codes as $code) {
+            $msgs[$code] = ErrorCode::getExceptionMessage($code);
+        }
+        return array_merge($codes, ['messages' => $msgs]);
+    }
+
+    public function login () {
+        $this->layout = 'login';
+        $this->Login->logout();
+    }
+
+    public function doLogin () {
+        $username = (isset($this->request->data)) ? $this->request->data['username'] : '';
+        $password = (isset($this->request->data)) ? $this->request->data['password'] : '';
+        $this->Login->checkLoginData($username, $password);
+    }
+
+    public function doLogout () {
+        $this->Login->logout();
+    }
 
     public function mail () {
         $Email = new CakeEmail('gmail');

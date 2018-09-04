@@ -35,7 +35,7 @@ var onSubmit = function () {
         }
 
         $.ajax({
-            url: Cake.api.path + "rest/test/index",
+            url: Cake.api.path + "/rest/test/index",
             method: 'POST',
             data: ajaxOption
         }).done(function(data) {

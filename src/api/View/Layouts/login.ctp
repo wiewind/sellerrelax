@@ -8,21 +8,15 @@
     echo $this->Html->meta('icon', Configure::read('system.url') . Configure::read('system.image.logo'));
     ?>
 
-    <script type="text/javascript" src="<?= Configure::read('system.url').'/apps/lib/jquery/'.Configure::read('system.jquery.file') ?>"></script>
-    <script type="text/javascript" src="<?= Configure::read('system.url') . Configure::read('system.js.path') . '/wiewindtools.js' ?>"></script>
-    <script type="text/javascript" src="<?= Configure::read('system.url') . Configure::read('system.js.path') . '/ga.js' ?>"></script>
-    <title>
-        <?= GlbF::getWebName() ?>
-    </title>
-    <link rel="stylesheet" type="text/css" href="<?= Configure::read('system.url') . Configure::read('system.api.path') ?>/css/styles.css?ref=<?= md5(time()) ?>" />
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/css/login.css?ref=<?= md5(time()) ?>">
+
+    <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+    <title><?= GlbF::getWebName() ?></title>
 </head>
 <body>
-<div class="login-container">
-    <div class="login-box">
-        <?= $this->fetch('content') ?>
-    </div>
-    <div class="login-foot"><?= GlbF::getWebName() ?> &star;&nbsp;<b>Version <?= $version['number'] ?></b></div>
-</div>
-<div class="login-cr">&copy; <?= GlbF::getAuthor() ?> <?= date('Y', strtotime($version['date'])) ?></div>
+<?= $this->fetch('content') ?>
+<div class="login-foot"><?= GlbF::getWebName() ?> &copy; <?= GlbF::getAuthor() ?> <?= date('Y') ?></div>
 </body>
 </html>
