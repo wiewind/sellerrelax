@@ -40,7 +40,9 @@ class AppController extends Controller {
         "Session",
         'MyCookie',
         'Cookie',
-        'Paginator'
+        'Paginator',
+        'Login',
+        'Rest'
     );
 
     var $helpers = array(

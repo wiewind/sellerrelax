@@ -19,7 +19,7 @@ class ImportController extends AppController
         'ItemsVariationsBarcode',
         'BarcodeType'
     ];
-    var $components = ['MySession', 'MyCookie', 'Rest.Rest'];
+    var $components = ['MySession', 'MyCookie', 'Rest'];
 
     var $version = '1.02';
 
