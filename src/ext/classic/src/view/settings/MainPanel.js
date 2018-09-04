@@ -36,6 +36,14 @@ Ext.define('SRX.view.settings.MainPanel', {
             width: '100%',
             items: [
                 {
+                    xtype: 'button',
+                    text: T.__('Sytem Update'),
+                    tooltip: T.__('Sytem Update'),
+                    iconCls: 'x-fa fa-retweet',
+                    // padding: 20,
+                    handler: 'onClickUpdate'
+                },
+                {
                     xtype: 'component',
                     flex: 1
                 },
@@ -46,10 +54,6 @@ Ext.define('SRX.view.settings.MainPanel', {
                     iconCls: Glb.btnSetting.logoutIconCls,
                     // padding: 20,
                     handler: 'onClickLogout'
-                },
-                {
-                    xtype: 'component',
-                    flex: 1
                 }
             ]
 

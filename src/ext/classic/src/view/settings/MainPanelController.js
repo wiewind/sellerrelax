@@ -13,5 +13,12 @@ Ext.define('SRX.view.settings.MainPanelController', {
                 window.location.assign('/');
             }
         });
+    },
+
+    onClickUpdate: function () {
+        Wiewind.Action.click({
+            url: '/update',
+            target: '_blank'
+        })
     }
 });

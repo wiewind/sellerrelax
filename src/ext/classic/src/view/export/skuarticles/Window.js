@@ -25,7 +25,7 @@ Ext.define('SRX.view.export.skuarticles.Window', {
     },
 
     items: [
-        
+
     ]
 
 });
