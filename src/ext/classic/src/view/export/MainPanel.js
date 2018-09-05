@@ -46,7 +46,7 @@ Ext.define('SRX.view.export.MainPanel', {
             },
             items: [
                 {
-                    text: T.__('Inventory forecast'),
+                    text: T.__('Edit SKU Articles'),
                     iconCls: Glb.btnSetting.editIconCls,
                     handler: 'openSkuVariations'
                 },

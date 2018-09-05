@@ -15,7 +15,7 @@ Ext.define('SRX.view.export.EditWindow', {
     },
 
     setting: {
-        url: Cake.api.path + '/exportsettings/json/save'
+        url: Cake.api.path + '/ExportSettings/json/save'
     },
 
     configForm: function () {

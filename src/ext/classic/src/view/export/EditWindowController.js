@@ -13,7 +13,7 @@ Ext.define('SRX.view.export.EditWindowController', {
 
         if (id > 0) {
             Glb.Ajax({
-                url: Cake.api.path + '/exportsettings/json/getExportSettingValue',
+                url: Cake.api.path + '/ExportSettings/json/getExportSettingValue',
                 params: {
                     id: id,
                     type: type

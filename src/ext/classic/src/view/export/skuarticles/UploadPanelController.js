@@ -65,7 +65,7 @@ Ext.define('SRX.view.export.skuarticles.UploadPanelController', {
         fd.append('removeOldData', removeOldData ? 1 : 0);
 
         Glb.jqAjax({
-            url: Cake.api.path + '/exportsettings/json/importSkuArticles',
+            url: Cake.api.path + '/ExportSettings/json/importSkuArticles',
             data: fd,
             timeout: 60000,
             success: function (data, status, xhr) {

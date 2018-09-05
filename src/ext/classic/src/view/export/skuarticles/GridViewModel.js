@@ -19,7 +19,7 @@ Ext.define('SRX.view.export.skuarticles.GridViewModel', {
             remoteSort: true,
 
             proxy: {
-                url: Cake.api.path + '/exportsettings/json/getSkuArticles'
+                url: Cake.api.path + '/ExportSettings/json/getSkuArticles'
             }
         })
     }

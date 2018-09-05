@@ -19,7 +19,7 @@ Ext.define('SRX.view.export.fbacustomers.GridViewModel', {
             remoteSort: true,
 
             proxy: {
-                url: Cake.api.path + '/exportsettings/json/getFbaCustomers'
+                url: Cake.api.path + '/ExportSettings/json/getFbaCustomers'
             }
         })
     }
