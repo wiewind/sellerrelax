@@ -57,7 +57,7 @@ class AppController extends Controller {
 
     function checkLogin () {
         if (!$this->logged) {
-            ErrorCode::throwExceptionCode(ErrorCode::ErrorCodeUserDenied);
+            ErrorCode::throwExceptionCode(ErrorCode::ErrorCodeSessionTimeout);
         }
     }
 

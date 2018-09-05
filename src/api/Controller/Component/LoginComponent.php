@@ -21,7 +21,7 @@ class LoginComponent extends Component {
             $resp = $this->Rest->login($username, $password);
             $rest = json_decode($resp);
             if (!isset($rest->access_token)) {
-                throw new Exception(__('Invalid username or password, please try again2.'));
+                throw new Exception(__('Invalid username or password, please try again.'));
             }
         }
 

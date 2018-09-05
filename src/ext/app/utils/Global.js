@@ -61,7 +61,8 @@ Ext.define('SRX.utils.Global', {
         var options = {
             method: 'POST',
             timeout: 30000,
-            responseType: 'json'
+            responseType: 'json',
+            waitMsg: T.__('loading...')
         };
         options = Ext.apply(options, config);
 
@@ -93,22 +94,56 @@ Ext.define('SRX.utils.Global', {
         };
         options.callback = function (options, success, response) {
             if (('callback' in config)) config.callback(options, success, response);
-            Glb.common.unmask();
         };
 
-        var hiddenMsg = config.hiddenMsg || false;
-        if (!hiddenMsg) {
-            var waitMsg = (config.waitMsg) ? config.waitMsg : T.__('loading...');
-            Glb.common.mask(waitMsg);
-        }
         Ext.Ajax.request(options);
+    },
+
+    jqAjax: function (config) {
+        var options = {
+            type: "POST",
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                return myXhr;
+            },
+            async: true,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 30000
+        };
+        options = Ext.apply(options, config);
+
+        options.success = function (data, status, xhr) {
+            var resp = Ext.decode(data);
+            if (resp.success) {
+                if (('success' in config)) config.success(data, status, xhr);
+            } else {
+                var msg = (resp.message) ? resp.message : T.__('Unknown'),
+                    fn = function () {};
+                if (resp.code === ErrorCode.ErrorCodeSessionTimeout) {
+                    fn = function () {location.reload();}
+                }
+                ABox.failure(msg, function () {
+                    if (('error' in config)) config.error();
+                    fn();
+                });
+            }
+        };
+
+        options.error = function () {
+            ABox.error(T.__('Server Error'));
+            if (('error' in config)) config.error();
+        };
+
+        $.ajax(options);
     },
 
     common: {
         checkLogin: function () {
-            // if (Wiewind.check(SSD.data.user) && Number(SSD.data.user.id) > 0) {
-            //     return true;
-            // }
+            if (Wiewind.check(SSD.data.user) && Wiewind.check(SSD.data.user.username)) {
+                return true;
+            }
             return false;
         },
 

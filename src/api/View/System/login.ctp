@@ -1,5 +1,5 @@
 <h1 align="center"><?= __("Login") ?></h1>
-<form role="form">
+<form class="login-form" role="form">
     <div class="form-group">
         <label for="firstname" class="col-sm-2 control-label"><?= __("Username") ?>:</label>
         <div class="col-sm-10">
@@ -15,10 +15,7 @@
         </div>
     </div>
     <br />
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10 error" id="resdiv">
-        </div>
-    </div>
+    <div class="error" id="resdiv"></div>
     <br />
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">

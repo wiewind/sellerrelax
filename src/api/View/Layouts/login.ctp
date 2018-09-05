@@ -16,7 +16,8 @@
     <title><?= GlbF::getWebName() ?></title>
 </head>
 <body>
-<?= $this->fetch('content') ?>
+<div class="login-header"><img src="<?= configure::read('system.image.logo') ?>" alt="LOGO"/></div>
+<div class="login-content"><?= $this->fetch('content') ?></div>
 <div class="login-foot"><?= GlbF::getWebName() ?> &copy; <?= GlbF::getAuthor() ?> <?= date('Y') ?></div>
 </body>
 </html>

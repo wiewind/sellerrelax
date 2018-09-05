@@ -101,13 +101,13 @@
                         $("#preview").html('');
                         $("#result").html('更新成功！');
 
-                        if (projectname === 'workshop') {
-                            // add Version
+//                        if (projectname === 'workshop') {
+//                            // add Version
 //                            $.ajax({
 //                                type: "POST",
 //                                url: '/apps/workshop/api/versions/json/addVersion'
 //                            });
-                        }
+//                        }
                     } else {
                         $("#result").html('<div class="errMsg">' + res.message + '</div>');
                     }

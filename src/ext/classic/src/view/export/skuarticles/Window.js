@@ -9,23 +9,39 @@ Ext.define('SRX.view.export.skuarticles.Window', {
     xtype: 'exportskuarticleswindow',
 
     requires: [
-        // 'SRX.view.export.skuarticles.Grid',
-        // 'SRX.view.export.skuarticles.EditPanel'
+        'SRX.view.export.skuarticles.Grid',
+        'SRX.view.export.skuarticles.UploadPanel'
     ],
 
 
     config: {
-        title: T.__('Edit SKU Articles'),
+        title: T.__('SKU Articles'),
         iconCls: 'x-fa fa-magic',
         modal: true,
         width: 1200,
         height: 800,
-        autoShow: true,
-        layout: 'hbox'
+        layout: 'border',
+        closable: true,
+        autoShow: true
     },
 
     items: [
-
+        {
+            xtype: 'exportskuarticlesgrid',
+            region: 'west',
+            width: 600
+        },
+        {
+            xtype: 'container',
+            region: 'center',
+            layout: 'fit',
+            itemId: 'editContainer',
+            items: [
+                {
+                    xtype: 'exportskuarticlesuploadpanel'
+                }
+            ]
+        }
     ]
 
 });

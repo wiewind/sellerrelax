@@ -1,12 +1,47 @@
+body {
+    background-color: #4070b7;
+}
+
+.login-header {
+    padding: 20px;
+    font-size: large;
+    font-weight: bold;
+    background-color: #35384c;
+    color: white;
+}
+
+.login-content {
+    padding: 20px;
+    width: 100%;
+    min-height: 200px;
+    background-color: white;
+    color: #35384c;
+}
+
+.login-content h1 {
+    font-weight: bold;
+}
+
 .login-foot {
     float: right;
-    margin-top: 50px;
-    margin-right: 10px;
-    color: #666;
+    padding: 20px;
+    color: #eee;
     font-size: small;
 }
 
 .error {
     color: red;
     font-weight: bold;
+}
+
+.login-form {
+    margin: 0 auto;
+    padding: 20px;
+    width: 500px;
+}
+
+.login-form button {
+    padding: 5px 20px;
+    background-color: #35384c;
+    color: white;
 }

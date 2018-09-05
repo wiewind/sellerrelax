@@ -11,6 +11,10 @@ Ext.define('SRX.view.export.MainPanelController', {
     },
 
     openFbaCustomers: function () {
+        Ext.create('SRX.view.export.fbacustomers.Window');
+    },
 
+    openExportInventoryForecast: function () {
+        ABox.error(T.__('in working...'));
     }
 });

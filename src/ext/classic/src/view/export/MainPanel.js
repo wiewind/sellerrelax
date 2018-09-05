@@ -35,21 +35,24 @@ Ext.define('SRX.view.export.MainPanel', {
         {
             title: T.__('Export Setting'),
             iconCls: 'x-fa fa-edit',
+            collapsible: true,
+            // collapsed: true,
+            layout: 'hbox',
             defaults: {
                 xtype: 'button',
-                margin: '10px auto',
+                margin: 10,
                 padding: 10,
                 width: 200
             },
             items: [
                 {
-                    text: T.__('Edit SKU Articles'),
-                    iconCls: 'x-fa fa-magic',
+                    text: T.__('Inventory forecast'),
+                    iconCls: Glb.btnSetting.editIconCls,
                     handler: 'openSkuVariations'
                 },
                 {
                     text: T.__('Edit FBA Customers'),
-                    iconCls: 'x-fa fa-magic',
+                    iconCls: Glb.btnSetting.editIconCls,
                     handler: 'openFbaCustomers'
                 }
             ]
@@ -59,12 +62,16 @@ Ext.define('SRX.view.export.MainPanel', {
             iconCls: 'x-fa fa-ge',
             defaults: {
                 xtype: 'button',
-                margin: '10px auto',
+                margin: 10,
                 padding: 10,
                 width: 200
             },
             items: [
-
+                {
+                    text: T.__('Inventory Forecast'),
+                    iconCls: 'x-fa fa-hand-o-right',
+                    handler: 'openExportInventoryForecast'
+                }
             ]
         }
     ]

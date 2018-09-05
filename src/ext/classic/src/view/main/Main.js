@@ -20,6 +20,7 @@ Ext.define('SRX.view.main.Main', {
     ],
 
     ui: 'navigation',
+    id: 'appmain',
 
     tabBarHeaderPosition: 1,
     titleRotation: 0,
