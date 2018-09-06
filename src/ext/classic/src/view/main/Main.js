@@ -97,7 +97,7 @@ Ext.define('SRX.view.main.Main', {
             // }
         },
         {
-            title: 'Settings',
+            title: T.__('Settings'),
             iconCls: 'fa-cog',
             items: [
                 {

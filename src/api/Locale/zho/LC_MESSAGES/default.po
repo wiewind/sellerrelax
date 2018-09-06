@@ -1,2 +1,505 @@
-msgid "Date"
-msgstr "日期"
+msgid ""
+msgstr ""
+"Project-Id-Version: SellerRelex\n"
+"POT-Creation-Date: 2018-09-06 11:12+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: B. Zou\n"
+"Language-Team: Wiewind Studio\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;___;T.__\n"
+"X-Poedit-Basepath: ../../../..\n"
+"X-Poedit-SearchPath-0: api\n"
+"X-Poedit-SearchPath-1: ext/app\n"
+"X-Poedit-SearchPath-2: ext/classic\n"
+"X-Poedit-SearchPath-3: ext/modern\n"
+
+#: api/Controller/Component/LoginComponent.php:17
+#: api/Controller/Component/LoginComponent.php:24
+msgid "Invalid username or password, please try again."
+msgstr "用户名或密码不正确，请重试。"
+
+#: api/Lib/ErrorCode.php:18 ext/app/ux/AMessageBox.js:44
+msgid "Success"
+msgstr "成功"
+
+#: api/Lib/ErrorCode.php:20
+msgid "The request was invalid or cannot be otherwise served."
+msgstr "请求无效或无法提供服务。"
+
+#: api/Lib/ErrorCode.php:22
+msgid "The server was denied this request."
+msgstr "服务器拒绝了该请求。"
+
+#: api/Lib/ErrorCode.php:24
+msgid "The request is invalid or the resource does not exists."
+msgstr "请求无效或资源不存在。"
+
+#: api/Lib/ErrorCode.php:26
+msgid "Authentication credentials were missing or incorrect."
+msgstr "身份验证凭据丢失或不正确。"
+
+#: api/Lib/ErrorCode.php:28
+msgid "The server is currently busy. Please try again later."
+msgstr "服务器当前正忙。请稍后再试。"
+
+#: api/Lib/ErrorCode.php:30
+msgid "Your session has expired. Please login again."
+msgstr "您的会话已过期。请再次登录。"
+
+#: api/Lib/ErrorCode.php:32
+msgid "Another session is already running."
+msgstr "另一个会话已在运行。"
+
+#: api/Lib/ErrorCode.php:34
+msgid "Your input is not valid."
+msgstr "您的输入无效。"
+
+#: api/Lib/ErrorCode.php:36
+msgid "This file name is already in use."
+msgstr "此文件名已在使用中。"
+
+#: api/Lib/ErrorCode.php:38
+msgid "This folder name is already in use."
+msgstr "此文件夹名称已在使用中。"
+
+#: api/Lib/ErrorCode.php:40
+msgid "An unknown error has occurred."
+msgstr "出现未知错误。"
+
+#: api/Lib/GlbF.php:132
+#, php-format
+msgid "Error by set folder [%s]."
+msgstr "设置文件夹 [%s] 出错。"
+
+#: api/Lib/GlbF.php:135
+#, php-format
+msgid "Error by set permissions [%s]."
+msgstr "设置权限 [%s] 出错。"
+
+#: api/Lib/GlbF.php:177
+#, php-format
+msgid "Error by delete Folder [%s]."
+msgstr "删除文件夹 [%s] 时出错。"
+
+#: api/Lib/GlbF.php:180
+#, php-format
+msgid "Error by delete File [%s]."
+msgstr "删除文件 [%s] 时出错。"
+
+#: api/Lib/GlbF.php:217
+msgid "email applied"
+msgstr "使用电子邮件"
+
+#: api/Lib/GlbF.php:219
+msgid "tele applied"
+msgstr "使用电话"
+
+#: api/Lib/GlbF.php:221
+msgid "post applied"
+msgstr "使用邮寄信件"
+
+#: api/Lib/GlbF.php:223
+msgid "tele interview"
+msgstr "电话面试"
+
+#: api/Lib/GlbF.php:225
+msgid "interview"
+msgstr "面试"
+
+#: api/Lib/GlbF.php:227
+msgid "offered"
+msgstr "提供"
+
+#: api/Lib/GlbF.php:229
+msgid "reject"
+msgstr "拒绝"
+
+#: api/Lib/GlbF.php:231
+msgid "indifferent"
+msgstr "冷漠"
+
+#: api/Lib/GlbF.php:233
+msgid "new job"
+msgstr "新工作"
+
+#: ext/app/store/Base.js:28 ext/app/utils/Global.js:75
+#: ext/app/utils/Global.js:122
+msgid "Unknown"
+msgstr "未知"
+
+#: ext/app/utils/Global.js:9
+msgid "Submit"
+msgstr "提交"
+
+#: ext/app/utils/Global.js:11
+msgid "Delete"
+msgstr "删除"
+
+#: ext/app/utils/Global.js:14 ext/classic/src/ux/SearchText.js:8
+#: ext/modern/overrides/picker/Date.js:19
+#: ext/modern/overrides/picker/Picker.js:12
+msgid "Cancel"
+msgstr "取消"
+
+#: ext/app/utils/Global.js:16
+msgid "Save"
+msgstr "保存"
+
+#: ext/app/utils/Global.js:18
+msgid "Save and Close"
+msgstr "保存并关闭"
+
+#: ext/app/utils/Global.js:20 ext/classic/src/ux/MusterFormWindow.js:24
+#: ext/classic/src/ux/UploadPhotoWindow.js:23
+msgid "Close"
+msgstr "关闭"
+
+#: ext/app/utils/Global.js:22
+msgid "New"
+msgstr "新建"
+
+#: ext/app/utils/Global.js:24
+msgid "Add"
+msgstr "添加"
+
+#: ext/app/utils/Global.js:26
+msgid "Edit"
+msgstr "编辑"
+
+#: ext/app/utils/Global.js:28 ext/classic/src/ux/SearchText.js:9
+msgid "Search"
+msgstr "查询"
+
+#: ext/app/utils/Global.js:30
+msgid "Reset"
+msgstr "重置"
+
+#: ext/app/utils/Global.js:32 api/View/System/login.ctp:1
+#: api/View/System/login.ctp:22
+msgid "Login"
+msgstr "登录"
+
+#: ext/app/utils/Global.js:34
+msgid "Logout"
+msgstr "登出"
+
+#: ext/app/utils/Global.js:36
+msgid "Send"
+msgstr "发送"
+
+#: ext/app/utils/Global.js:38
+msgid "Refresh"
+msgstr "刷新"
+
+#: ext/app/utils/Global.js:40
+msgid "Print"
+msgstr "打印"
+
+#: ext/app/utils/Global.js:49
+#: ext/classic/src/view/settings/MainPanelController.js:10
+msgid "Please wait..."
+msgstr "请稍候……"
+
+#: ext/app/utils/Global.js:54
+msgid "Monday"
+msgstr "周一"
+
+#: ext/app/utils/Global.js:54
+msgid "Tuesday"
+msgstr "周二"
+
+#: ext/app/utils/Global.js:54
+msgid "Wednesday"
+msgstr "周三"
+
+#: ext/app/utils/Global.js:54
+msgid "Thursday"
+msgstr "周四"
+
+#: ext/app/utils/Global.js:54
+msgid "Friday"
+msgstr "周五"
+
+#: ext/app/utils/Global.js:56
+msgid "weekly"
+msgstr "星期"
+
+#: ext/app/utils/Global.js:57
+msgid "two-weeks"
+msgstr "两星期"
+
+#: ext/app/utils/Global.js:65
+msgid "loading..."
+msgstr "加载中……"
+
+#: ext/app/utils/Global.js:92 ext/app/utils/Global.js:135
+msgid "Server Error"
+msgstr "服务器错误"
+
+#: ext/app/ux/AMessageBox.js:55
+msgid "Info"
+msgstr "信息"
+
+#: ext/app/ux/AMessageBox.js:65
+msgid "Error"
+msgstr "错误"
+
+#: ext/app/ux/AMessageBox.js:75
+msgid "Warning"
+msgstr "警告"
+
+#: ext/app/ux/AMessageBox.js:85
+msgid "Failure"
+msgstr "失败"
+
+#: ext/app/ux/AMessageBox.js:94
+msgid "Attention"
+msgstr "注意"
+
+#: ext/app/ux/AMessageBox.js:106
+msgid "Please enter..."
+msgstr "请输入……"
+
+#: ext/classic/src/ux/MusterFormController.js:43
+#: ext/classic/src/ux/UploadPhotoWindowController.js:43
+msgid "server error"
+msgstr "服务器错误"
+
+#: ext/classic/src/ux/MusterFormController.js:48
+#: ext/classic/src/ux/UploadPhotoWindowController.js:48
+msgid "client error"
+msgstr "客户端错误"
+
+#: ext/classic/src/ux/PhotoField.js:21
+msgid "Your file is not allowed, the accredited files are: png, jpg, gif, bmp"
+msgstr "您的文件是不被允许的，可以接受的文件有：png, jpg, gif, bmp"
+
+#: ext/classic/src/ux/UploadPhotoWindow.js:15
+msgid "Photo upload"
+msgstr "上传照片"
+
+#: ext/classic/src/ux/UploadPhotoWindow.js:43
+msgid "Photo"
+msgstr "照片"
+
+#: ext/classic/src/ux/UploadPhotoWindow.js:48
+msgid "Select Photo..."
+msgstr "选择照片……"
+
+#: ext/classic/src/ux/UploadPhotoWindow.js:57
+#: ext/classic/src/ux/UploadPhotoWindow.js:58
+msgid "Upload"
+msgstr "上传"
+
+#: ext/classic/src/ux/UploadPhotoWindowController.js:20
+msgid "Uploading your photo..."
+msgstr "上传你的照片……"
+
+#: ext/classic/src/view/article/Grid.js:18 ext/classic/src/view/main/Main.js:84
+msgid "Articles"
+msgstr "商品"
+
+#: ext/classic/src/view/article/Grid.js:30
+#: ext/classic/src/view/article/Grid.js:36
+#: ext/classic/src/view/export/fbacustomers/Grid.js:25
+#: ext/classic/src/view/export/fbacustomers/Grid.js:31
+#: ext/classic/src/view/export/skuarticles/Grid.js:25
+#: ext/classic/src/view/export/skuarticles/Grid.js:31
+msgid "This list is empty."
+msgstr "该列表为空"
+
+#: ext/classic/src/view/article/Grid.js:41
+msgid "Article ID"
+msgstr "商品 ID"
+
+#: ext/classic/src/view/article/Grid.js:47
+msgid "name"
+msgstr "名称"
+
+#: ext/classic/src/view/article/Grid.js:53
+msgid "count of orders"
+msgstr "订单数量"
+
+#: ext/classic/src/view/article/Grid.js:66
+msgid "quantity"
+msgstr "数量"
+
+#: ext/classic/src/view/article/Grid.js:79
+msgid "price net"
+msgstr "净价格"
+
+#: ext/classic/src/view/article/Grid.js:109
+msgid "orders in "
+msgstr "订单晚于"
+
+#: ext/classic/src/view/article/Grid.js:116
+msgid "days "
+msgstr "天"
+
+#: ext/classic/src/view/article/Grid.js:120
+msgid "Search with article name..."
+msgstr "搜索商品名称"
+
+#: ext/classic/src/view/export/EditWindow.js:49
+msgid "Old Value"
+msgstr "旧值"
+
+#: ext/classic/src/view/export/EditWindow.js:58
+msgid "Value"
+msgstr "值"
+
+#: ext/classic/src/view/export/EditWindowViewModel.js:17
+msgid "Edit SKU Article"
+msgstr "编辑SKU商品"
+
+#: ext/classic/src/view/export/EditWindowViewModel.js:17
+msgid "New SKU Article"
+msgstr "新建SKU商品"
+
+#: ext/classic/src/view/export/EditWindowViewModel.js:19
+msgid "Edit FBA Customer"
+msgstr "编辑FBA用户"
+
+#: ext/classic/src/view/export/EditWindowViewModel.js:19
+msgid "New FBA Customer"
+msgstr "新建FBA用户"
+
+#: ext/classic/src/view/export/MainPanel.js:36
+msgid "Export Setting"
+msgstr "导出设置"
+
+#: ext/classic/src/view/export/MainPanel.js:49
+msgid "Edit SKU Articles"
+msgstr "编辑SKU商品"
+
+#: ext/classic/src/view/export/MainPanel.js:54
+msgid "Edit FBA Customers"
+msgstr "编辑FBA客户"
+
+#: ext/classic/src/view/export/MainPanel.js:61
+#: ext/classic/src/view/main/Main.js:75
+msgid "Export"
+msgstr "导出"
+
+#: ext/classic/src/view/export/MainPanel.js:71
+msgid "Inventory Forecast"
+msgstr "库存预测"
+
+#: ext/classic/src/view/export/MainPanelController.js:18
+msgid "in working..."
+msgstr "工作中……"
+
+#: ext/classic/src/view/export/fbacustomers/GridController.js:11
+#: ext/classic/src/view/export/skuarticles/GridController.js:11
+msgid "Are you sure you want to delete the record?"
+msgstr "您真的要删除该数据吗？"
+
+#: ext/classic/src/view/export/fbacustomers/GridController.js:20
+#: ext/classic/src/view/export/skuarticles/GridController.js:20
+msgid "The record has been deleted!"
+msgstr "数据删除完毕！"
+
+#: ext/classic/src/view/export/fbacustomers/Window.js:17
+msgid "FBA Customers"
+msgstr "FBA客户"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanel.js:25
+msgid "Import data from an external file"
+msgstr "从外部文件导入"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanel.js:29
+msgid "remove old records"
+msgstr "删除原有数据"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanel.js:37
+msgid "Drag file to this area..."
+msgstr "将文件拖入该区域……"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanelController.js:47
+msgid "You may upload only one file."
+msgstr "您仅可以上传一个文件。"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanelController.js:57
+msgid "You may upload only csv file."
+msgstr "您仅可以上传CSV文件。"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanelController.js:61
+#, javascript-format
+msgid "Upload file: %s <br /> filesize: %d"
+msgstr "上传文件：%s<br />文件大小：%d"
+
+#: ext/classic/src/view/export/skuarticles/UploadPanelController.js:74
+#, javascript-format
+msgid "%s record(s) are imported!"
+msgstr "已导入%s条记录"
+
+#: ext/classic/src/view/export/skuarticles/Window.js:18
+msgid "SKU Articles"
+msgstr "SKU商品"
+
+#: ext/classic/src/view/main/Main.js:93
+msgid "Orders"
+msgstr "订单"
+
+#: ext/classic/src/view/settings/MainPanel.js:16
+msgid "Settings"
+msgstr "设置"
+
+#: ext/classic/src/view/settings/MainPanel.js:31
+msgid "Current User"
+msgstr "当前用户"
+
+#: ext/classic/src/view/settings/MainPanel.js:40
+#: ext/classic/src/view/settings/MainPanel.js:41
+msgid "Sytem Update"
+msgstr "系统更新"
+
+#: ext/modern/overrides/picker/Date.js:14
+msgid "Day"
+msgstr "日"
+
+#: ext/modern/overrides/picker/Date.js:15
+msgid "Month"
+msgstr "月"
+
+#: ext/modern/overrides/picker/Date.js:16
+msgid "Year"
+msgstr "年"
+
+#: ext/modern/overrides/picker/Date.js:18
+#: ext/modern/overrides/picker/Picker.js:11
+msgid "Select"
+msgstr "选择"
+
+#: api/View/Display/noshow.ctp:2
+msgid "NO PREVIEW FOR THIS FILE, PLEASE DOWNLOUD!"
+msgstr "该文件无法预览，请下载！"
+
+#: api/View/Layouts/viewer.ctp:23
+msgid "Previewer"
+msgstr "预览"
+
+#: api/View/System/login.ctp:4
+msgid "Username"
+msgstr "用户名"
+
+#: api/View/System/login.ctp:6
+msgid "Please enter your username"
+msgstr "请输入您的用户名"
+
+#: api/View/System/login.ctp:12
+msgid "Password"
+msgstr "密码"
+
+#: api/View/System/login.ctp:14
+msgid "Please enter your password"
+msgstr "请输入您的密码"
+
+#~ msgid "Date"
+#~ msgstr "æ¥æ"

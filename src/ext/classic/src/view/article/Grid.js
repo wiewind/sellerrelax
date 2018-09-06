@@ -106,14 +106,15 @@ Ext.define('SRX.view.article.Grid', {
 
     tbar: [
         '->',
-        T.__('orders in '),
+        T.__('orders in'),
         {
             xtype: 'numberfield',
             filedId: 'searchDays',
             width: 100,
             value: 7
         },
-        T.__('days '),
+        T.__('days'),
+        ' ',
         {
             xtype: 'searchfield',
             filedId: 'searchText',

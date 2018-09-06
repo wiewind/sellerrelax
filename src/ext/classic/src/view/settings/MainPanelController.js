@@ -7,7 +7,7 @@ Ext.define('SRX.view.settings.MainPanelController', {
     alias: 'controller.settingstmainpanel',
 
     onClickLogout: function () {
-        Glb.common.mask(T.__('Please waite...'));
+        Glb.common.mask(T.__('Please wait...'));
         Glb.Ajax({
             url: Cake.api.path + '/system/json/doLogout',
             success: function () {
