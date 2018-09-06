@@ -96,6 +96,7 @@ class ExportSettingsController extends AppController
     }
 
     function getExportSettingValue () {
+        $this->checkLogin();
         $id = $this->request->data['id'];
         $type = $this->request->data['type'];
         $data = $this->ExportSetting->find('first', [
@@ -112,6 +113,7 @@ class ExportSettingsController extends AppController
     }
 
     function save () {
+        $this->checkLogin();
         $data = $this->request->data;
 
         if ($data['id'] === 0) {
@@ -122,6 +124,7 @@ class ExportSettingsController extends AppController
     }
 
     function delete () {
+        $this->checkLogin();
         $this->ExportSetting->delete($this->request->data['id']);
     }
 }

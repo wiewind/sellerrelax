@@ -51,7 +51,7 @@ class AppController extends Controller {
         'Js'
     );
 
-    public $allow = array();
+    public $allow = [];
 
     public $logged = false;
 

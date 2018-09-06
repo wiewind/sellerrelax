@@ -15,8 +15,6 @@ Ext.define('SRX.view.export.skuarticles.Grid', {
     },
 
     config: {
-        // title: T.__('Articles'),
-        // iconCls: 'x-fa fa-cube',
         scrollable: true,
         border: 1,
         forceFit: true,
@@ -35,9 +33,20 @@ Ext.define('SRX.view.export.skuarticles.Grid', {
 
     columns: [
         {
-            // text: false,
             dataIndex: 'number',
+            flex: 1,
             sortable: true
+        },
+        {
+            xtype:'actioncolumn',
+            width:30,
+            items: [
+                {
+                    iconCls: Glb.btnSetting.deleteIconCls2,
+                    tooltip: Glb.btnSetting.deleteText,
+                    handler: 'onDelete'
+                }
+            ]
         }
     ],
 
