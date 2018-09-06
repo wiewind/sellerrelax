@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-09-06 11:12+0200\n"
+"POT-Creation-Date: 2018-09-06 12:11+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -311,6 +311,8 @@ msgstr "商品"
 #: ext/classic/src/view/export/fbacustomers/Grid.js:31
 #: ext/classic/src/view/export/skuarticles/Grid.js:25
 #: ext/classic/src/view/export/skuarticles/Grid.js:31
+#: ext/classic/src/view/settings/robots/Grid.js:27
+#: ext/classic/src/view/settings/robots/Grid.js:33
 msgid "This list is empty."
 msgstr "该列表为空"
 
@@ -335,14 +337,14 @@ msgid "price net"
 msgstr "净价格"
 
 #: ext/classic/src/view/article/Grid.js:109
-msgid "orders in "
+msgid "orders in"
 msgstr "订单晚于"
 
 #: ext/classic/src/view/article/Grid.js:116
-msgid "days "
+msgid "days"
 msgstr "天"
 
-#: ext/classic/src/view/article/Grid.js:120
+#: ext/classic/src/view/article/Grid.js:121
 msgid "Search with article name..."
 msgstr "搜索商品名称"
 
@@ -447,6 +449,7 @@ msgstr "SKU商品"
 msgid "Orders"
 msgstr "订单"
 
+#: ext/classic/src/view/main/Main.js:100
 #: ext/classic/src/view/settings/MainPanel.js:16
 msgid "Settings"
 msgstr "设置"
@@ -459,6 +462,22 @@ msgstr "当前用户"
 #: ext/classic/src/view/settings/MainPanel.js:41
 msgid "Sytem Update"
 msgstr "系统更新"
+
+#: ext/classic/src/view/settings/robots/Grid.js:18
+msgid "Robots"
+msgstr "爬虫机器人"
+
+#: ext/classic/src/view/settings/robots/Grid.js:38
+msgid "Time"
+msgstr "时间"
+
+#: ext/classic/src/view/settings/robots/Grid.js:46
+msgid "IP"
+msgstr "IP"
+
+#: ext/classic/src/view/settings/robots/Grid.js:51
+msgid "URL"
+msgstr "URL"
 
 #: ext/modern/overrides/picker/Date.js:14
 msgid "Day"
@@ -500,6 +519,15 @@ msgstr "密码"
 #: api/View/System/login.ctp:14
 msgid "Please enter your password"
 msgstr "请输入您的密码"
+
+#~ msgid "time"
+#~ msgstr "时间"
+
+#~ msgid "orders in "
+#~ msgstr "订单晚于"
+
+#~ msgid "days "
+#~ msgstr "天"
 
 #~ msgid "Date"
 #~ msgstr "æ¥æ"

@@ -36,18 +36,16 @@ Ext.define('SRX.Application', {
         $('#welcome_box').hide();
 
 
-        // if (Glb.common.checkLogin()) {
-        //     var timerId = null;
-        //
-        //     timerId = window.setInterval(function () {
-        //         if (SSD) {
-        //             Glb.Ajax({
-        //                 url: Cake.api.path + '/system/json/keeplive',
-        //                 timerId: timerId
-        //             });
-        //         }
-        //     }, 60000);
-        // }
+        if (Glb.common.checkLogin()) {
+            var timerId = window.setInterval(function () {
+                if (SSD) {
+                    Glb.Ajax({
+                        url: Cake.api.path + '/system/json/keeplive',
+                        timerId: timerId
+                    });
+                }
+            }, 60000);
+        }
     },
 
     onAppUpdate: function () {

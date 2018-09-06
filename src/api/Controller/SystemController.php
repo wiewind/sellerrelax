@@ -91,6 +91,13 @@ class SystemController extends AppController
         $this->Login->logout();
     }
 
+    public function keeplive () {
+        if (!$this->logged) {
+            ErrorCode::throwExceptionCode(ErrorCode::ErrorCodeSessionTimeout);
+        }
+        return true;
+    }
+
     public function mail () {
         $Email = new CakeEmail('gmail');
         $Email->from('zoubenying@hotmail.com');
