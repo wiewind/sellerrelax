@@ -48,6 +48,34 @@ Ext.define('SRX.view.settings.robots.Grid', {
             width: 150
         },
         {
+            text: T.__("Location"),
+            flex: 1,
+            renderer: function (v, meta, rec) {
+                var location = rec.getData().Import.ip_info,
+                    str = '',
+                    str2 = '';
+                if (!Wiewind.isEmpty(location.hostname)) {
+                    str += "<div>Host: " + location.hostname + '</div>';
+                }
+                if (!Wiewind.isEmpty(location.continent)) {
+                    str2 += location.continent + ', ';
+                }
+                if (!Wiewind.isEmpty(location.country)) {
+                    str2 += location.country + ', ';
+                }
+                if (!Wiewind.isEmpty(location.region)) {
+                    str2 += location.region + ', ';
+                }
+                if (!Wiewind.isEmpty(location.city)) {
+                    str2 += location.city;
+                }
+                if (str2) {
+                    str += '<div>' + str2 + '</div>'
+                }
+                return str;
+            }
+        },
+        {
             text: T.__("URL"),
             dataIndex: 'url',
             flex: 1

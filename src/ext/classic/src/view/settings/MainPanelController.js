@@ -4,7 +4,7 @@
 Ext.define('SRX.view.settings.MainPanelController', {
     extend: 'Ext.app.ViewController',
 
-    alias: 'controller.settingstmainpanel',
+    alias: 'controller.settingsmainpanel',
 
     onClickLogout: function () {
         Glb.common.mask(T.__('Please wait...'));

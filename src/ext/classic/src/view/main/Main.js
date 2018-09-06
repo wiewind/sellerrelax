@@ -91,17 +91,14 @@ Ext.define('SRX.view.main.Main', {
         },
         {
             title: T.__('Orders'),
-            iconCls: 'fa-file-text-o',
-            // bind: {
-            //     html: '{loremIpsum}'
-            // }
+            iconCls: 'fa-file-text-o'
         },
         {
             title: T.__('Settings'),
             iconCls: 'fa-cog',
             items: [
                 {
-                    xtype: 'settingstmainpanel'
+                    xtype: 'settingsmainpanel'
                 }
             ]
         }

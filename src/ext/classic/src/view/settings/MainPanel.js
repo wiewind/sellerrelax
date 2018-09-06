@@ -4,14 +4,14 @@
 
 Ext.define('SRX.view.settings.MainPanel', {
     extend: 'Ext.panel.Panel',
-    xtype: 'settingstmainpanel',
+    xtype: 'settingsmainpanel',
 
     requires: [
         'SRX.view.settings.MainPanelController',
         'SRX.view.settings.robots.Grid'
     ],
 
-    controller: 'settingstmainpanel',
+    controller: 'settingsmainpanel',
 
     config: {
         title: T.__('Settings'),

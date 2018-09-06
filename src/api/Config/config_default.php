@@ -36,5 +36,30 @@ $config['system']['rest']['username']       = '';
 $config['system']['rest']['password']       = '';
 $config['system']['rest']['limitPerImport'] = 2000;
 
+
+$config['Glb']['formatting'] = [
+    'zho' => [
+        'currency_char' => '￥',
+        'date_format' => 'Y年m月d日',
+        'date_format_short' => 'y.m.d',
+        'decimal_separator' => '.',
+        'thousands_separator' => ','
+    ],
+    'deu' => [
+        'currency_char' => '€',
+        'date_format' => 'd.m.Y',
+        'date_format_short' => 'd.m.Y',
+        'decimal_separator' => ',',
+        'thousands_separator' => '.'
+    ],
+    'eng' => [
+        'currency_char' => '$',
+        'date_format' => 'm/d/Y',
+        'date_format_short' => 'm/d/y',
+        'decimal_separator' => '.',
+        'thousands_separator' => ','
+    ]
+];
+
 include_once 'config_private.php';
 include_once 'config_combi.php';

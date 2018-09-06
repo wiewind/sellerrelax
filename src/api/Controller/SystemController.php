@@ -28,7 +28,7 @@ class SystemController extends AppController
             $username = $this->MySession->read('user.username');
         }
 
-        $this->__setLanguage1();
+        $this->__setLanguage();
 
         if ($this->MySession->checkAll()) {
             $res['session'] = $this->MySession->readAll();
@@ -43,7 +43,7 @@ class SystemController extends AppController
         $this->layout = 'ajax';
     }
 
-    private function __setLanguage1 () {
+    private function __setLanguage () {
         $this->MySession->deleteConfig('languages');
         $this->MySession->delete('appLanguage');
 
@@ -92,10 +92,7 @@ class SystemController extends AppController
     }
 
     public function keeplive () {
-        if (!$this->logged) {
-            ErrorCode::throwExceptionCode(ErrorCode::ErrorCodeSessionTimeout);
-        }
-        return true;
+        $this->checkLogin();
     }
 
     public function mail () {
@@ -103,7 +100,6 @@ class SystemController extends AppController
         $Email->from('zoubenying@hotmail.com');
         $Email->to('zoubenying@gmail.com');
         $Email->subject('test');
-
         $Email->send("Hallo");
     }
 }

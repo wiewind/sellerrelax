@@ -4,7 +4,5 @@
 Ext.define('SRX.view.settings.robots.GridController', {
     extend: 'Ext.app.ViewController',
 
-    alias: 'controller.settingsrobotsgrid',
-
-
+    alias: 'controller.settingsrobotsgrid'
 });
