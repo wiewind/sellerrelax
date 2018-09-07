@@ -5,7 +5,7 @@
     <meta name="google" content="notranslate" />
     <?php
     echo $this->Html->charset();
-    echo $this->Html->meta('icon', Configure::read('system.url') . Configure::read('system.image.logo'));
+    echo $this->Html->meta('icon', Configure::read('system.url') . Configure::read('system.image.path') . '/logo/logo1.png');
     ?>
 
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">

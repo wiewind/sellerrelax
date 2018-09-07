@@ -19,7 +19,7 @@ require_once '../api/Config/config_default.php';
     <meta name="publisher" content="<?= $config['system']['author'] ?>"/>
     <meta name="copyright" content="<?= $config['system']['author'] ?>"/>
     <meta http-equiv="expires" content="0"/>
-    <link rel="shortcut icon" href="<?= $config['system']['image']['logo'] ?>" >
+    <link rel="shortcut icon" href="<?= $config['system']['image']['path'] ?>/logo/logo1.phg" >
 
     <script type="text/javascript" src="../lib/jquery/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="../lib/ckeditor/ckeditor.js"></script>
