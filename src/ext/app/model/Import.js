@@ -17,6 +17,7 @@ Ext.define('SRX.model.Import', {
         {name: 'import_beginn', mapping: 'Import.import_beginn', type: 'date'},
         {name: 'import_end', mapping: 'Import.import_end', type: 'date'},
         {name: 'url', mapping: 'Import.url'},
-        {name: 'ip', mapping: 'Import.ip'}
+        {name: 'ip', mapping: 'Import.ip'},
+        {name: 'ip_location', mapping: 'Import.ip_location'}
     ]
 });

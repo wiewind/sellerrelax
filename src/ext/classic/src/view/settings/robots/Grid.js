@@ -49,9 +49,14 @@ Ext.define('SRX.view.settings.robots.Grid', {
         },
         {
             text: T.__("Location"),
+            dataIndex: 'ip_location',
             flex: 1,
             renderer: function (v, meta, rec) {
-                var location = rec.getData().Import.ip_info,
+                if (!v) {
+                    var id = rec.get('id');
+                    return '<a href="javascript: Glb.uploadIpLocation('+id+')">'+T.__('Get Info')+'</a>';
+                }
+                var location = Ext.decode(v),
                     str = '',
                     str2 = '';
                 if (!Wiewind.isEmpty(location.hostname)) {

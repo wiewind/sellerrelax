@@ -159,6 +159,7 @@ Ext.define('SRX.utils.Global', {
         },
 
         mask: function (msg, component) {
+            msg = msg || T.__('Please wait...');
             component = component || false;
             if (!component) {
                 component = Ext.getCmp('appmain');
@@ -334,5 +335,22 @@ Ext.define('SRX.utils.Global', {
 
     formatMoney: function (s) {
         return Glb.formatNum(s, 2);
+    },
+
+    uploadIpLocation: function (id) {
+        Glb.common.mask();
+        Glb.Ajax({
+            url: Cake.api.path + '/import/json/getIpLocation',
+            params: {
+                id: id
+            },
+            success: function () {
+                Glb.common.unmask();
+                var grid = Ext.ComponentQuery.query('settingsrobotsgrid');
+                if (grid) {
+                    grid[0].getStore().reload();
+                }
+            }
+        });
     }
 });
