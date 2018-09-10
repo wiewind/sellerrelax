@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-09-06 12:11+0200\n"
+"POT-Creation-Date: 2018-09-10 16:21+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -201,7 +201,7 @@ msgstr "刷新"
 msgid "Print"
 msgstr "打印"
 
-#: ext/app/utils/Global.js:49
+#: ext/app/utils/Global.js:49 ext/app/utils/Global.js:162
 #: ext/classic/src/view/settings/MainPanelController.js:10
 msgid "Please wait..."
 msgstr "请稍候……"
@@ -393,10 +393,6 @@ msgstr "导出"
 msgid "Inventory Forecast"
 msgstr "库存预测"
 
-#: ext/classic/src/view/export/MainPanelController.js:18
-msgid "in working..."
-msgstr "工作中……"
-
 #: ext/classic/src/view/export/fbacustomers/GridController.js:11
 #: ext/classic/src/view/export/skuarticles/GridController.js:11
 msgid "Are you sure you want to delete the record?"
@@ -449,17 +445,17 @@ msgstr "SKU商品"
 msgid "Orders"
 msgstr "订单"
 
-#: ext/classic/src/view/main/Main.js:100
-#: ext/classic/src/view/settings/MainPanel.js:16
+#: ext/classic/src/view/main/Main.js:97
+#: ext/classic/src/view/settings/MainPanel.js:17
 msgid "Settings"
 msgstr "设置"
 
-#: ext/classic/src/view/settings/MainPanel.js:31
+#: ext/classic/src/view/settings/MainPanel.js:32
 msgid "Current User"
 msgstr "当前用户"
 
-#: ext/classic/src/view/settings/MainPanel.js:40
 #: ext/classic/src/view/settings/MainPanel.js:41
+#: ext/classic/src/view/settings/MainPanel.js:42
 msgid "Sytem Update"
 msgstr "系统更新"
 
@@ -476,6 +472,14 @@ msgid "IP"
 msgstr "IP"
 
 #: ext/classic/src/view/settings/robots/Grid.js:51
+msgid "Location"
+msgstr "位置"
+
+#: ext/classic/src/view/settings/robots/Grid.js:57
+msgid "Get Info"
+msgstr "获取信息"
+
+#: ext/classic/src/view/settings/robots/Grid.js:84
 msgid "URL"
 msgstr "URL"
 
@@ -519,6 +523,9 @@ msgstr "密码"
 #: api/View/System/login.ctp:14
 msgid "Please enter your password"
 msgstr "请输入您的密码"
+
+#~ msgid "in working..."
+#~ msgstr "工作中……"
 
 #~ msgid "time"
 #~ msgstr "时间"
