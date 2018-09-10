@@ -10,47 +10,37 @@ class ExportController extends AppController
 {
 
     var $uses = [
-        'Order',
-        'Item',
-        'OrderItem',
-        'RestToken',
-        'Unit',
-        'ItemsVariation',
-        'ItemsVariationsBarcode',
-        'BarcodeType'
+        'VwSkuQuantity',
+        'VwSkuPredictionsV1',
+        'VwSkuPredictionsV2',
+        'Items'
     ];
 
-    function stockv1 () {
-        $this->checkLogin();
+    function getStorePlan () {
         $this->layout = 'csv';
-        $skus = $this->__getSkusFile();
-        $fbacustomer="255214515";
 
+        $fields =  [
+            'item_id',
+            'variation_extern_id',
+            'variation_number',
+            'recommend',
+            'recommend_v2'
+        ];
 
-    }
-
-    private function __getSkusFile(){
-        $file = '/meldenbestandskus.csv';
-
-        $skus = [];
-
-        $file_name = $file;
-
-        if (file_exists($file_name)){
-
-            $h_file=file($file_name);
-
-            foreach ($h_file as $line) {
-                if (trim($line)) {
-                    $a_skus = explode(';',$line);
-                    $sku = $a_skus[0];
-
-                    $d = $this->VaritionNumber->find();
-                }
+        $data = $this->VwSkuPredictionsV2->find('all', [
+            'fields' =>$fields,
+            'order' => 'variation_extern_id'
+        ]);
+        $this->set('header', $fields);
+        $data_contents = [];
+        if ($data) {
+            foreach ($data as $d) {
+                $data_contents[] = $d['VwSkuPredictionsV2'];
             }
         }
+        $this->set('data', $data_contents);
 
-        return $skus;
+        $this->render('csv');
     }
 
 }

@@ -15,6 +15,9 @@ Ext.define('SRX.view.export.MainPanelController', {
     },
 
     openExportInventoryForecast: function () {
-        ABox.error(T.__('in working...'));
+        Wiewind.Action.click({
+            url: Cake.api.path + '/export/getStorePlan',
+            target: '_blank'
+        })
     }
 });
