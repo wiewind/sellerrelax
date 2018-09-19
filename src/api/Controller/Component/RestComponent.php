@@ -80,7 +80,7 @@ class RestComponent extends Component
 
         if ($resp) {
             $rest = json_decode($resp);
-            if (isset($rest->token_type)) {
+            if (isset($rest->token_type) && $rest->token_type) {
                 if (!$extern) {
                     $now = date('Y-m-d H:i:s');
                     $model = ClassRegistry::init('RestToken');
@@ -92,9 +92,11 @@ class RestComponent extends Component
                         'created' => $now
                     ]);
                 }
+                CakeLog::write('import',  "{$username} logged in!");
+            } else {
+                CakeLog::write('import',  "{$username} can not login!");
             }
         }
-        CakeLog::write('import',  "{$username} logged in ...");
         return $resp;
     }
 
@@ -105,8 +107,12 @@ class RestComponent extends Component
         ]);
         $token_created = ($token) ? $token['RestToken']['created'] : '';
         if (!$token_created || strtotime(date('Y-m-d H:i:s'))-strtotime($token_created) >= (86400-(60*60*2))) {
-            $this->login();
-            return $this->getToken ();
+            $res_login = json_decode($this->login());
+            if (isset($res_login->token_type) && $res_login->token_type) {
+                return $this->getToken ();
+            } else {
+                ErrorCode::throwExceptionCode(ErrorCode::ErrorCodeUserDenied);
+            }
         }
         return $token['RestToken']['access_token'];
     }

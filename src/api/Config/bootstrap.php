@@ -97,24 +97,6 @@ Inflector::rules('singular', array(
 ));
 Inflector::rules('plural', array(
     'irregular' => array(
-        'ebooks_gbcolor'        => 'ebooks_gbcolor',
-        'ebooks_lesezeichen'    => 'ebooks_lesezeichen',
-        'not_job'               => 'not_job',
-        'not_menu'              => 'not_menu',
-        'not_recorder'          => 'not_recorder',
-        'search_seite'          => 'search_seite',
-        'sys_hotlink'           => 'sys_hotlink',
-        'sys_log_anmelden'      => 'sys_log_anmelden',
-        'sys_mitteilung'        => 'sys_mitteilung',
-        'sys_munue'             => 'sys_munue',
-        'sys_user'              => 'sys_user',
-        'sys_user_share_tele'   => 'sys_user_share_tele',
-        'telebuch_adr'          => 'telebuch_adr',
-        'telebuch_email'        => 'telebuch_email',
-        'telebuch_menu'         => 'telebuch_menu',
-        'telebuch_person'       => 'telebuch_person',
-        'telebuch_tel'          => 'telebuch_tel',
-
         'data'                  => 'datas',
 )));
 
@@ -129,8 +111,9 @@ Inflector::rules('plural', array(
  */
 
 CakePlugin::load('Rest'); //Loads a single plugin named Rest
+CakePlugin::load('Barcode'); //Loads a single plugin named Barcode
 
-CakePlugin::load('ViaExport'); //Loads a single plugin named Rest
+CakePlugin::load('ViaExport'); //Loads a single plugin named ViaExport
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:

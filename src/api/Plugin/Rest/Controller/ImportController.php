@@ -135,7 +135,6 @@ class ImportController extends AppController
 
         $data = $this->Rest->callAPI('GET', $this->restAdress['orders'], $params);
 
-
         $data = json_decode($data);
 
         $orders = $data->entries;
@@ -552,7 +551,11 @@ class ImportController extends AppController
         $importStep = 0;
         $sum = 0;
         do {
-            $data = $this->importOrdersOnce();
+            try {
+                $data = $this->importOrdersOnce();
+            } catch (Exception $e) {
+                return $e->getCode() . ': ' . $e->getMessage();
+            }
             $sum += $data['menge'];
             $importStep++;
         } while ($importStep < 2 && !$data['is_last_page']);
@@ -562,7 +565,11 @@ class ImportController extends AppController
     function importItemsAll () {
         $sum = 0;
         do {
-            $data = $this->importItems();
+            try {
+                $data = $this->importItems();
+            } catch (Exception $e) {
+                return $e->getCode() . ': ' . $e->getMessage();
+            }
             $sum += $data['menge'];
             echo "Page {$data['page']} with {$data['menge']} items.";
             if ($data['is_last_page']) {
@@ -577,7 +584,11 @@ class ImportController extends AppController
     function importVariationsAll () {
         $sum = 0;
         do {
-            $data = $this->importVariations();
+            try {
+                $data = $this->importVariations();
+            } catch (Exception $e) {
+                return $e->getCode() . ': ' . $e->getMessage();
+            }
             $sum += $data['menge'];
             echo "Page {$data['page']} with {$data['menge']} variations.";
             if ($data['is_last_page']) {
@@ -597,7 +608,11 @@ class ImportController extends AppController
             'page' => 1,
             'itemsPerPage' => 1000
         ];
-        $data = $this->Rest->callAPI('GET', $this->restAdress['units'], $params);
+        try {
+            $data = $this->Rest->callAPI('GET', $this->restAdress['units'], $params);
+        } catch (Exception $e) {
+            return $e->getCode() . ': ' . $e->getMessage();
+        }
         $data = json_decode($data);
         $recs = $data->entries;
         $now = date('Y-m-d H:i:s');
@@ -634,7 +649,11 @@ class ImportController extends AppController
             'page' => 1,
             'itemsPerPage' => 1000
         ];
-        $data = $this->Rest->callAPI('GET', $this->restAdress['barcode_types'], $params);
+        try {
+            $data = $this->Rest->callAPI('GET', $this->restAdress['barcode_types'], $params);
+        } catch (Exception $e) {
+            return $e->getCode() . ': ' . $e->getMessage();
+        }
         $data = json_decode($data);
         $recs = $data->entries;
         $now = date('Y-m-d H:i:s');

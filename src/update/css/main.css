@@ -2,19 +2,19 @@
 /* CSS Document */
 
 body {
-    background-color: #666666;
+    background-color: #999;
 }
 
 #main {
     width: 980px;
     margin: 30px auto 0 auto;
-    border: 1px solid #d3d3d3;
+    border: 1px solid #35384c;
     padding: 0;
     -moz-border-radius: 10px;
     -khtml-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background-color: #99CCCC;
+    background-color: #35384c;
 }
 
 h2.top_title {
@@ -24,7 +24,7 @@ h2.top_title {
     padding-bottom: 10px;
     font-size: 18px;
     line-height: 25px;
-    color: #4E88BB;
+    color: #dfe9f6;
     font-weight: bold;
 }
 

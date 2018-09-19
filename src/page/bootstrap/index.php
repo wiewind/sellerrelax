@@ -1,12 +1,5 @@
 <?php
-
-
-//if (strpos($_SERVER['HTTP_HOST'], 'local') === false && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS']!=='on')) {
-//    header('Location: https://'.$_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
-//}
-
 require_once '../../api/Config/config_default.php';
-
 ?><!DOCTYPE html>
 <html lang="zh-CN">
 <head>

@@ -20,7 +20,7 @@ $config['system']['api']['dirname']             = 'api/index.php';
 $config['system']['app']['dirname']             = 'ext';
 
 $config['system']['import']['dirname']          = '__import__';
-$config['system']['import']['tmp']['dirname']   = '__tmp__';
+$config['system']['import']['stock']['dirname']   = 'stocks';
 
 $config['system']['image']['dirname']           = 'resources/images';
 $config['system']['image']['logoFile']          = 'logo/logo.png';

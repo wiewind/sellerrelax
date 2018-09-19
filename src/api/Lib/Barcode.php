@@ -54,8 +54,13 @@ class Barcode extends \Picqer\Barcode\BarcodeGenerator
     }
 
     public static function getBarcode ($code, $barcodeType, $filetype='png')  {
+        $barcodeType = self::getBarcodeType($barcodeType);
         $generator = self::getGenerator($filetype);
         return $generator->getBarcode($code, $barcodeType);
+    }
+
+    public static function getBarcode64 ($code, $barcodeType, $filetype='png')  {
+        return base64_encode(self::getBarcode($code, $barcodeType, $filetype));
     }
 
     public static function getGenerator ($filetype = 'png') {
@@ -71,5 +76,9 @@ class Barcode extends \Picqer\Barcode\BarcodeGenerator
             default:
                 return new \Picqer\Barcode\BarcodeGeneratorPNG();
         }
+    }
+
+    public static function getBarcodeType ($type) {
+        return constant('\Picqer\Barcode\BarcodeGenerator::' . $type);
     }
 }
