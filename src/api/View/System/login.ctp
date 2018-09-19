@@ -4,21 +4,15 @@
         <label for="username"><?= __("Username") ?>:</label>
         <input type="text" class="form-control submit_on_enter" id="username" placeholder="<?= __("Please enter your username") ?>" >
     </div>
-    <br />
-    <br />
     <div class="form-group">
         <label for="password"><?= __("Password") ?>:</label>
         <input type="password" class="form-control submit_on_enter" id="password" placeholder="<?= __("Please enter your password") ?>">
     </div>
-    <br />
-    <br />
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button id="btnSubmit" type="button" class="btn btn-default" onclick="onSubmit()"><?= __("Login") ?></button>
         </div>
     </div>
-    <br />
-    <br />
     <div class="error" id="resdiv"></div>
 </form>
 <script>
