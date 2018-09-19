@@ -1,18 +1,14 @@
 <h1 align="center"><?= __("Login") ?></h1>
 <form class="login-form" role="form">
     <div class="form-group">
-        <label for="firstname" class="col-sm-2 control-label"><?= __("Username") ?>:</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control submit_on_enter" id="username" placeholder="<?= __("Please enter your username") ?>" >
-        </div>
+        <label for="username"><?= __("Username") ?>:</label>
+        <input type="text" class="form-control submit_on_enter" id="username" placeholder="<?= __("Please enter your username") ?>" >
     </div>
     <br />
     <br />
     <div class="form-group">
-        <label for="lastname" class="col-sm-2 control-label"><?= __("Password") ?>:</label>
-        <div class="col-sm-10">
-            <input type="password" class="form-control submit_on_enter" id="password" placeholder="<?= __("Please enter your password") ?>">
-        </div>
+        <label for="password"><?= __("Password") ?>:</label>
+        <input type="password" class="form-control submit_on_enter" id="password" placeholder="<?= __("Please enter your password") ?>">
     </div>
     <br />
     <br />

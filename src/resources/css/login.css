@@ -37,7 +37,8 @@ body {
 .login-form {
     margin: 0 auto;
     padding: 20px;
-    width: 600px;
+    min-width: 600px;
+    max-width: 600px;
 }
 
 .login-form button {

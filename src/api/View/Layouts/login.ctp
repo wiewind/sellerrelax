@@ -8,7 +8,7 @@
     echo $this->Html->meta('icon', Configure::read('system.url') . Configure::read('system.image.path') . '/logo/logo1.png');
     ?>
 
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/login.css?ref=<?= md5(time()) ?>">
 
     <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>

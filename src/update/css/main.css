@@ -22,8 +22,8 @@ h2.top_title {
     padding-top: 15px;
     padding-left: 20px;
     padding-bottom: 10px;
-    font-size: 18px;
-    line-height: 25px;
+    font-size: 40px;
+    /*line-height: 25px;*/
     color: #dfe9f6;
     font-weight: bold;
 }
