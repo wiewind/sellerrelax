@@ -14,7 +14,7 @@ $config['system']['projUrl']                = $config['system']['url'] . '/' . $
 $config['system']['api']['path']            = $config['system']['path'] . '/' . $config['system']['api']['dirname'];
 $config['system']['app']['path']            = $config['system']['path'] . '/' . $config['system']['app']['dirname'];
 
-$config['system']['import']['path']         = $_SERVER['DOCROOT'] . (($config['system']['path']) ? '/' : '') . $config['system']['path'] . '/' . $config['system']['import']['dirname'];
+$config['system']['import']['path']         = $_SERVER['DOCUMENT_ROOT'] . (($config['system']['path']) ? '/' : '') . $config['system']['path'] . '/' . $config['system']['import']['dirname'];
 $config['system']['import']['stock']['path']  = $config['system']['import']['path'] . '/' . $config['system']['import']['stock']['dirname'];
 
 $config['system']['image']['path']          = $config['system']['path'] . '/' . $config['system']['image']['dirname'];

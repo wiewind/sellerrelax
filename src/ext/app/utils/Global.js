@@ -206,6 +206,14 @@ Ext.define('SRX.utils.Global', {
             if (!date) date = new Date(timestamp);
             if (format_extra) format = format + format_extra;
             return Ext.Date.format(date, format);
+        },
+
+        displayDateFromStringtoFormat: function (timestamp, format) { // param yyyy-mm-dd HH:ii:ss
+            if (Number(timestamp) === 0) return ''; // avoid 01.01.1970
+            var date = Ext.Date.parse(timestamp, "Y-m-d H:i:s");
+            if (!date) date = Ext.Date.parse(timestamp, "Y-m-d");
+            if (!date) date = new Date(timestamp);
+            return Ext.Date.format(date, format);
         }
     },
 

@@ -13,6 +13,7 @@ class ImportController extends AppController
         'Order',
         'Item',
         'OrderItem',
+        'OrderProperty',
         'RestToken',
         'Unit',
         'ItemsVariation',
@@ -139,123 +140,9 @@ class ImportController extends AppController
 
         $orders = $data->entries;
 
-        $dataSource = $this->Order->getDataSource();
         $errorOrders = [];
         foreach ($orders as $order) {
-
-            $dataSource->begin();
-            try {
-                $oData = [
-                    'extern_id'     => $order->id + 0,
-                    'plenty_id'     => ($order->plentyId) ? $order->plentyId : 0,
-                    'location_id'   => ($order->locationId) ? $order->locationId : 0,
-                    'owner_id'      => ($order->ownerId) ? $order->ownerId : 0,
-                    'type_id'       => ($order->typeId) ? $order->typeId : 0,
-                    'status_id'     => ($order->statusId) ? $order->statusId : 0,
-                    'created'       => GlbF::iso2Date($order->createdAt),
-                    'deleted'       => $order->deletedDate > 0,
-                    'updated'       => GlbF::iso2Date($order->updatedAt),
-                    'imported'      => $now
-                ];
-                foreach ($order->relations as $relation) {
-                    if ($relation->relation === 'receiver' && $relation->referenceType === 'contact') {
-                        $oData['customer_id'] = $relation->referenceId;
-                        break;
-                    }
-                }
-                if (isset($order->amounts[0])) {
-                    $oData = array_merge($oData, [
-                        'gross_total'       => ($order->amounts[0]->grossTotal) ? $order->amounts[0]->grossTotal : 0,
-                        'invoice_total'     => ($order->amounts[0]->invoiceTotal) ? $order->amounts[0]->invoiceTotal : 0,
-                        'net_total'         => ($order->amounts[0]->netTotal) ? $order->amounts[0]->netTotal : 0,
-                        'vat_total'         => ($order->amounts[0]->vatTotal) ? $order->amounts[0]->vatTotal : 0,
-                        'currency'          => ($order->amounts[0]->currency) ? $order->amounts[0]->currency : 'EUR',
-                        'exchange_rate'      => ($order->amounts[0]->exchangeRate) ? $order->amounts[0]->exchangeRate : 1
-                    ]);
-                }
-                if ($order->dates) {
-                    foreach ($order->dates as $od) {
-                        switch ($od->typeId) {
-                            case 2:
-                                $oData['enty_date'] = GlbF::iso2Date($od->date);
-                                break;
-                            case 3:
-                                $oData['payment_date'] = GlbF::iso2Date($od->date);
-                                break;
-                            case 7:
-                                $oData['payment_due_date'] = GlbF::iso2Date($od->date);
-                                break;
-                            case 5:
-                                $oData['shipping_date'] = GlbF::iso2Date($od->date);
-                                break;
-                        }
-                    }
-                }
-                if ($order->addressRelations) {
-                    foreach ($order->addressRelations as $ar) {
-                        switch ($ar->typeId) {
-                            case 1:
-                                $oData['billing_address_id'] = $ar->addressId;
-                                break;
-                            case 2:
-                                $oData['delivery_address_id'] = $ar->addressId;
-                                break;
-                        }
-                    }
-                }
-
-                $dbOrder = $this->Order->find('first', [
-                    'fields' => 'id',
-                    'conditions' => [
-                        'extern_id' => $oData['extern_id']
-                    ]
-                ]);
-                if ($dbOrder) {
-                    $oData['id'] = $dbOrder['Order']['id'];
-                } else {
-                    $this->Order->create();
-                }
-
-                $this->Order->save($oData);
-
-                $this->OrderItem->deleteAll(['order_id' => $order->id]);
-                foreach ($order->orderItems as $orderItem) {
-                    $oiData = [
-                        'extern_id'             => $orderItem->id + 0,
-                        'order_id'              => $orderItem->orderId + 0,
-                        'item_variation_id'     => ($orderItem->itemVariationId) ? $orderItem->itemVariationId : 0,
-                        'item_id'               => (isset($orderItem->variation)) ? $orderItem->variation->itemId : 0,
-                        'type_id'               => ($orderItem->typeId) ? $orderItem->typeId : 0,
-                        'quantity'              => ($orderItem->quantity) ? $orderItem->quantity : 0,
-                        'var_rate'              => ($orderItem->vatRate) ? $orderItem->vatRate : 0,
-                        'warehouse_id'          => ($orderItem->warehouseId) ? $orderItem->warehouseId : 0,
-                        'referrer_id'           => $orderItem->referrerId,
-                        'updated_at'            => GlbF::iso2Date($orderItem->updatedAt),
-                        'imported'              => $now
-                    ];
-                    if (isset($orderItem->amounts[0])) {
-                        $oiData = array_merge($oiData, [
-                            'price_gross'           => ($orderItem->amounts[0]->priceGross) ? $orderItem->amounts[0]->priceGross : 0,
-                            'price_net'             => ($orderItem->amounts[0]->priceNet) ? $orderItem->amounts[0]->priceNet : 0,
-                            'price_original_gross'  => ($orderItem->amounts[0]->priceOriginalGross) ? $orderItem->amounts[0]->priceOriginalGross : 0,
-                            'price_original_net'    => ($orderItem->amounts[0]->priceOriginalNet) ? $orderItem->amounts[0]->priceOriginalNet : 0,
-                            'purchase_price'        => ($orderItem->amounts[0]->purchasePrice) ? $orderItem->amounts[0]->purchasePrice : 0,
-                            'exchange_rate'         => ($orderItem->amounts[0]->exchangeRate) ? $orderItem->amounts[0]->exchangeRate : 1,
-                            'currency'              => ($orderItem->amounts[0]->currency) ? $orderItem->amounts[0]->currency : 'EUR'
-                        ]);
-                    }
-
-                    $this->OrderItem->create();
-                    $this->OrderItem->save($oiData);
-                }
-                $dataSource->commit();
-            } catch (Exception $e) {
-                $dataSource->rollback();
-                $errorOrders[$order->id] = [
-                    'message' => $e->getMessage(),
-                    'code' => $e->getCode()
-                ];
-            }
+            $this->__doImportOrderData($order, $now);
         }
 
         $now2 = date('Y-m-d H:i:s');
@@ -283,6 +170,185 @@ class ImportController extends AppController
         CakeLog::write('import', "Import orders end with $mengeOfPage record(s)!");
 
         return $importData;
+    }
+
+    private function __doImportOrderData ($order, $now="") {
+        if (!$now) $now = date('Y-m-d H:i:s');
+
+        $dataSource = $this->Order->getDataSource();
+        $dataSource->begin();
+        try {
+            $oData = [
+                'extern_id'     => $order->id + 0,
+                'plenty_id'     => ($order->plentyId) ? $order->plentyId : 0,
+                'location_id'   => ($order->locationId) ? $order->locationId : 0,
+                'owner_id'      => ($order->ownerId) ? $order->ownerId : 0,
+                'type_id'       => ($order->typeId) ? $order->typeId : 0,
+                'status_id'     => ($order->statusId) ? $order->statusId : 0,
+                'created'       => GlbF::iso2Date($order->createdAt),
+                'deleted'       => $order->deletedDate > 0,
+                'updated'       => GlbF::iso2Date($order->updatedAt),
+                'imported'      => $now
+            ];
+            foreach ($order->relations as $relation) {
+                if ($relation->relation === 'receiver' && $relation->referenceType === 'contact') {
+                    $oData['customer_id'] = $relation->referenceId;
+                    break;
+                }
+            }
+            if (isset($order->amounts[0])) {
+                $oData = array_merge($oData, [
+                    'gross_total'       => ($order->amounts[0]->grossTotal) ? $order->amounts[0]->grossTotal : 0,
+                    'invoice_total'     => ($order->amounts[0]->invoiceTotal) ? $order->amounts[0]->invoiceTotal : 0,
+                    'net_total'         => ($order->amounts[0]->netTotal) ? $order->amounts[0]->netTotal : 0,
+                    'vat_total'         => ($order->amounts[0]->vatTotal) ? $order->amounts[0]->vatTotal : 0,
+                    'currency'          => ($order->amounts[0]->currency) ? $order->amounts[0]->currency : 'EUR',
+                    'exchange_rate'      => ($order->amounts[0]->exchangeRate) ? $order->amounts[0]->exchangeRate : 1
+                ]);
+            }
+            if ($order->dates) {
+                foreach ($order->dates as $od) {
+                    switch ($od->typeId) {
+                        case 2:
+                            $oData['enty_date'] = GlbF::iso2Date($od->date);
+                            break;
+                        case 3:
+                            $oData['payment_date'] = GlbF::iso2Date($od->date);
+                            break;
+                        case 7:
+                            $oData['payment_due_date'] = GlbF::iso2Date($od->date);
+                            break;
+                        case 5:
+                            $oData['shipping_date'] = GlbF::iso2Date($od->date);
+                            break;
+                    }
+                }
+            }
+            if ($order->addressRelations) {
+                foreach ($order->addressRelations as $ar) {
+                    switch ($ar->typeId) {
+                        case 1:
+                            $oData['billing_address_id'] = $ar->addressId;
+                            break;
+                        case 2:
+                            $oData['delivery_address_id'] = $ar->addressId;
+                            break;
+                    }
+                }
+            }
+
+            if ($order->orderReferences) {
+                $oData['org_order_id'] = $order->orderReferences[0]->originOrderId;
+                $oData['ref_order_id'] = $order->orderReferences[0]->referenceOrderId;
+                $oData['ref_type'] = $order->orderReferences[0]->referenceType;
+            }
+
+            $dbOrder = $this->Order->find('first', [
+                'fields' => 'id',
+                'conditions' => [
+                    'extern_id' => $oData['extern_id']
+                ]
+            ]);
+            if ($dbOrder) {
+                $oData['id'] = $dbOrder['Order']['id'];
+            } else {
+                $this->Order->create();
+            }
+
+            $this->Order->save($oData);
+
+            // order_items
+            $this->OrderItem->deleteAll(['order_id' => $order->id]);
+            foreach ($order->orderItems as $orderItem) {
+                $oiData = [
+                    'extern_id'             => $orderItem->id + 0,
+                    'order_id'              => $orderItem->orderId + 0,
+                    'item_variation_id'     => ($orderItem->itemVariationId) ? $orderItem->itemVariationId : 0,
+                    'item_id'               => (isset($orderItem->variation)) ? $orderItem->variation->itemId : 0,
+                    'type_id'               => ($orderItem->typeId) ? $orderItem->typeId : 0,
+                    'quantity'              => ($orderItem->quantity) ? $orderItem->quantity : 0,
+                    'var_rate'              => ($orderItem->vatRate) ? $orderItem->vatRate : 0,
+                    'warehouse_id'          => ($orderItem->warehouseId) ? $orderItem->warehouseId : 0,
+                    'referrer_id'           => $orderItem->referrerId,
+                    'shipping_profile_id'   => $orderItem->shippingProfileId + 0,
+                    'updated_at'            => GlbF::iso2Date($orderItem->updatedAt),
+                    'imported'              => $now
+                ];
+                if (isset($orderItem->amounts[0])) {
+                    $oiData = array_merge($oiData, [
+                        'price_gross'           => ($orderItem->amounts[0]->priceGross) ? $orderItem->amounts[0]->priceGross : 0,
+                        'price_net'             => ($orderItem->amounts[0]->priceNet) ? $orderItem->amounts[0]->priceNet : 0,
+                        'price_original_gross'  => ($orderItem->amounts[0]->priceOriginalGross) ? $orderItem->amounts[0]->priceOriginalGross : 0,
+                        'price_original_net'    => ($orderItem->amounts[0]->priceOriginalNet) ? $orderItem->amounts[0]->priceOriginalNet : 0,
+                        'purchase_price'        => ($orderItem->amounts[0]->purchasePrice) ? $orderItem->amounts[0]->purchasePrice : 0,
+                        'exchange_rate'         => ($orderItem->amounts[0]->exchangeRate) ? $orderItem->amounts[0]->exchangeRate : 1,
+                        'currency'              => ($orderItem->amounts[0]->currency) ? $orderItem->amounts[0]->currency : 'EUR',
+                        'discount'              => ($orderItem->amounts[0]->discount) ? $orderItem->amounts[0]->discount : 0,
+                    ]);
+                }
+
+                $this->OrderItem->create();
+                $this->OrderItem->save($oiData);
+            }
+
+            // order_properties
+            $this->OrderProperty->deleteAll(['order_id' => $order->id]);
+            foreach ($order->properties as $orderProperty) {
+                $opData = [
+                    'order_id' => $orderProperty->orderId + 0,
+                    'type_id' => $orderProperty->typeId + 0,
+                    'value' => $orderProperty->value
+                ];
+
+                $this->OrderProperty->create();
+                $this->OrderProperty->save($opData);
+            }
+
+            $dataSource->commit();
+        } catch (Exception $e) {
+            $dataSource->rollback();
+            $errorOrders[$order->id] = [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode()
+            ];
+        }
+    }
+
+    function importOrderById ($order_id = 0) {
+        $this->checkLogin();
+
+        ini_set("memory_limit","1024M");
+
+        $data = json_decode($this->Rest->callAPI('GET', str_replace('rest/orders/', 'rest/orders/'.$order_id, $this->restAdress['orders'])));
+
+        if (isset($data->error)) {
+            ErrorCode::throwException($data->error->message, ErrorCode::ErrorCodeBadRequest);
+        }
+
+        $this->__doImportOrderData($data);
+
+        return true;
+    }
+
+    function importById () {
+        $param = $this->request->data;
+
+        $param['id'] = intval($param['id']);
+
+        if ($param['type'] == 'order') {
+            $this->importOrderById($param['id']);
+        } else {
+            $this->importItemById($param['id']);
+        }
+    }
+
+    function clearOrderImports () {
+        $this->checkLogin();
+        return;
+        $this->Item->query('TRUNCATE TABLE orders;');
+        $this->Item->query('TRUNCATE TABLE order_items;');
+        $this->Item->query('TRUNCATE TABLE order_properties;');
+        $this->Item->query('TRUNCATE TABLE imports;');
     }
 
     function importItems () {
@@ -417,6 +483,34 @@ class ImportController extends AppController
         $this->Item->save($data);
     }
 
+    function importItemById ($item_id) {
+        $this->checkLogin();
+        ini_set("memory_limit","1024M");
+
+        $url = str_replace('rest/items', 'rest/items/'.$item_id, $this->restAdress['items']);
+        $data = json_decode($this->Rest->callAPI('GET', $url));
+
+        if (isset($data->error)) {
+            ErrorCode::throwException($data->error->message, ErrorCode::ErrorCodeBadRequest);
+        }
+
+        $this->__doImportItemData($data);
+
+
+        $this->ItemsVariation->deleteAll([
+            'item_id' => $item_id
+        ]);
+        $urlVa = str_replace('rest/items/variation', 'rest/items/'.$item_id.'/variation', $this->restAdress['variations']);
+        $data = json_decode($this->Rest->callAPI('GET', $urlVa));
+        if (!isset($data->error)) {
+            $variations = $data->entries;
+            foreach ($variations as $var) {
+                $this->__doImportVariationData($var);
+            }
+        }
+        return true;
+    }
+
     function importVariations () {
         $this->autoRender = false;
         ini_set("memory_limit","1024M");
@@ -530,10 +624,23 @@ class ImportController extends AppController
             'updated_at' => GlbF::iso2Date($var->updatedAt),
             'imported' => date('Y-m-d H:i:s')
         ];
-        $this->ItemsVariation->create();
-        $this->ItemsVariation->save($data);
-        $newVariationId = $this->ItemsVariation->getLastInsertID();
 
+        $d = $this->ItemsVariation->find('first',  [
+            'fields' => 'id',
+            'conditions' => [
+                'extern_id' => $data['extern_id']
+            ]
+        ]);
+        if ($d) {
+            $data['id'] = $d['ItemsVariation']['id'];
+        } else {
+            $this->ItemsVariation->create();
+        }
+
+        $this->ItemsVariation->save($data);
+        $this->ItemsVariationsBarcode->deleteAll([
+            'variation_id' => $var->id
+        ]);
         if ($var->variationBarcodes)
         foreach ($var->variationBarcodes as $barcode) {
             $bcd = [
@@ -565,39 +672,19 @@ class ImportController extends AppController
     function importItemsAll () {
         $sum = 0;
         do {
-            try {
-                $data = $this->importItems();
-            } catch (Exception $e) {
-                return $e->getCode() . ': ' . $e->getMessage();
-            }
+            $data = $this->importItems();
             $sum += $data['menge'];
-            echo "Page {$data['page']} with {$data['menge']} items.";
-            if ($data['is_last_page']) {
-                echo '<p style="color: green">All items are finished!</p>';
-            } else {
-                echo " continue...<br>";
-            }
         } while (!$data['is_last_page']);
-        return "import summe: " . $sum;
+        return $sum;
     }
 
     function importVariationsAll () {
         $sum = 0;
         do {
-            try {
-                $data = $this->importVariations();
-            } catch (Exception $e) {
-                return $e->getCode() . ': ' . $e->getMessage();
-            }
+            $data = $this->importVariations();
             $sum += $data['menge'];
-            echo "Page {$data['page']} with {$data['menge']} variations.";
-            if ($data['is_last_page']) {
-                echo '<p style="color: green">All variations are finished!</p>';
-            } else {
-                echo " continue...<br>";
-            }
         } while (!$data['is_last_page']);
-        return "import summe: " . $sum;
+        return $sum;
     }
 
     function importUnits () {

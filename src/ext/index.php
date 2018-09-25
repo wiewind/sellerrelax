@@ -25,6 +25,13 @@ require_once '../api/Config/config_default.php';
     <script type="text/javascript" src="../lib/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="../lib/ckeditor/ckfinder/ckfinder.js"></script>
 
+<!--  translater must be here, otherwise do not word in overrides class  -->
+    <script type="text/javascript" src="app/locales/LL.js"></script>
+    <script type="text/javascript" src="app/locales/zho.js"></script>
+    <script type="text/javascript" src="app/locales/deu.js"></script>
+    <script type="text/javascript" src="app/locales/eng.js"></script>
+    <script type="text/javascript" src="app/locales/Translator.js"></script>
+
     <title><?= $config['system']['name'] ?></title>
 
 

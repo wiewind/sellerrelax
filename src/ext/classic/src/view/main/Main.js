@@ -6,7 +6,7 @@
  * TODO - Replace this content of this view to suite the needs of your application.
  */
 Ext.define('SRX.view.main.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.container.Container',
     xtype: 'app-main',
 
     requires: [
@@ -14,91 +14,40 @@ Ext.define('SRX.view.main.Main', {
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
 
-        'SRX.view.article.Grid',
+        'SRX.overrides.form.field.Base',
+        'SRX.overrides.button.Button',
+
+        'SRX.ux.*',
+
+        'SRX.view.main.Config',
+
+        'SRX.view.home.MainPanel',
+        'SRX.view.article.MainPanel',
         'SRX.view.export.MainPanel',
-        'SRX.view.settings.MainPanel'
+        'SRX.view.settings.MainPanel',
+
+        'SRX.view.main.HeaderPanel'
     ],
 
-    ui: 'navigation',
     id: 'appmain',
 
-    tabBarHeaderPosition: 1,
-    titleRotation: 0,
-    tabRotation: 0,
-
-    header: {
-        layout: {
-            align: 'stretchmax'
-        },
-        title: {
-            text: '<img src="'+Cake.image.logo+'" style="position: absolute; left: 0; top: -18px;" />'
-        }
-    },
-
-    tabBar: {
-        layout: {
-            align: 'stretch',
-            overflowHandler: 'none'
-        }
-    },
-
-    responsiveConfig: {
-        tall: {
-            headerPosition: 'top'
-        },
-        wide: {
-            headerPosition: 'top'
-        }
-    },
-
-    defaults: {
-        bodyPadding: 20,
-        scrollable: true,
-        tabConfig: {
-            plugins: 'responsive',
-            responsiveConfig: {
-                wide: {
-                    iconAlign: 'left',
-                    textAlign: 'left'
-                },
-                tall: {
-                    iconAlign: 'top',
-                    textAlign: 'center',
-                    width: 120
-                }
-            }
-        }
+    config: {
+        layout: 'border'
     },
 
     items: [
         {
-            title: T.__('Export'),
-            iconCls: 'fa-ge',
-            items: [
-                {
-                    xtype: 'exportmainpanel'
-                }
-            ]
+            xtype: 'mainheader',
+            region: 'north'
         },
         {
-            title: T.__('Articles'),
-            iconCls: 'fa-cube',
+            xtype: 'tabpanel',
+            id: 'mainTabpanel',
+            region: 'center',
+            ui: 'navigation',
             items: [
                 {
-                    xtype: 'articlegrid'
-                }
-            ]
-        },
-        {
-            title: T.__('Orders'),
-            iconCls: 'fa-file-text-o'
-        },
-        {
-            title: T.__('Settings'),
-            iconCls: 'fa-cog',
-            items: [
-                {
-                    xtype: 'settingsmainpanel'
+                    xtype: 'homemainpanel'
                 }
             ]
         }

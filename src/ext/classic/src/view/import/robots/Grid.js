@@ -1,23 +1,20 @@
 /**
  * Created by benying.zou on 31.08.2018.
  */
-Ext.define('SRX.view.settings.robots.Grid', {
+Ext.define('SRX.view.import.robots.Grid', {
     extend: 'Ext.grid.Panel',
-    xtype: 'settingsrobotsgrid',
+    xtype: 'importrobotsgrid',
 
     requires: [
-        'SRX.view.settings.robots.GridController',
-        'SRX.view.settings.robots.GridViewModel'
+        'SRX.view.import.robots.GridController',
+        'SRX.view.import.robots.GridViewModel'
     ],
-    controller: 'settingsrobotsgrid',
+    controller: 'importrobotsgrid',
     viewModel: {
-        type: 'settingsrobotsgrid'
+        type: 'importrobotsgrid'
     },
 
     config: {
-        title: T.__('Robots'),
-        iconCls: 'x-fa fa-android',
-        border: 0,
         forceFit: true,
         scrollable: true,
         bind: {

@@ -15,9 +15,6 @@ Ext.define('SRX.view.article.Grid', {
     },
 
     config: {
-        title: T.__('Articles'),
-        iconCls: 'x-fa fa-cube',
-        border: 0,
         selModel: {
             selType: 'checkboxmodel',
             ignoreRightMouseSelection: true
@@ -126,5 +123,9 @@ Ext.define('SRX.view.article.Grid', {
             onClickCancel: 'onClickCancel',
             onClickSearch: 'onClickSearch'
         }
-    ]
+    ],
+
+    listeners: {
+        itemdblclick: 'itemDblClick'
+    }
 });

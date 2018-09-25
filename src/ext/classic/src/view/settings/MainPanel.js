@@ -7,8 +7,7 @@ Ext.define('SRX.view.settings.MainPanel', {
     xtype: 'settingsmainpanel',
 
     requires: [
-        'SRX.view.settings.MainPanelController',
-        'SRX.view.settings.robots.Grid'
+        'SRX.view.settings.MainPanelController'
     ],
 
     controller: 'settingsmainpanel',
@@ -57,11 +56,6 @@ Ext.define('SRX.view.settings.MainPanel', {
                     handler: 'onClickLogout'
                 }
             ]
-        },
-        {
-            xtype: 'settingsrobotsgrid',
-            width: '100%',
-            height: 500
         }
     ]
 

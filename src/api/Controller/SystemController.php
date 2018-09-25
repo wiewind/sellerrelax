@@ -22,7 +22,7 @@ class SystemController extends AppController
 
     public function initApp () {
         // NOTICE: To be safe, we don`t cache here regarding IE9 issue
-        $this->disableCache();
+        CakeResponse::disableCache();
 
         if ($this->logged) {
             $username = $this->MySession->read('user.username');

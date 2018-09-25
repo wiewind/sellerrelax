@@ -8,18 +8,12 @@
  */
 class ZoController extends AppController
 {
-    var $uses = ['TestJob'];
+    var $uses = ['OrderProperty'];
 
     function test () {
         $this->autoRender = false;
-        $importData = [
-            'url' => $_SERVER['SCRIPT_URI'],
-            'ip' => $_SERVER['REMOTE_ADDR']
-        ];
+        $data = $this->OrderProperty->find('all');
+        GlbF::printArray($data);
 
-//        GlbF::printArray($_SERVER);
-
-        $this->TestJob->create();
-        $this->TestJob->save($importData);
     }
 }

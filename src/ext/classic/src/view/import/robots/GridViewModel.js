@@ -1,10 +1,10 @@
 /**
  * Created by benying.zou on 13.02.2018.
  */
-Ext.define('SRX.view.settings.robots.GridViewModel', {
+Ext.define('SRX.view.import.robots.GridViewModel', {
     extend: 'Ext.app.ViewModel',
 
-    alias: 'viewmodel.settingsrobotsgrid',
+    alias: 'viewmodel.importrobotsgrid',
 
     data: {},
 

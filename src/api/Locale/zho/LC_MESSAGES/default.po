@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-09-10 16:21+0200\n"
+"POT-Creation-Date: 2018-09-25 17:19+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -155,7 +155,8 @@ msgstr "保存"
 msgid "Save and Close"
 msgstr "保存并关闭"
 
-#: ext/app/utils/Global.js:20 ext/classic/src/ux/MusterFormWindow.js:24
+#: ext/app/utils/Global.js:20 ext/classic/overrides/panel/Panel.js:6
+#: ext/classic/src/ux/MusterFormWindow.js:24
 #: ext/classic/src/ux/UploadPhotoWindow.js:23
 msgid "Close"
 msgstr "关闭"
@@ -181,7 +182,7 @@ msgid "Reset"
 msgstr "重置"
 
 #: ext/app/utils/Global.js:32 api/View/System/login.ctp:1
-#: api/View/System/login.ctp:22
+#: api/View/System/login.ctp:13
 msgid "Login"
 msgstr "登录"
 
@@ -266,6 +267,14 @@ msgstr "注意"
 msgid "Please enter..."
 msgstr "请输入……"
 
+#: ext/classic/overrides/panel/Panel.js:7
+msgid "Collapse"
+msgstr "关闭"
+
+#: ext/classic/overrides/panel/Panel.js:8
+msgid "Expand"
+msgstr "展开"
+
 #: ext/classic/src/ux/MusterFormController.js:43
 #: ext/classic/src/ux/UploadPhotoWindowController.js:43
 msgid "server error"
@@ -301,52 +310,50 @@ msgstr "上传"
 msgid "Uploading your photo..."
 msgstr "上传你的照片……"
 
-#: ext/classic/src/view/article/Grid.js:18 ext/classic/src/view/main/Main.js:84
-msgid "Articles"
-msgstr "商品"
-
-#: ext/classic/src/view/article/Grid.js:30
-#: ext/classic/src/view/article/Grid.js:36
+#: ext/classic/src/view/article/Grid.js:27
+#: ext/classic/src/view/article/Grid.js:33
 #: ext/classic/src/view/export/fbacustomers/Grid.js:25
 #: ext/classic/src/view/export/fbacustomers/Grid.js:31
 #: ext/classic/src/view/export/skuarticles/Grid.js:25
 #: ext/classic/src/view/export/skuarticles/Grid.js:31
-#: ext/classic/src/view/settings/robots/Grid.js:27
-#: ext/classic/src/view/settings/robots/Grid.js:33
+#: ext/classic/src/view/import/robots/Grid.js:24
+#: ext/classic/src/view/import/robots/Grid.js:30
+#: ext/classic/src/view/import/tracking/Grid.js:24
+#: ext/classic/src/view/import/tracking/Grid.js:30
 msgid "This list is empty."
-msgstr "该列表为空"
+msgstr "该列表为空。"
 
-#: ext/classic/src/view/article/Grid.js:41
+#: ext/classic/src/view/article/Grid.js:38
 msgid "Article ID"
 msgstr "商品 ID"
 
-#: ext/classic/src/view/article/Grid.js:47
+#: ext/classic/src/view/article/Grid.js:44
 msgid "name"
 msgstr "名称"
 
-#: ext/classic/src/view/article/Grid.js:53
+#: ext/classic/src/view/article/Grid.js:50
 msgid "count of orders"
 msgstr "订单数量"
 
-#: ext/classic/src/view/article/Grid.js:66
+#: ext/classic/src/view/article/Grid.js:63
 msgid "quantity"
 msgstr "数量"
 
-#: ext/classic/src/view/article/Grid.js:79
+#: ext/classic/src/view/article/Grid.js:76
 msgid "price net"
 msgstr "净价格"
 
-#: ext/classic/src/view/article/Grid.js:109
+#: ext/classic/src/view/article/Grid.js:106
 msgid "orders in"
 msgstr "订单晚于"
 
-#: ext/classic/src/view/article/Grid.js:116
+#: ext/classic/src/view/article/Grid.js:113
 msgid "days"
 msgstr "天"
 
-#: ext/classic/src/view/article/Grid.js:121
+#: ext/classic/src/view/article/Grid.js:118
 msgid "Search with article name..."
-msgstr "搜索商品名称"
+msgstr "搜索商品名称......"
 
 #: ext/classic/src/view/export/EditWindow.js:49
 msgid "Old Value"
@@ -372,24 +379,24 @@ msgstr "编辑FBA用户"
 msgid "New FBA Customer"
 msgstr "新建FBA用户"
 
-#: ext/classic/src/view/export/MainPanel.js:36
+#: ext/classic/src/view/export/MainPanel.js:32
 msgid "Export Setting"
 msgstr "导出设置"
 
-#: ext/classic/src/view/export/MainPanel.js:49
+#: ext/classic/src/view/export/MainPanel.js:45
 msgid "Edit SKU Articles"
 msgstr "编辑SKU商品"
 
-#: ext/classic/src/view/export/MainPanel.js:54
+#: ext/classic/src/view/export/MainPanel.js:50
 msgid "Edit FBA Customers"
 msgstr "编辑FBA客户"
 
-#: ext/classic/src/view/export/MainPanel.js:61
-#: ext/classic/src/view/main/Main.js:75
+#: ext/classic/src/view/export/MainPanel.js:57
+#: ext/classic/src/view/main/Config.js:11
 msgid "Export"
 msgstr "导出"
 
-#: ext/classic/src/view/export/MainPanel.js:71
+#: ext/classic/src/view/export/MainPanel.js:67
 msgid "Inventory Forecast"
 msgstr "库存预测"
 
@@ -435,53 +442,184 @@ msgstr "上传文件：%s<br />文件大小：%d"
 #: ext/classic/src/view/export/skuarticles/UploadPanelController.js:74
 #, javascript-format
 msgid "%s record(s) are imported!"
-msgstr "已导入%s条记录"
+msgstr "已导入%s条记录！"
 
 #: ext/classic/src/view/export/skuarticles/Window.js:18
 msgid "SKU Articles"
 msgstr "SKU商品"
 
-#: ext/classic/src/view/main/Main.js:93
-msgid "Orders"
-msgstr "订单"
+#: ext/classic/src/view/home/MainPanel.js:9
+msgid "Home"
+msgstr "主页"
 
-#: ext/classic/src/view/main/Main.js:97
-#: ext/classic/src/view/settings/MainPanel.js:17
-msgid "Settings"
-msgstr "设置"
+#: ext/classic/src/view/import/MainPanel.js:38
+msgid "Tracking"
+msgstr "追踪"
 
-#: ext/classic/src/view/settings/MainPanel.js:32
-msgid "Current User"
-msgstr "当前用户"
+#: ext/classic/src/view/import/MainPanel.js:44
+msgid "Manipulation"
+msgstr "手工导入"
 
-#: ext/classic/src/view/settings/MainPanel.js:41
-#: ext/classic/src/view/settings/MainPanel.js:42
-msgid "Sytem Update"
-msgstr "系统更新"
-
-#: ext/classic/src/view/settings/robots/Grid.js:18
+#: ext/classic/src/view/import/MainPanel.js:50
 msgid "Robots"
 msgstr "爬虫机器人"
 
-#: ext/classic/src/view/settings/robots/Grid.js:38
+#: ext/classic/src/view/import/manipulation/Panel.js:28
+msgid "Exact Import"
+msgstr "精确导入"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:39
+msgid "Enter ID..."
+msgstr "输入ID......"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:66
+msgid "Reset Orders"
+msgstr "订单重置"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:82
+#: ext/classic/src/view/import/manipulation/Panel.js:91
+msgid "Import Items"
+msgstr "导入商品原型"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:96
+msgid "Import Variations"
+msgstr "导入商品细类"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:10
+msgid "Import erledigt!"
+msgstr "导入完成！"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:15
+msgid "Do you want to reset the database?"
+msgstr "您确信要重置数据库吗？"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:20
+msgid "The database is empty, it will refill at next run of import conjob!"
+msgstr "数据库已经清空，下一次conjob运行时它将被再次填写!"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:29
+msgid ""
+"All items will be removed and the data re-imported. Are you sure you want to "
+"do this?"
+msgstr "清空全部商品并重新导入。您学信要这样做吗？"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:34
+msgid "Items have been updated!"
+msgstr "商品更新完毕！"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:43
+msgid ""
+"All variations will be removed and the data re-imported. Are you sure you "
+"want to do this?"
+msgstr "清空全部商品细类并重新导入。您学信要这样做吗？"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:48
+msgid "Variations have been updated!"
+msgstr "商品细类更新完毕！"
+
+#: ext/classic/src/view/import/robots/Grid.js:35
 msgid "Time"
 msgstr "时间"
 
-#: ext/classic/src/view/settings/robots/Grid.js:46
+#: ext/classic/src/view/import/robots/Grid.js:43
 msgid "IP"
 msgstr "IP"
 
-#: ext/classic/src/view/settings/robots/Grid.js:51
+#: ext/classic/src/view/import/robots/Grid.js:48
 msgid "Location"
 msgstr "位置"
 
-#: ext/classic/src/view/settings/robots/Grid.js:57
+#: ext/classic/src/view/import/robots/Grid.js:54
 msgid "Get Info"
 msgstr "获取信息"
 
-#: ext/classic/src/view/settings/robots/Grid.js:84
+#: ext/classic/src/view/import/robots/Grid.js:81
 msgid "URL"
 msgstr "URL"
+
+#: ext/classic/src/view/import/tracking/Grid.js:34
+msgid "Date"
+msgstr "日期"
+
+#: ext/classic/src/view/import/tracking/Grid.js:47
+msgid " - "
+msgstr " - "
+
+#: ext/classic/src/view/import/tracking/Grid.js:64
+msgid "realy import"
+msgstr "真实导入"
+
+#: ext/classic/src/view/import/tracking/Grid.js:76
+msgid "ID"
+msgstr "ID"
+
+#: ext/classic/src/view/import/tracking/Grid.js:82
+msgid "Beginn"
+msgstr "开始"
+
+#: ext/classic/src/view/import/tracking/Grid.js:90
+msgid "End"
+msgstr "完毕"
+
+#: ext/classic/src/view/import/tracking/Grid.js:98
+msgid "Plenty Updated"
+msgstr "Plenty更新时间"
+
+#: ext/classic/src/view/import/tracking/Grid.js:105
+#, javascript-format
+msgid "before %s"
+msgstr "%s之前"
+
+#: ext/classic/src/view/import/tracking/Grid.js:108
+#, javascript-format
+msgid "from %s"
+msgstr "从%s开始"
+
+#: ext/classic/src/view/import/tracking/Grid.js:115
+msgid "Page"
+msgstr "页码"
+
+#: ext/classic/src/view/import/tracking/Grid.js:121
+msgid "Last Page"
+msgstr "最后的页码"
+
+#: ext/classic/src/view/import/tracking/Grid.js:128
+msgid "Total"
+msgstr "总共"
+
+#: ext/classic/src/view/import/tracking/Grid.js:134
+msgid "Quantity"
+msgstr "数量"
+
+#: ext/classic/src/view/import/tracking/Grid.js:140
+msgid "Errors"
+msgstr "错误"
+
+#: ext/classic/src/view/main/Config.js:10
+msgid "Import"
+msgstr "导入"
+
+#: ext/classic/src/view/main/Config.js:12
+msgid "Articles"
+msgstr "商品"
+
+#: ext/classic/src/view/main/Config.js:13
+msgid "Orders"
+msgstr "订单"
+
+#: ext/classic/src/view/main/Config.js:14
+#: ext/classic/src/view/settings/MainPanel.js:16
+msgid "Settings"
+msgstr "设置"
+
+#: ext/classic/src/view/settings/MainPanel.js:31
+msgid "Current User"
+msgstr "当前用户"
+
+#: ext/classic/src/view/settings/MainPanel.js:40
+#: ext/classic/src/view/settings/MainPanel.js:41
+msgid "Sytem Update"
+msgstr "系统更新"
 
 #: ext/modern/overrides/picker/Date.js:14
 msgid "Day"
@@ -512,15 +650,15 @@ msgstr "预览"
 msgid "Username"
 msgstr "用户名"
 
-#: api/View/System/login.ctp:6
+#: api/View/System/login.ctp:5
 msgid "Please enter your username"
 msgstr "请输入您的用户名"
 
-#: api/View/System/login.ctp:12
+#: api/View/System/login.ctp:8
 msgid "Password"
 msgstr "密码"
 
-#: api/View/System/login.ctp:14
+#: api/View/System/login.ctp:9
 msgid "Please enter your password"
 msgstr "请输入您的密码"
 
@@ -535,6 +673,3 @@ msgstr "请输入您的密码"
 
 #~ msgid "days "
 #~ msgstr "天"
-
-#~ msgid "Date"
-#~ msgstr "æ¥æ"

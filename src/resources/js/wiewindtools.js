@@ -123,11 +123,10 @@ var Wiewind = {
     },
 
     Date: {
-        getDateStr: function (addDayCount) {
-            var dd = new Date();
-            dd.setDate(dd.getDate()+addDayCount);//获取AddDayCount天后的日期
-            var y = dd.getFullYear();
-            var m = dd.getMonth()+1;//获取当前月份的日期
+        dateToSqlStr: function (date) {
+            var dd = date || new Date(),
+                y = dd.getFullYear(),
+                m = dd.getMonth()+1;//获取当前月份的日期
             m = m < 10 ? "0" + m : m;
             var d = dd.getDate();
             d = d < 10 ? "0" + d : d;
@@ -135,16 +134,27 @@ var Wiewind = {
             return y+"-"+m+"-"+d;
         },
 
+        datetimeToSqlStr: function (datetime) {
+            var date = Wiewind.Date.dateToSqlStr(datetime),
+                h = Wiewind.Number.displayIntZerofill(datetime.getHours(), 2),
+                i = Wiewind.Number.displayIntZerofill(datetime.getMinutes(), 2),
+                s = Wiewind.Number.displayIntZerofill(datetime.getSeconds(), 2);
+            return date + ' ' + h + ':' + i + ':' + s;
+        },
+
         getDate: function (menge, unit) {
             unit = unit || 'd';
             var dd = new Date();
-            switch (unit.toLowerCase()) {
+            switch (unit.toLowerCase().charAt(0)) {
                 case 'y':
+                case 'j': // für deutsch "Jahr"
                     dd.setFullYear(dd.getFullYear() + menge);
                     break;
                 case 'm':
                     dd.setMonth(dd.getMonth() + menge);
                     break;
+                case 'd':
+                case 't': // für deutsch "Tag"
                 default:
                     dd.setDate(dd.getDate()+menge);
                     break;

@@ -150,7 +150,7 @@ class AppController extends Controller {
             'code' => 200
         );
         if ($fn_name) {
-            $dataSource = ClassRegistry::init('User')->getDataSource();
+            $dataSource = ClassRegistry::init('Item')->getDataSource();
             $dataSource->begin();
             try {
                 $r = call_user_func_array(array($this, $fn_name), $args);

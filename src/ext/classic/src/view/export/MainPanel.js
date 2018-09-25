@@ -12,10 +12,6 @@ Ext.define('SRX.view.export.MainPanel', {
     ],
 
     controller: 'exportmainpanel',
-    // viewModel: {
-    //     type: 'exportmainpanel'
-    // },
-
 
     config: {
         layout: 'vbox',
@@ -75,6 +71,4 @@ Ext.define('SRX.view.export.MainPanel', {
             ]
         }
     ]
-
-
 });

@@ -30,6 +30,11 @@ Ext.define('SRX.view.article.GridController', {
         daysField.setValue(7);
         store.setExtraParams({'searchText': '', 'searchDays': 7});
         store.reload();
+    },
+
+    itemDblClick: function (gridView, record) {
+        var item_id = record.get('id');
+        
     }
 
 });

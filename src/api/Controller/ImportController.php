@@ -68,4 +68,36 @@ class ImportController extends AppController
 
         return $info;
     }
+
+    function getImports () {
+        $this->checkLogin();
+        $params = $this->request->data;
+        $conditions = ['type' => 'orders'];
+        if (isset($params['from']) && $params['from']) {
+            $conditions['update_from >= '] = $params['from'] . ' 00:00:00';
+        }
+        if (isset($params['to']) && $params['to']) {
+            $conditions['update_to <= '] = $params['to'] . ' 23:59:59';
+        }
+        if (isset($params['hasMenge']) && $params['hasMenge'] === 'true') {
+            $conditions['menge > '] = 0;
+            $conditions['menge > '] = 0;
+        }
+
+        $total = $this->Import->find('count', [
+            'conditions' => $conditions
+        ]);
+
+        $data = $this->Import->find('all', [
+            'conditions' => $conditions,
+            'order' => ['Import.import_beginn DESC'],
+            'page' => $params['page'],
+            'limit' => $params['limit']
+        ]);
+
+        return [
+            'total' => $total,
+            'data' => $data
+        ];
+    }
 }
