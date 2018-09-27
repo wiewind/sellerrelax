@@ -16,10 +16,17 @@ Ext.define('SRX.view.settings.MainPanelController', {
         });
     },
 
+    onClickRest: function () {
+        Wiewind.Action.click({
+            url: '/page/bootstrap',
+            target: '_blank'
+        });
+    },
+
     onClickUpdate: function () {
         Wiewind.Action.click({
             url: '/update',
             target: '_blank'
-        })
+        });
     }
 });

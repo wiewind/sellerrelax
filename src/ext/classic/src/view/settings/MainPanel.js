@@ -20,20 +20,19 @@ Ext.define('SRX.view.settings.MainPanel', {
         bodyPadding: 10
     },
 
-    defaults: {
-        margin: '10px auto',
-        width: 200
-    },
-
     items: [
         {
             xtype: 'component',
+            margin: 10,
             html: T.__('Current User') + ': ' + '<h3>' + SSD.data.user.username + '</h3>'
         },
         {
             xtype: 'container',
             layout: 'hbox',
             width: '100%',
+            defaults: {
+                margin: 10
+            },
             items: [
                 {
                     xtype: 'button',
@@ -44,6 +43,14 @@ Ext.define('SRX.view.settings.MainPanel', {
                     handler: 'onClickUpdate'
                 },
                 {
+                    xtype: 'button',
+                    text: T.__('Rest Test'),
+                    tooltip: T.__('Rest Test'),
+                    iconCls: 'x-fa fa-exchange',
+                    // padding: 20,
+                    handler: 'onClickRest'
+                },
+                {
                     xtype: 'component',
                     flex: 1
                 },
@@ -52,7 +59,6 @@ Ext.define('SRX.view.settings.MainPanel', {
                     text: Glb.btnSetting.logoutText,
                     tooltip: Glb.btnSetting.logoutText,
                     iconCls: Glb.btnSetting.logoutIconCls,
-                    // padding: 20,
                     handler: 'onClickLogout'
                 }
             ]

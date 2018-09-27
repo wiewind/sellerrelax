@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-09-25 17:19+0200\n"
+"POT-Creation-Date: 2018-09-27 11:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -448,9 +448,55 @@ msgstr "已导入%s条记录！"
 msgid "SKU Articles"
 msgstr "SKU商品"
 
-#: ext/classic/src/view/home/MainPanel.js:9
+#: ext/classic/src/view/home/MainPanel.js:14
 msgid "Home"
 msgstr "主页"
+
+#: ext/classic/src/view/home/chart/OrderCount.js:19
+msgid "Count of Orders"
+msgstr "订单数量"
+
+#: ext/classic/src/view/home/chart/OrderCount.js:30
+#: ext/classic/src/view/home/chart/SalesAmount.js:38
+msgid "Select Period"
+msgstr "选择周期"
+
+#: ext/classic/src/view/home/chart/OrderCount.js:34
+#: ext/classic/src/view/home/chart/OrderCountViewModel.js:10
+#: ext/classic/src/view/home/chart/SalesAmount.js:45
+#: ext/modern/overrides/picker/Date.js:14
+msgid "Day"
+msgstr "日"
+
+#: ext/classic/src/view/home/chart/OrderCount.js:35
+#: ext/classic/src/view/home/chart/OrderCountViewModel.js:10
+#: ext/classic/src/view/home/chart/SalesAmount.js:46
+#: ext/modern/overrides/picker/Date.js:15
+msgid "Month"
+msgstr "月"
+
+#: ext/classic/src/view/home/chart/OrderCount.js:36
+#: ext/classic/src/view/home/chart/OrderCountViewModel.js:10
+#: ext/classic/src/view/home/chart/SalesAmount.js:47
+#: ext/modern/overrides/picker/Date.js:16
+msgid "Year"
+msgstr "年"
+
+#: ext/classic/src/view/home/chart/SalesAmount.js:19
+msgid "Sales Amount"
+msgstr "销售额"
+
+#: ext/classic/src/view/home/chart/SalesAmount.js:61
+msgid "Type Of Preis"
+msgstr "价格类型"
+
+#: ext/classic/src/view/home/chart/SalesAmount.js:68
+msgid "pre-tax"
+msgstr "税前"
+
+#: ext/classic/src/view/home/chart/SalesAmount.js:69
+msgid "after-tax"
+msgstr "税后"
 
 #: ext/classic/src/view/import/MainPanel.js:38
 msgid "Tracking"
@@ -612,26 +658,19 @@ msgstr "订单"
 msgid "Settings"
 msgstr "设置"
 
-#: ext/classic/src/view/settings/MainPanel.js:31
+#: ext/classic/src/view/settings/MainPanel.js:27
 msgid "Current User"
 msgstr "当前用户"
 
+#: ext/classic/src/view/settings/MainPanel.js:39
 #: ext/classic/src/view/settings/MainPanel.js:40
-#: ext/classic/src/view/settings/MainPanel.js:41
 msgid "Sytem Update"
 msgstr "系统更新"
 
-#: ext/modern/overrides/picker/Date.js:14
-msgid "Day"
-msgstr "日"
-
-#: ext/modern/overrides/picker/Date.js:15
-msgid "Month"
-msgstr "月"
-
-#: ext/modern/overrides/picker/Date.js:16
-msgid "Year"
-msgstr "年"
+#: ext/classic/src/view/settings/MainPanel.js:47
+#: ext/classic/src/view/settings/MainPanel.js:48
+msgid "Rest Test"
+msgstr "Rest测试"
 
 #: ext/modern/overrides/picker/Date.js:18
 #: ext/modern/overrides/picker/Picker.js:11
@@ -661,6 +700,12 @@ msgstr "密码"
 #: api/View/System/login.ctp:9
 msgid "Please enter your password"
 msgstr "请输入您的密码"
+
+#~ msgid "Gross"
+#~ msgstr "税前"
+
+#~ msgid "Net"
+#~ msgstr "税后"
 
 #~ msgid "in working..."
 #~ msgstr "工作中……"
