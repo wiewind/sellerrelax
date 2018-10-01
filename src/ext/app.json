@@ -1,7 +1,7 @@
 {
     "name": "SRX",
     "namespace": "SRX",
-    "version": "1.0.0.0",
+    "version": "1.0.4.1",
     "framework": "ext",
 
     /**
@@ -203,6 +203,14 @@
      *
      */
     "js": [
+        {
+            "path": "app/locales/LL.js"   // Special Bootstrap for Local-Language-Files
+        },
+        {	"path": "app/locales/zho.js" },
+        {	"path": "app/locales/deu.js" },
+        {	"path": "app/locales/eng.js" },
+        {	"path": "app/locales/Translator.js" },
+
         {	"path": "../resources/js/wiewindtools.js" },
 
         {

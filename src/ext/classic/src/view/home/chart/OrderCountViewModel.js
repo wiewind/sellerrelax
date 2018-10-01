@@ -13,7 +13,11 @@ Ext.define('SRX.view.home.chart.OrderCountViewModel', {
 
     stores: {
         ordercount: {
-            type: 'salesvolume',
+            type: 'base',
+            fields: [
+                {name: 'date', mapping: 'date', type: 'string'},
+                {name: 'sum', mapping: 'sum', type: 'float'}
+            ],
             autoLoad: true,
             proxy: {
                 url: Cake.api.path + '/chart/json/getOrderCount'

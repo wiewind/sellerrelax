@@ -32,6 +32,8 @@ Ext.define('SRX.view.export.MainPanel', {
             title: T.__('Export Setting'),
             iconCls: 'x-fa fa-edit',
             collapsible: true,
+            collapseToolText: T.__('Collapse'),
+            expandToolText: T.__('Expand'),
             // collapsed: true,
             layout: 'hbox',
             defaults: {

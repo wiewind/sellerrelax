@@ -16,6 +16,8 @@ Ext.define('SRX.view.import.manipulation.Panel', {
         defaults: {
             margin: 10,
             collapsible: true,
+            collapseToolText: T.__('Collapse'),
+            expandToolText: T.__('Expand'),
             defaults: {
                 margin: 10
             }

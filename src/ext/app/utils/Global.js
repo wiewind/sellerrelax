@@ -189,6 +189,11 @@ Ext.define('SRX.utils.Global', {
     },
 
     Date: {
+        months: [
+            T.__('January'), T.__('February'), T.__('March'), T.__('April'), T.__('May'), T.__('June'),
+            T.__('July'), T.__('August'), T.__('September'), T.__('October'), T.__('November'), T.__('December')
+        ],
+
         displayDateFromTimestamp: function (timestamp, format_extra, shot) {
             if (Number(timestamp) === 0) return ''; // avoid 01.01.1970
 

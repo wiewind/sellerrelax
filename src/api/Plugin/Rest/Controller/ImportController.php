@@ -10,6 +10,7 @@ class ImportController extends AppController
 {
     var $uses = [
         'Import',
+        'ImportTodo',
         'Order',
         'Item',
         'OrderItem',
@@ -98,6 +99,7 @@ class ImportController extends AppController
         $params['page'] = $newImport['page'];
         $params['itemsPerPage'] = $newImport['itemsPerPage'];
 
+        $withItems = true;
         if ($newImport['from']) {
             $from = GlbF::date2Iso($newImport['from']);
             if ($newImport['install']) {
@@ -105,6 +107,8 @@ class ImportController extends AppController
             } else {
                 $params['updatedAtFrom'] = $from;
             }
+        } else {
+            $withItems = false; // by init database do not update the items
         }
         if ($newImport['to']) {
             $to = GlbF::date2Iso($newImport['to']);
@@ -142,7 +146,7 @@ class ImportController extends AppController
 
         $errorOrders = [];
         foreach ($orders as $order) {
-            $this->__doImportOrderData($order, $now);
+            $this->__doImportOrderData($order, $now, $withItems);
         }
 
         $now2 = date('Y-m-d H:i:s');
@@ -172,7 +176,7 @@ class ImportController extends AppController
         return $importData;
     }
 
-    private function __doImportOrderData ($order, $now="") {
+    private function __doImportOrderData ($order, $now="", $withItems = false) {
         if (!$now) $now = date('Y-m-d H:i:s');
 
         $dataSource = $this->Order->getDataSource();
@@ -289,6 +293,24 @@ class ImportController extends AppController
 
                 $this->OrderItem->create();
                 $this->OrderItem->save($oiData);
+
+                // check Item, when not found, import item!
+                if ($withItems && isset($orderItem->variation)) {
+                    $iv = $this->ItemsVariation->find('first', [
+                        'fields' => 'id',
+                        'conditions' => [
+                            'extern_id' => $orderItem->itemVariationId
+                        ]
+                    ]);
+                    if (!$iv) {
+                        $this->ImportTodo->create();
+                        $this->ImportTodo->save([
+                            'type' => 'item',
+                            'extern_id' => $orderItem->variation->itemId,
+                            'created' => $now
+                        ]);
+                    }
+                }
             }
 
             // order_properties
@@ -315,7 +337,7 @@ class ImportController extends AppController
     }
 
     function importOrderById ($order_id = 0) {
-        $this->checkLogin();
+//        $this->checkLogin();  // für conjob, darf es kein logingeben
 
         ini_set("memory_limit","1024M");
 
@@ -344,7 +366,6 @@ class ImportController extends AppController
 
     function clearOrderImports () {
         $this->checkLogin();
-        return;
         $this->Item->query('TRUNCATE TABLE orders;');
         $this->Item->query('TRUNCATE TABLE order_items;');
         $this->Item->query('TRUNCATE TABLE order_properties;');
@@ -484,7 +505,7 @@ class ImportController extends AppController
     }
 
     function importItemById ($item_id) {
-        $this->checkLogin();
+//        $this->checkLogin();
         ini_set("memory_limit","1024M");
 
         $url = str_replace('rest/items', 'rest/items/'.$item_id, $this->restAdress['items']);
@@ -756,5 +777,51 @@ class ImportController extends AppController
         }
         $menge = ($data->lastOnPage) ? $data->lastOnPage - $data->firstOnPage + 1 : 0;
         CakeLog::write('import', "Import Barcode Types end with $menge record(s)!");
+    }
+
+    function callTodos () {
+        $this->autoRender = false;
+        CakeLog::write('import', "Search in todos...");
+        $todos = $this->ImportTodo->find('all', [
+            'conditions' => [
+                'finished is null'
+            ],
+            'group' => ['type', 'extern_id']
+        ]);
+
+//        return GlbF::printArray($todos);
+
+        if ($todos) {
+            foreach ($todos as $todo) {
+                switch($todo['ImportTodo']['type']) {
+                    case 'item':
+                        $this->importItemById($todo['ImportTodo']['extern_id']);
+                        break;
+                    case 'order':
+                        $this->importOrderById($todo['ImportTodo']['extern_id']);
+                        break;
+                }
+
+                $this->ImportTodo->updateAll(
+                    [
+                        'finished' => "'" . date('Y-m-d H:i:s') . "'"
+                    ],
+                    [
+                        'type' => $todo['ImportTodo']['type'],
+                        'extern_id' => $todo['ImportTodo']['extern_id']
+                    ]
+                );
+
+                CakeLog::write('import', "import {$todo['ImportTodo']['type']} {$todo['ImportTodo']['extern_id']}.");
+            }
+        }
+
+        CakeLog::write('import', "Todo finished!");
+    }
+
+    function test () {
+        $this->autoRender = false;
+        $ts = strtotime("2018-10-01 15:00");
+        echo date('c', $ts);
     }
 }

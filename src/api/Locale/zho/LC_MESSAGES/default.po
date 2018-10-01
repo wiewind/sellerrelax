@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-09-27 11:22+0200\n"
+"POT-Creation-Date: 2018-09-28 14:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -128,6 +128,10 @@ msgstr "冷漠"
 msgid "new job"
 msgstr "新工作"
 
+#: ext/app/Application.js:52
+msgid "The new version is online!"
+msgstr "新版本已经上线！"
+
 #: ext/app/store/Base.js:28 ext/app/utils/Global.js:75
 #: ext/app/utils/Global.js:122
 msgid "Unknown"
@@ -155,8 +159,7 @@ msgstr "保存"
 msgid "Save and Close"
 msgstr "保存并关闭"
 
-#: ext/app/utils/Global.js:20 ext/classic/overrides/panel/Panel.js:6
-#: ext/classic/src/ux/MusterFormWindow.js:24
+#: ext/app/utils/Global.js:20 ext/classic/src/ux/MusterFormWindow.js:24
 #: ext/classic/src/ux/UploadPhotoWindow.js:23
 msgid "Close"
 msgstr "关闭"
@@ -243,6 +246,54 @@ msgstr "加载中……"
 msgid "Server Error"
 msgstr "服务器错误"
 
+#: ext/app/utils/Global.js:193
+msgid "January"
+msgstr "一月"
+
+#: ext/app/utils/Global.js:193
+msgid "February"
+msgstr "二月"
+
+#: ext/app/utils/Global.js:193
+msgid "March"
+msgstr "三月"
+
+#: ext/app/utils/Global.js:193
+msgid "April"
+msgstr "四月"
+
+#: ext/app/utils/Global.js:193
+msgid "May"
+msgstr "五月"
+
+#: ext/app/utils/Global.js:193
+msgid "June"
+msgstr "六月"
+
+#: ext/app/utils/Global.js:194
+msgid "July"
+msgstr "七月"
+
+#: ext/app/utils/Global.js:194
+msgid "August"
+msgstr "八月"
+
+#: ext/app/utils/Global.js:194
+msgid "September"
+msgstr "九月"
+
+#: ext/app/utils/Global.js:194
+msgid "October"
+msgstr "十月"
+
+#: ext/app/utils/Global.js:194
+msgid "November"
+msgstr "十一月"
+
+#: ext/app/utils/Global.js:194
+msgid "December"
+msgstr "十二月"
+
 #: ext/app/ux/AMessageBox.js:55
 msgid "Info"
 msgstr "信息"
@@ -266,14 +317,6 @@ msgstr "注意"
 #: ext/app/ux/AMessageBox.js:106
 msgid "Please enter..."
 msgstr "请输入……"
-
-#: ext/classic/overrides/panel/Panel.js:7
-msgid "Collapse"
-msgstr "关闭"
-
-#: ext/classic/overrides/panel/Panel.js:8
-msgid "Expand"
-msgstr "展开"
 
 #: ext/classic/src/ux/MusterFormController.js:43
 #: ext/classic/src/ux/UploadPhotoWindowController.js:43
@@ -383,20 +426,30 @@ msgstr "新建FBA用户"
 msgid "Export Setting"
 msgstr "导出设置"
 
-#: ext/classic/src/view/export/MainPanel.js:45
+#: ext/classic/src/view/export/MainPanel.js:35
+#: ext/classic/src/view/import/manipulation/Panel.js:19
+msgid "Collapse"
+msgstr "关闭"
+
+#: ext/classic/src/view/export/MainPanel.js:36
+#: ext/classic/src/view/import/manipulation/Panel.js:20
+msgid "Expand"
+msgstr "展开"
+
+#: ext/classic/src/view/export/MainPanel.js:47
 msgid "Edit SKU Articles"
 msgstr "编辑SKU商品"
 
-#: ext/classic/src/view/export/MainPanel.js:50
+#: ext/classic/src/view/export/MainPanel.js:52
 msgid "Edit FBA Customers"
 msgstr "编辑FBA客户"
 
-#: ext/classic/src/view/export/MainPanel.js:57
+#: ext/classic/src/view/export/MainPanel.js:59
 #: ext/classic/src/view/main/Config.js:11
 msgid "Export"
 msgstr "导出"
 
-#: ext/classic/src/view/export/MainPanel.js:67
+#: ext/classic/src/view/export/MainPanel.js:69
 msgid "Inventory Forecast"
 msgstr "库存预测"
 
@@ -448,7 +501,7 @@ msgstr "已导入%s条记录！"
 msgid "SKU Articles"
 msgstr "SKU商品"
 
-#: ext/classic/src/view/home/MainPanel.js:14
+#: ext/classic/src/view/home/MainPanel.js:15
 msgid "Home"
 msgstr "主页"
 
@@ -456,28 +509,28 @@ msgstr "主页"
 msgid "Count of Orders"
 msgstr "订单数量"
 
-#: ext/classic/src/view/home/chart/OrderCount.js:30
-#: ext/classic/src/view/home/chart/SalesAmount.js:38
+#: ext/classic/src/view/home/chart/OrderCount.js:29
+#: ext/classic/src/view/home/chart/SalesAmount.js:34
 msgid "Select Period"
 msgstr "选择周期"
 
-#: ext/classic/src/view/home/chart/OrderCount.js:34
+#: ext/classic/src/view/home/chart/OrderCount.js:35
 #: ext/classic/src/view/home/chart/OrderCountViewModel.js:10
-#: ext/classic/src/view/home/chart/SalesAmount.js:45
+#: ext/classic/src/view/home/chart/SalesAmount.js:41
 #: ext/modern/overrides/picker/Date.js:14
 msgid "Day"
 msgstr "日"
 
-#: ext/classic/src/view/home/chart/OrderCount.js:35
+#: ext/classic/src/view/home/chart/OrderCount.js:36
 #: ext/classic/src/view/home/chart/OrderCountViewModel.js:10
-#: ext/classic/src/view/home/chart/SalesAmount.js:46
+#: ext/classic/src/view/home/chart/SalesAmount.js:42
 #: ext/modern/overrides/picker/Date.js:15
 msgid "Month"
 msgstr "月"
 
-#: ext/classic/src/view/home/chart/OrderCount.js:36
+#: ext/classic/src/view/home/chart/OrderCount.js:37
 #: ext/classic/src/view/home/chart/OrderCountViewModel.js:10
-#: ext/classic/src/view/home/chart/SalesAmount.js:47
+#: ext/classic/src/view/home/chart/SalesAmount.js:43
 #: ext/modern/overrides/picker/Date.js:16
 msgid "Year"
 msgstr "年"
@@ -486,17 +539,28 @@ msgstr "年"
 msgid "Sales Amount"
 msgstr "销售额"
 
-#: ext/classic/src/view/home/chart/SalesAmount.js:61
+#: ext/classic/src/view/home/chart/SalesAmount.js:57
+#: ext/classic/src/view/home/chart/SelesAmount3Y.js:36
 msgid "Type Of Preis"
 msgstr "价格类型"
 
-#: ext/classic/src/view/home/chart/SalesAmount.js:68
+#: ext/classic/src/view/home/chart/SalesAmount.js:64
+#: ext/classic/src/view/home/chart/SelesAmount3Y.js:43
 msgid "pre-tax"
 msgstr "税前"
 
-#: ext/classic/src/view/home/chart/SalesAmount.js:69
+#: ext/classic/src/view/home/chart/SalesAmount.js:65
+#: ext/classic/src/view/home/chart/SelesAmount3Y.js:44
 msgid "after-tax"
 msgstr "税后"
+
+#: ext/classic/src/view/home/chart/SelesAmount3Y.js:19
+msgid "Sales Amount of 3 years"
+msgstr "三年销售额"
+
+#: ext/classic/src/view/home/chart/SelesAmount3Y.js:58
+msgid "Years"
+msgstr "年份"
 
 #: ext/classic/src/view/import/MainPanel.js:38
 msgid "Tracking"
@@ -510,24 +574,24 @@ msgstr "手工导入"
 msgid "Robots"
 msgstr "爬虫机器人"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:28
+#: ext/classic/src/view/import/manipulation/Panel.js:30
 msgid "Exact Import"
 msgstr "精确导入"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:39
+#: ext/classic/src/view/import/manipulation/Panel.js:41
 msgid "Enter ID..."
 msgstr "输入ID......"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:66
+#: ext/classic/src/view/import/manipulation/Panel.js:68
 msgid "Reset Orders"
 msgstr "订单重置"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:82
-#: ext/classic/src/view/import/manipulation/Panel.js:91
+#: ext/classic/src/view/import/manipulation/Panel.js:84
+#: ext/classic/src/view/import/manipulation/Panel.js:93
 msgid "Import Items"
 msgstr "导入商品原型"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:96
+#: ext/classic/src/view/import/manipulation/Panel.js:98
 msgid "Import Variations"
 msgstr "导入商品细类"
 
@@ -547,7 +611,7 @@ msgstr "数据库已经清空，下一次conjob运行时它将被再次填写!"
 msgid ""
 "All items will be removed and the data re-imported. Are you sure you want to "
 "do this?"
-msgstr "清空全部商品并重新导入。您学信要这样做吗？"
+msgstr "清空全部商品并重新导入。您确信要这样做吗？"
 
 #: ext/classic/src/view/import/manipulation/PanelController.js:34
 msgid "Items have been updated!"
@@ -557,7 +621,7 @@ msgstr "商品更新完毕！"
 msgid ""
 "All variations will be removed and the data re-imported. Are you sure you "
 "want to do this?"
-msgstr "清空全部商品细类并重新导入。您学信要这样做吗？"
+msgstr "清空全部商品细类并重新导入。您确信要这样做吗？"
 
 #: ext/classic/src/view/import/manipulation/PanelController.js:48
 msgid "Variations have been updated!"

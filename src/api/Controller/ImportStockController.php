@@ -39,30 +39,31 @@ class ImportStockController extends AppController
     }
 
     function importCsv ($file, $fn) {
+
+        $now = date('Y-m-d H:i:s');
         if (($handle = fopen($file, "r")) !== FALSE) {
             $row = 0;
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $row++;
                 if ($row <= 1) continue;
-                $this->$fn($data);
+                $this->$fn($data, $now);
             }
             fclose($handle);
         }
     }
 
-    function importLine1 ($data) {
+    function importLine1 ($data, $time) {
         $variation = $this->ItemsVariation->findByNumber($data[0]);
         //if (!$variation) return;
 
-        $now = date('Y-m-d H:i:s');
         $saveData = [
-            'stock_from' => '1',
+            'warehouse_id' => '1',
             'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
             'variation_id' => ($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
             'number' => $data[0],
             'quantity' => $data[2],
             'reserved' => $data[3],
-            'imported' => $now
+            'imported' => $time
         ];
 
         $stock = $this->Stock->find('first', [
@@ -80,7 +81,7 @@ class ImportStockController extends AppController
         $this->Stock->save($saveData);
     }
 
-    function importLine2 ($data) {
+    function importLine2 ($data, $time) {
         $variation = $this->ItemsVariation->find('first', [
             'fields' => [
                 'ItemsVariation.item_id',
@@ -101,11 +102,9 @@ class ImportStockController extends AppController
                 'ItemsVariationsBarcode.code' => $data[1]
             ]
         ]);
-        // if (!$variation) return;
 
-        $now = date('Y-m-d H:i:s');
         $saveData = [
-            'stock_from' => '2',
+            'warehouse_id' => '2',
             'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
             'variation_id' =>($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
             'ean' => $data[1],
@@ -113,7 +112,56 @@ class ImportStockController extends AppController
             'be_down' => $this->__getBoolean($data[5]),
             'next_receipt' => $data[7],
             'next_receipt_on' => $this->__getDate($data[8]),
-            'imported' => $now
+            'imported' => $time
+        ];
+
+        $stock = $this->Stock->find('first', [
+            'fields' => 'id',
+            'conditions' => [
+                'ean' => $data[1]
+            ]
+        ]);
+        if ($stock) {
+            $saveData['id'] = $stock['Stock']['id'];
+        } else {
+            $this->Stock->create();
+        }
+
+        $this->Stock->save($saveData);
+    }
+
+    function importLine3 ($data, $time) {
+        $variation = $this->ItemsVariation->find('first', [
+            'fields' => [
+                'ItemsVariation.item_id',
+                'ItemsVariation.extern_id'
+            ],
+            'joins' => [
+                [
+                    'table' => Inflector::tableize('ItemsVariationsBarcode'),
+                    'alias' => 'ItemsVariationsBarcode',
+                    'conditions' => array(
+                        'ItemsVariation.extern_id = ItemsVariationsBarcode.variation_id',
+                        'ItemsVariationsBarcode.barcode_type_id' => 1
+                    ),
+                    'type' => 'inner'
+                ]
+            ],
+            'conditions' => [
+                'ItemsVariationsBarcode.code' => $data[1]
+            ]
+        ]);
+
+        $saveData = [
+            'warehouse_id' => '3',
+            'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
+            'variation_id' =>($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
+            'ean' => $data[1],
+            'quantity' => $data[6],
+            'be_down' => $this->__getBoolean($data[5]),
+            'next_receipt' => $data[7],
+            'next_receipt_on' => $this->__getDate($data[8]),
+            'imported' => $time
         ];
 
         $stock = $this->Stock->find('first', [

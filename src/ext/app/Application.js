@@ -49,6 +49,7 @@ Ext.define('SRX.Application', {
     },
 
     onAppUpdate: function () {
-        window.location.reload();
+        ABox.info(T.__('The new version is online!'));
+        // window.location.reload();
     }
 });

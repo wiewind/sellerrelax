@@ -7,6 +7,7 @@ Ext.define('SRX.view.home.MainPanel', {
 
     requires: [
         'SRX.view.home.chart.SalesAmount',
+        'SRX.view.home.chart.SalesAmount3Y',
         'SRX.view.home.chart.OrderCount'
     ],
 
@@ -41,7 +42,7 @@ Ext.define('SRX.view.home.MainPanel', {
                 {
                     items: [
                         {
-                            xtype: 'homechartsalesamount'
+                            xtype: 'homechartsalesamount3y'
                         }
                     ]
                 },
