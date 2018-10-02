@@ -127,9 +127,9 @@ class AppController extends Controller {
                 if (is_array($r) && isset($r['data'])) $result = array_merge($result, $r);
                 else $result['data'] = $r;
             } catch (Exception $e) {
-                $result['success'] = false;
                 $result['message'] = $e->getMessage();
                 $result['code'] = $e->getCode();
+                $result['success'] = ($result['code'] == ErrorCode::Success);
             }
         }
 
@@ -159,9 +159,9 @@ class AppController extends Controller {
                 $dataSource->commit();
             } catch (Exception $e) {
                 $dataSource->rollback();
-                $result['success'] = false;
                 $result['message'] = $e->getMessage();
                 $result['code'] = $e->getCode();
+                $result['success'] = ($result['code'] == ErrorCode::Success);
             }
         }
 

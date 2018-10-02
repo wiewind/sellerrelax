@@ -13,51 +13,299 @@ class ImportStockController extends AppController
         'Item',
         'ItemsVariation',
         'ItemsVariationsBarcode',
-        'BarcodeType'
+        'BarcodeType',
+        'Warehouse'
     ];
 
-    function import () {
+    function download ($warehouse_id) {
+        $warehouse = $this->Warehouse->findById($warehouse_id);
+        $res = false;
+        if ($warehouse) {
+            $warehouse = $warehouse['Warehouse'];
+            switch ($warehouse['protokoll']) {
+                case 'ftp':
+                    $res = $this->downloadPerFtp($warehouse['host'], $warehouse['username'], $warehouse['password'], $warehouse['server_file'], $warehouse['local_file'], $warehouse['downloaded'], $warehouse['id']);
+                    break;
+                case 'email':
+                    $res = $this->downloadPerEmail($warehouse['host'], $warehouse['username'], $warehouse['password'], $warehouse['server_file'], $warehouse['local_file'], $warehouse['downloaded'], $warehouse['id']);
+                    break;
+            }
+            $this->Warehouse->save([
+                'id' => $warehouse['id'],
+                'downloaded' => date('Y-m-d H:i:s')
+            ]);
+        }
+        return ($res) ?
+            sprintf(__("Successfully written to %s!"), $warehouse['local_file']) :
+            sprintf(__("There are not new file for warehouse %s!"), $warehouse['id']);
+    }
+
+    function downloadPerFtp ($hostname, $username, $password, $server_file, $local_file, $last_downloaded, $warehouse_id) {
+        // open some file to write to
+        $path = Configure::read('system.import.stock.path');
+        GlbF::mkDir($path);
+        $local_filename = $path . '/' . $local_file;
+
+        $success = false;
+
+        // set up basic connection
+        $conn_id = ftp_connect($hostname);
+        if (!$conn_id) {
+            ErrorCode::throwException(sprintf(__("FTP connect error at warehouse %s!"), $warehouse_id), ErrorCode::ErrorCodeBadRequest);
+        }
+
+        // login with username and password
+        if (ftp_login($conn_id, $username, $password) && ftp_pasv($conn_id, true)) {
+            $modifiedTS = ftp_mdtm($conn_id, $server_file);
+            if ($modifiedTS != -1) {
+                if ($modifiedTS >= strtotime($last_downloaded)) {
+                    $success = ftp_get($conn_id, $local_filename, $server_file, FTP_ASCII, 0);
+                    if (!$success) {
+                        ErrorCode::throwException(sprintf(__("FTP transport error at warehouse %s!"), $warehouse_id), ErrorCode::ErrorCodeBadRequest);
+                    }
+                }
+            }
+        } else {
+            ErrorCode::throwException(sprintf(__("FTP login error at warehouse %s!"), $warehouse_id), ErrorCode::ErrorCodeBadRequest);
+        }
+
+        // close the connection
+        ftp_close($conn_id);
+        return $success;
+    }
+
+    function downloadPerEmail ($hostname, $username, $password, $server_file, $local_file, $last_downloaded, $warehouse_id) {
+        set_time_limit(3000);
+        $success = false;
+
+        // open some file to write to
+        $path = Configure::read('system.import.stock.path');
+        GlbF::mkDir($path);
+        $local_filename = $path . '/' . $local_file;
+
+        $inbox = imap_open($hostname, $username, $password);
+        if (!$inbox) {
+            ErrorCode::throwException(sprintf(__("The emailbox %s can not be login!"), $warehouse_id), ErrorCode::Success);
+        }
+
+        if (!$last_downloaded) {
+            $last_downloaded = '2018-01-01 01:00:00';
+        }
+
+        $emails = imap_search($inbox,'SINCE "'.date('Y-m-d', strtotime($last_downloaded)).'"');
+
+        if($emails) {
+
+            $count = 1;
+
+            /* put the newest emails on top */
+            rsort($emails);
+
+            /* for every email... */
+            foreach ($emails as $email_number) {
+                /* get information specific to this email */
+                $overview = imap_fetch_overview($inbox, $email_number, 0);
+                if (!$overview) {
+                    continue;
+                }
+
+                $dateTS = intval($overview[0]->udate);
+                $last_downloadedTS = strtotime($last_downloaded);
+
+                if ($dateTS >= $last_downloadedTS) {
+                    /* get mail message */
+//                    $message = imap_fetchbody($inbox, $email_number, 2);
+
+                    /* get mail structure */
+                    $structure = imap_fetchstructure($inbox, $email_number);
+
+                    $attachments = array();
+
+                    /* if any attachments found... */
+                    if(isset($structure->parts) && count($structure->parts))
+                    {
+                        for($i = 0; $i < count($structure->parts); $i++)
+                        {
+                            $attachments[$i] = array(
+                                'is_attachment' => false,
+                                'filename' => '',
+                                'name' => '',
+                                'attachment' => ''
+                            );
+
+                            if($structure->parts[$i]->ifdparameters)
+                            {
+                                foreach($structure->parts[$i]->dparameters as $object)
+                                {
+                                    if(strtolower($object->attribute) == 'filename')
+                                    {
+                                        $attachments[$i]['is_attachment'] = true;
+                                        $attachments[$i]['filename'] = $object->value;
+                                    }
+
+                                    if(strtolower($object->attribute) == 'name')
+                                    {
+                                        $attachments[$i]['is_attachment'] = true;
+                                        $attachments[$i]['name'] = $object->value;
+                                    }
+                                }
+                            }
+
+                            if($attachments[$i]['is_attachment'])
+                            {
+                                $attachments[$i]['attachment'] = imap_fetchbody($inbox, $email_number, $i+1);
+
+                                /* 3 = BASE64 encoding */
+                                if($structure->parts[$i]->encoding == 3)
+                                {
+                                    $attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
+                                }
+                                /* 4 = QUOTED-PRINTABLE encoding */
+                                elseif($structure->parts[$i]->encoding == 4)
+                                {
+                                    $attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
+                                }
+                            }
+                        }
+                    }
+
+                    /* iterate through each attachment and save it */
+                    foreach($attachments as $attachment)
+                    {
+                        if($attachment['is_attachment'] == 1 && ($attachment['filename'] === $server_file || $attachment['name'] === $server_file))
+                        {
+                            $fp = fopen($local_filename, "w+");
+                            fwrite($fp, $attachment['attachment']);
+                            fclose($fp);
+                            $success = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        /* close the connection */
+        imap_close($inbox);
+
+        return $success;
+    }
+
+    function import ($warehouse_id) {
         $path = Configure::read('system.import.stock.path');
         $archivePath = $path . '/archive';
         GlbF::mkDir($archivePath);
 
-        $d = dir($path);
-        while (false !== ($entry = $d->read())) {
-            $file = $path . '/' . $entry;
-            if (is_dir($file)) continue;
-            switch ($entry) {
-                case 'ausgabe.csv':
-                    $this->importCsv($file, 'importLine1');
-                    break;
-                case 'bestaende.csv':
-                    $this->importCsv($file, 'importLine2');
-                    break;
+        $warehouse = $this->Warehouse->findById($warehouse_id);
+        if ($warehouse) {
+            $warehouse = $warehouse['Warehouse'];
+            $localfile = $path . '/' . $warehouse['local_file'];
+            if (is_file($localfile)) {
+                $now = date('Y-m-d H:i:s');
+                $now2 = date('Ymd_His');
+                switch ($warehouse['local_file']) {
+                    case '1.csv':
+                    case '2.csv':
+                        $this->importCsv($localfile, 'importLine1', $warehouse['id'], $now);
+                        break;
+                    case '3.csv':
+                        $this->importCsv($localfile, 'importLine3', $warehouse['id'], $now);
+                        break;
+                }
+
+                //
+                $this->Stock->updateAll(
+                    [
+                        'quantity' => 0,
+                        'next_receipt' => 0,
+                        'next_receipt_on' => null,
+                        'reserved' => 0,
+                        'imported' => '"' . $now . '"'
+                    ],
+                    [
+                        'warehouse_id' => $warehouse['id'],
+                        'imported < ' => $now
+                    ]
+                );
+
+                @rename($localfile, $archivePath . '/' . $warehouse['local_file'] . '_' . $now2);
+
+                $this->Warehouse->save([
+                    'id' => $warehouse['id'],
+                    'imported' => $now
+                ]);
             }
-            @rename($file, $archivePath . '/' . $entry . '_' . date('Ymd_his'));
         }
-        $d->close();
     }
 
-    function importCsv ($file, $fn) {
-
-        $now = date('Y-m-d H:i:s');
+    function importCsv ($file, $fn, $warehouse_id, $now) {
         if (($handle = fopen($file, "r")) !== FALSE) {
             $row = 0;
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $row++;
                 if ($row <= 1) continue;
-                $this->$fn($data, $now);
+                $this->$fn($data, $warehouse_id, $now);
             }
             fclose($handle);
         }
     }
 
-    function importLine1 ($data, $time) {
+    function importLine1 ($data, $warehouse_id, $time) {
+        $variation = $this->ItemsVariation->find('first', [
+            'fields' => [
+                'ItemsVariation.item_id',
+                'ItemsVariation.extern_id'
+            ],
+            'joins' => [
+                [
+                    'table' => Inflector::tableize('ItemsVariationsBarcode'),
+                    'alias' => 'ItemsVariationsBarcode',
+                    'conditions' => array(
+                        'ItemsVariation.extern_id = ItemsVariationsBarcode.variation_id',
+                        'ItemsVariationsBarcode.barcode_type_id' => 1
+                    ),
+                    'type' => 'inner'
+                ]
+            ],
+            'conditions' => [
+                'ItemsVariationsBarcode.code' => $data[1]
+            ]
+        ]);
+
+        $saveData = [
+            'warehouse_id' => $warehouse_id,
+            'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
+            'variation_id' =>($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
+            'ean' => $data[1],
+            'quantity' => $data[6],
+            'be_down' => $this->__getBoolean($data[5]),
+            'next_receipt' => $data[7],
+            'next_receipt_on' => $this->__getDate($data[8]),
+            'imported' => $time
+        ];
+
+        $stock = $this->Stock->find('first', [
+            'fields' => 'id',
+            'conditions' => [
+                'ean' => $data[1]
+            ]
+        ]);
+        if ($stock) {
+            $saveData['id'] = $stock['Stock']['id'];
+        } else {
+            $this->Stock->create();
+        }
+
+        $this->Stock->save($saveData);
+    }
+
+    function importLine3 ($data, $warehouse_id, $time) {
         $variation = $this->ItemsVariation->findByNumber($data[0]);
         //if (!$variation) return;
 
         $saveData = [
-            'warehouse_id' => '1',
+            'warehouse_id' => $warehouse_id,
             'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
             'variation_id' => ($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
             'number' => $data[0],
@@ -70,104 +318,6 @@ class ImportStockController extends AppController
             'fields' => 'id',
             'conditions' => [
                 'number' => $data[0]
-            ]
-        ]);
-        if ($stock) {
-            $saveData['id'] = $stock['Stock']['id'];
-        } else {
-            $this->Stock->create();
-        }
-
-        $this->Stock->save($saveData);
-    }
-
-    function importLine2 ($data, $time) {
-        $variation = $this->ItemsVariation->find('first', [
-            'fields' => [
-                'ItemsVariation.item_id',
-                'ItemsVariation.extern_id'
-            ],
-            'joins' => [
-                [
-                    'table' => Inflector::tableize('ItemsVariationsBarcode'),
-                    'alias' => 'ItemsVariationsBarcode',
-                    'conditions' => array(
-                        'ItemsVariation.extern_id = ItemsVariationsBarcode.variation_id',
-                        'ItemsVariationsBarcode.barcode_type_id' => 1
-                    ),
-                    'type' => 'inner'
-                ]
-            ],
-            'conditions' => [
-                'ItemsVariationsBarcode.code' => $data[1]
-            ]
-        ]);
-
-        $saveData = [
-            'warehouse_id' => '2',
-            'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
-            'variation_id' =>($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
-            'ean' => $data[1],
-            'quantity' => $data[6],
-            'be_down' => $this->__getBoolean($data[5]),
-            'next_receipt' => $data[7],
-            'next_receipt_on' => $this->__getDate($data[8]),
-            'imported' => $time
-        ];
-
-        $stock = $this->Stock->find('first', [
-            'fields' => 'id',
-            'conditions' => [
-                'ean' => $data[1]
-            ]
-        ]);
-        if ($stock) {
-            $saveData['id'] = $stock['Stock']['id'];
-        } else {
-            $this->Stock->create();
-        }
-
-        $this->Stock->save($saveData);
-    }
-
-    function importLine3 ($data, $time) {
-        $variation = $this->ItemsVariation->find('first', [
-            'fields' => [
-                'ItemsVariation.item_id',
-                'ItemsVariation.extern_id'
-            ],
-            'joins' => [
-                [
-                    'table' => Inflector::tableize('ItemsVariationsBarcode'),
-                    'alias' => 'ItemsVariationsBarcode',
-                    'conditions' => array(
-                        'ItemsVariation.extern_id = ItemsVariationsBarcode.variation_id',
-                        'ItemsVariationsBarcode.barcode_type_id' => 1
-                    ),
-                    'type' => 'inner'
-                ]
-            ],
-            'conditions' => [
-                'ItemsVariationsBarcode.code' => $data[1]
-            ]
-        ]);
-
-        $saveData = [
-            'warehouse_id' => '3',
-            'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
-            'variation_id' =>($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
-            'ean' => $data[1],
-            'quantity' => $data[6],
-            'be_down' => $this->__getBoolean($data[5]),
-            'next_receipt' => $data[7],
-            'next_receipt_on' => $this->__getDate($data[8]),
-            'imported' => $time
-        ];
-
-        $stock = $this->Stock->find('first', [
-            'fields' => 'id',
-            'conditions' => [
-                'ean' => $data[1]
             ]
         ]);
         if ($stock) {
