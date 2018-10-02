@@ -44,7 +44,7 @@ class ImportController extends AppController
     function getIpLocation () {
         $id = $this->request->data['id'];
         $import = $this->Import->findById($id);
-        $url = "https://ipstack.com/ipstack_api.php?ip=" . $import['Import']['id'];
+        $url = "https://ipstack.com/ipstack_api.php?ip=" . $import['Import']['ip'];
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

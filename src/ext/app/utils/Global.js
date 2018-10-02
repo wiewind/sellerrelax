@@ -359,7 +359,7 @@ Ext.define('SRX.utils.Global', {
             },
             success: function () {
                 Glb.common.unmask();
-                var grid = Ext.ComponentQuery.query('settingsrobotsgrid');
+                var grid = Ext.ComponentQuery.query('importrobotsgrid');
                 if (grid) {
                     grid[0].getStore().reload();
                 }
