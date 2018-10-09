@@ -14,7 +14,8 @@ class ImportStockController extends AppController
         'ItemsVariation',
         'ItemsVariationsBarcode',
         'BarcodeType',
-        'Warehouse'
+        'Warehouse',
+        'StockHistory'
     ];
 
     function download ($warehouse_id) {
@@ -58,11 +59,15 @@ class ImportStockController extends AppController
         if (ftp_login($conn_id, $username, $password) && ftp_pasv($conn_id, true)) {
             $modifiedTS = ftp_mdtm($conn_id, $server_file);
             if ($modifiedTS != -1) {
-                if ($modifiedTS >= strtotime($last_downloaded)) {
+                if ($last_downloaded<=0 || $modifiedTS >= strtotime($last_downloaded)) {
                     $success = ftp_get($conn_id, $local_filename, $server_file, FTP_ASCII, 0);
                     if (!$success) {
                         ErrorCode::throwException(sprintf(__("FTP transport error at warehouse %s!"), $warehouse_id), ErrorCode::ErrorCodeBadRequest);
                     }
+                    $this->Warehouse->save([
+                        'id' => $warehouse_id,
+                        'fdate' => date('Y-m-d H:i:s', $modifiedTS)
+                    ]);
                 }
             }
         } else {
@@ -112,7 +117,7 @@ class ImportStockController extends AppController
                 $dateTS = intval($overview[0]->udate);
                 $last_downloadedTS = strtotime($last_downloaded);
 
-                if ($dateTS >= $last_downloadedTS) {
+                if ($last_downloaded<=0 || $dateTS >= $last_downloadedTS) {
                     /* get mail message */
 //                    $message = imap_fetchbody($inbox, $email_number, 2);
 
@@ -178,6 +183,11 @@ class ImportStockController extends AppController
                             fwrite($fp, $attachment['attachment']);
                             fclose($fp);
                             $success = true;
+
+                            $this->Warehouse->save([
+                                'id' => $warehouse_id,
+                                'fdate' => date('Y-m-d H:i:s', $dateTS)
+                            ]);
                             break;
                         }
                     }
@@ -207,27 +217,35 @@ class ImportStockController extends AppController
                 switch ($warehouse['local_file']) {
                     case '1.csv':
                     case '2.csv':
-                        $this->importCsv($localfile, 'importLine1', $warehouse['id'], $now);
+                        $this->importCsv($localfile, 'importLine1', $warehouse['id'], $warehouse['fdate'], $now);
                         break;
                     case '3.csv':
-                        $this->importCsv($localfile, 'importLine3', $warehouse['id'], $now);
+                        $this->importCsv($localfile, 'importLine3', $warehouse['id'], $warehouse['fdate'], $now);
                         break;
                 }
 
-                //
-                $this->Stock->updateAll(
-                    [
-                        'quantity' => 0,
-                        'next_receipt' => 0,
-                        'next_receipt_on' => null,
-                        'reserved' => 0,
-                        'imported' => '"' . $now . '"'
-                    ],
-                    [
+                // set all other stock 0
+                $others = $this->Stock->find('all', [
+                    'conditions' => [
                         'warehouse_id' => $warehouse['id'],
+                        'quantity > ' => 0,
                         'imported < ' => $now
                     ]
-                );
+                ]);
+
+                if ($others) {
+                    foreach ($others as $stock) {
+                        $this->saveToHistory($stock, $now);
+                        $stock['Stock'] = array_merge($stock['Stock'], [
+                            'quantity' => 0,
+                            'next_receipt' => 0,
+                            'next_receipt_on' => null,
+                            'reserved' => 0,
+                            'imported' => $now
+                        ]);
+                        $this->Stock->save($stock['Stock']);
+                    }
+                }
 
                 @rename($localfile, $archivePath . '/' . $warehouse['local_file'] . '_' . $now2);
 
@@ -239,19 +257,19 @@ class ImportStockController extends AppController
         }
     }
 
-    function importCsv ($file, $fn, $warehouse_id, $now) {
+    function importCsv ($file, $fn, $warehouse_id, $fdate, $now) {
         if (($handle = fopen($file, "r")) !== FALSE) {
             $row = 0;
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $row++;
                 if ($row <= 1) continue;
-                $this->$fn($data, $warehouse_id, $now);
+                $this->$fn($data, $warehouse_id, $fdate, $now);
             }
             fclose($handle);
         }
     }
 
-    function importLine1 ($data, $warehouse_id, $time) {
+    function importLine1 ($data, $warehouse_id, $fdate, $time) {
         $variation = $this->ItemsVariation->find('first', [
             'fields' => [
                 'ItemsVariation.item_id',
@@ -282,17 +300,21 @@ class ImportStockController extends AppController
             'be_down' => $this->__getBoolean($data[5]),
             'next_receipt' => $data[7],
             'next_receipt_on' => $this->__getDate($data[8]),
+            'fdate' => $fdate,
             'imported' => $time
         ];
 
         $stock = $this->Stock->find('first', [
-            'fields' => 'id',
             'conditions' => [
-                'ean' => $data[1]
+                'ean' => $data[1],
+                'warehouse_id' => $warehouse_id
             ]
         ]);
         if ($stock) {
             $saveData['id'] = $stock['Stock']['id'];
+
+            //save history
+            $this->saveToHistory($stock, $time);
         } else {
             $this->Stock->create();
         }
@@ -300,7 +322,7 @@ class ImportStockController extends AppController
         $this->Stock->save($saveData);
     }
 
-    function importLine3 ($data, $warehouse_id, $time) {
+    function importLine3 ($data, $warehouse_id, $fdate, $time) {
         $variation = $this->ItemsVariation->findByNumber($data[0]);
         //if (!$variation) return;
 
@@ -311,17 +333,21 @@ class ImportStockController extends AppController
             'number' => $data[0],
             'quantity' => $data[2],
             'reserved' => $data[3],
+            'fdate' => $fdate,
             'imported' => $time
         ];
 
         $stock = $this->Stock->find('first', [
-            'fields' => 'id',
             'conditions' => [
-                'number' => $data[0]
+                'number' => $data[0],
+                'warehouse_id' => $warehouse_id
             ]
         ]);
         if ($stock) {
             $saveData['id'] = $stock['Stock']['id'];
+
+            //save history
+            $this->saveToHistory($stock, $time);
         } else {
             $this->Stock->create();
         }
@@ -338,5 +364,29 @@ class ImportStockController extends AppController
         if (!$data) return;
         list($d, $m, $y) = explode('.', $data);
         return "$y-$m-$d";
+    }
+
+    public function saveToHistory ($stock, $deletedAt = false) {
+        if (!$deletedAt) {
+            $deletedAt = date('Y-m-d H:i:s');
+        }
+        $history = [
+            'stock_id' => $stock['Stock']['id'],
+            'number' => $stock['Stock']['number'],
+            'ean' => $stock['Stock']['ean'],
+            'warehouse_id' => $stock['Stock']['warehouse_id'],
+            'item_id' => $stock['Stock']['item_id'],
+            'variation_id' => $stock['Stock']['variation_id'],
+            'be_down' => $stock['Stock']['be_down'],
+            'quantity' => $stock['Stock']['quantity'],
+            'next_receipt' => $stock['Stock']['next_receipt'],
+            'next_receipt_on' => $stock['Stock']['next_receipt_on'],
+            'reserved' => $stock['Stock']['reserved'],
+            'fdate' => $stock['Stock']['fdate'],
+            'imported' => $stock['Stock']['imported'],
+            'deleted' => $deletedAt,
+        ];
+        $this->StockHistory->create();
+        $this->StockHistory->save($history);
     }
 }
