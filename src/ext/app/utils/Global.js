@@ -93,6 +93,7 @@ Ext.define('SRX.utils.Global', {
             if (('failure' in config)) config.failure(response, options);
         };
         options.callback = function (options, success, response) {
+            Glb.common.unmask();
             if (('callback' in config)) config.callback(options, success, response);
         };
 

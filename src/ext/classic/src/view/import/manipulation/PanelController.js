@@ -28,6 +28,8 @@ Ext.define('SRX.view.import.manipulation.PanelController', {
         ABox.confirm(
             T.__('All items will be removed and the data re-imported. Are you sure you want to do this?'),
             function () {
+                Glb.common.mask();
+                timeout: 300000,
                 Glb.Ajax({
                     url: Cake.api.path + '/rest/import/transjson/importItemsAll',
                     success: function (response, options) {
@@ -42,8 +44,10 @@ Ext.define('SRX.view.import.manipulation.PanelController', {
         ABox.confirm(
             T.__('All variations will be removed and the data re-imported. Are you sure you want to do this?'),
             function () {
+                Glb.common.mask();
                 Glb.Ajax({
                     url: Cake.api.path + '/rest/import/transjson/importVariationsAll',
+                    timeout: 300000,
                     success: function (response, options) {
                         ABox.info(T.__('Variations have been updated!'));
                     }

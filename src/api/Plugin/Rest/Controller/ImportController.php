@@ -83,7 +83,7 @@ class ImportController extends AppController
             'from' => $update_from,
             'to' => $update_to,
             'page' => $page,
-            'install' => $update_from <= 0
+            'install' => ($update_from <= 0)
         ];
     }
 
@@ -692,6 +692,9 @@ class ImportController extends AppController
 
     function importItemsAll () {
         $sum = 0;
+        $this->Item->query('TRUNCATE TABLE items;');
+        $this->Item->query('TRUNCATE TABLE items_variations;');
+        $this->Item->query('TRUNCATE TABLE items_variations_barcodes;');
         do {
             $data = $this->importItems();
             $sum += $data['menge'];
@@ -701,6 +704,8 @@ class ImportController extends AppController
 
     function importVariationsAll () {
         $sum = 0;
+        $this->Item->query('TRUNCATE TABLE items_variations;');
+        $this->Item->query('TRUNCATE TABLE items_variations_barcodes;');
         do {
             $data = $this->importVariations();
             $sum += $data['menge'];
