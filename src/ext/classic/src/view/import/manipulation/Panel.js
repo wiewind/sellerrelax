@@ -99,6 +99,61 @@ Ext.define('SRX.view.import.manipulation.Panel', {
                     handler: 'onImportVariations'
                 }
             ]
+        },
+        {
+            xtype: 'panel',
+            title: T.__('Stock managment'),
+            width: '100%',
+            border: 1,
+            layout: 'vbox',
+            // collapsed: true,
+            bodyPadding: 10,
+            items: [
+                {
+                    xtype: 'button',
+                    text: T.__('Import together'),
+                    handler: 'onImportAllWarehouses'
+                },
+                {
+                    xtype: 'container',
+                    layout: 'vbox',
+                    hidden: true,
+                    items: [
+                        {
+                            html: '<B>' + T.__('Import separately') + ': </B>'
+                        },
+                        {
+                            xtype: 'container',
+                            layout: 'hbox',
+                            defaults: {
+                                margin: '0 20 0 0'
+                            },
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    text: T.__('Warehouses'),
+                                    handler: 'onImportWarehouses'
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: T.__('Dimensions'),
+                                    handler: 'onImportDimensions'
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: T.__('Levels'),
+                                    handler: 'onImportlevels'
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: T.__('Locations'),
+                                    handler: 'onImportLocations'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 });

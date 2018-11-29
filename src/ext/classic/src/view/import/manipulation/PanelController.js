@@ -54,5 +54,37 @@ Ext.define('SRX.view.import.manipulation.PanelController', {
                 });
             }
         );
+    },
+
+    onImportAllWarehouses: function () {
+        ABox.confirm(
+            T.__('All warehouses (inc. dimensions, levels and locations) will be removed and the data re-imported. Are you sure you want to do this?'),
+            function () {
+                Glb.common.mask();
+                Glb.Ajax({
+                    url: Cake.api.path + '/rest/StockManagement/transjson/renewAllWarehouses',
+                    timeout: 300000,
+                    success: function (response, options) {
+                        ABox.info(T.__('All warehouses have been updated!'));
+                    }
+                });
+            }
+        );
+    },
+
+    onImportWarehouses: function () {
+
+    },
+
+    onImportDimensions: function () {
+
+    },
+
+    onImportlevels: function () {
+
+    },
+
+    onImportLocations: function () {
+
     }
 });

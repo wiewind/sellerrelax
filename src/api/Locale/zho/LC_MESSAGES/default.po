@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-09-28 14:31+0200\n"
+"POT-Creation-Date: 2018-11-26 15:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;___;T.__\n"
 "X-Poedit-Basepath: ../../../..\n"
@@ -23,6 +23,40 @@ msgstr ""
 #: api/Controller/Component/LoginComponent.php:24
 msgid "Invalid username or password, please try again."
 msgstr "用户名或密码不正确，请重试。"
+
+#: api/Controller/ImportController.php:116
+msgid "All"
+msgstr "全部"
+
+#: api/Controller/ImportStockController.php:40
+#, php-format
+msgid "Successfully written to %s!"
+msgstr "已成功写入 %s!"
+
+#: api/Controller/ImportStockController.php:41
+#, php-format
+msgid "There are not new file for warehouse %s!"
+msgstr "仓库%s没有新文件！"
+
+#: api/Controller/ImportStockController.php:55
+#, php-format
+msgid "FTP connect error at warehouse %s!"
+msgstr "仓库%s的FTP服务器出现连接错误！"
+
+#: api/Controller/ImportStockController.php:65
+#, php-format
+msgid "FTP transport error at warehouse %s!"
+msgstr "仓库%s出现传输错误！"
+
+#: api/Controller/ImportStockController.php:74
+#, php-format
+msgid "FTP login error at warehouse %s!"
+msgstr "仓库%s出现登录错误！"
+
+#: api/Controller/ImportStockController.php:93
+#, php-format
+msgid "The emailbox %s can not be login!"
+msgstr "信箱%s无法正常登录！"
 
 #: api/Lib/ErrorCode.php:18 ext/app/ux/AMessageBox.js:44
 msgid "Success"
@@ -133,7 +167,7 @@ msgid "The new version is online!"
 msgstr "新版本已经上线！"
 
 #: ext/app/store/Base.js:28 ext/app/utils/Global.js:75
-#: ext/app/utils/Global.js:122
+#: ext/app/utils/Global.js:123
 msgid "Unknown"
 msgstr "未知"
 
@@ -205,7 +239,7 @@ msgstr "刷新"
 msgid "Print"
 msgstr "打印"
 
-#: ext/app/utils/Global.js:49 ext/app/utils/Global.js:162
+#: ext/app/utils/Global.js:49 ext/app/utils/Global.js:163
 #: ext/classic/src/view/settings/MainPanelController.js:10
 msgid "Please wait..."
 msgstr "请稍候……"
@@ -242,55 +276,55 @@ msgstr "两星期"
 msgid "loading..."
 msgstr "加载中……"
 
-#: ext/app/utils/Global.js:92 ext/app/utils/Global.js:135
+#: ext/app/utils/Global.js:92 ext/app/utils/Global.js:136
 msgid "Server Error"
 msgstr "服务器错误"
 
-#: ext/app/utils/Global.js:193
+#: ext/app/utils/Global.js:194
 msgid "January"
 msgstr "一月"
 
-#: ext/app/utils/Global.js:193
+#: ext/app/utils/Global.js:194
 msgid "February"
 msgstr "二月"
 
-#: ext/app/utils/Global.js:193
+#: ext/app/utils/Global.js:194
 msgid "March"
 msgstr "三月"
 
-#: ext/app/utils/Global.js:193
+#: ext/app/utils/Global.js:194
 msgid "April"
 msgstr "四月"
 
-#: ext/app/utils/Global.js:193
+#: ext/app/utils/Global.js:194
 msgid "May"
 msgstr "五月"
 
-#: ext/app/utils/Global.js:193
+#: ext/app/utils/Global.js:194
 msgid "June"
 msgstr "六月"
 
-#: ext/app/utils/Global.js:194
+#: ext/app/utils/Global.js:195
 msgid "July"
 msgstr "七月"
 
-#: ext/app/utils/Global.js:194
+#: ext/app/utils/Global.js:195
 msgid "August"
 msgstr "八月"
 
-#: ext/app/utils/Global.js:194
+#: ext/app/utils/Global.js:195
 msgid "September"
 msgstr "九月"
 
-#: ext/app/utils/Global.js:194
+#: ext/app/utils/Global.js:195
 msgid "October"
 msgstr "十月"
 
-#: ext/app/utils/Global.js:194
+#: ext/app/utils/Global.js:195
 msgid "November"
 msgstr "十一月"
 
-#: ext/app/utils/Global.js:194
+#: ext/app/utils/Global.js:195
 msgid "December"
 msgstr "十二月"
 
@@ -595,6 +629,34 @@ msgstr "导入商品原型"
 msgid "Import Variations"
 msgstr "导入商品细类"
 
+#: ext/classic/src/view/import/manipulation/Panel.js:105
+msgid "Stock managment"
+msgstr "库存管理"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:114
+msgid "Import together"
+msgstr "统一导入"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:123
+msgid "Import separately"
+msgstr "分别导入"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:134
+msgid "Warehouses"
+msgstr "仓库"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:139
+msgid "Dimensions"
+msgstr "坐标"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:144
+msgid "Levels"
+msgstr "层"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:149
+msgid "Locations"
+msgstr "区域"
+
 #: ext/classic/src/view/import/manipulation/PanelController.js:10
 msgid "Import erledigt!"
 msgstr "导入完成！"
@@ -613,19 +675,30 @@ msgid ""
 "do this?"
 msgstr "清空全部商品并重新导入。您确信要这样做吗？"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:34
+#: ext/classic/src/view/import/manipulation/PanelController.js:36
 msgid "Items have been updated!"
 msgstr "商品更新完毕！"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:43
+#: ext/classic/src/view/import/manipulation/PanelController.js:45
 msgid ""
 "All variations will be removed and the data re-imported. Are you sure you "
 "want to do this?"
 msgstr "清空全部商品细类并重新导入。您确信要这样做吗？"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:48
+#: ext/classic/src/view/import/manipulation/PanelController.js:52
 msgid "Variations have been updated!"
 msgstr "商品细类更新完毕！"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:61
+msgid ""
+"All warehouses (inc. dimensions, levels and locations) will be removed and "
+"the data re-imported. Are you sure you want to do this?"
+msgstr ""
+"所有仓库（包括坐标，层和区域）信息将被删除并重新导入。您确定要这么做吗？"
+
+#: ext/classic/src/view/import/manipulation/PanelController.js:68
+msgid "All warehouses have been updated!"
+msgstr "所有仓库信息更新完毕！"
 
 #: ext/classic/src/view/import/robots/Grid.js:35
 msgid "Time"
@@ -648,60 +721,65 @@ msgid "URL"
 msgstr "URL"
 
 #: ext/classic/src/view/import/tracking/Grid.js:34
+#: ext/classic/src/view/import/tracking/Grid.js:130
+msgid "Type"
+msgstr "类别"
+
+#: ext/classic/src/view/import/tracking/Grid.js:66
 msgid "Date"
 msgstr "日期"
 
-#: ext/classic/src/view/import/tracking/Grid.js:47
+#: ext/classic/src/view/import/tracking/Grid.js:79
 msgid " - "
 msgstr " - "
 
-#: ext/classic/src/view/import/tracking/Grid.js:64
+#: ext/classic/src/view/import/tracking/Grid.js:96
 msgid "realy import"
 msgstr "真实导入"
 
-#: ext/classic/src/view/import/tracking/Grid.js:76
+#: ext/classic/src/view/import/tracking/Grid.js:108
 msgid "ID"
 msgstr "ID"
 
-#: ext/classic/src/view/import/tracking/Grid.js:82
+#: ext/classic/src/view/import/tracking/Grid.js:114
 msgid "Beginn"
 msgstr "开始"
 
-#: ext/classic/src/view/import/tracking/Grid.js:90
+#: ext/classic/src/view/import/tracking/Grid.js:122
 msgid "End"
 msgstr "完毕"
 
-#: ext/classic/src/view/import/tracking/Grid.js:98
+#: ext/classic/src/view/import/tracking/Grid.js:135
 msgid "Plenty Updated"
 msgstr "Plenty更新时间"
 
-#: ext/classic/src/view/import/tracking/Grid.js:105
+#: ext/classic/src/view/import/tracking/Grid.js:142
 #, javascript-format
 msgid "before %s"
 msgstr "%s之前"
 
-#: ext/classic/src/view/import/tracking/Grid.js:108
+#: ext/classic/src/view/import/tracking/Grid.js:145
 #, javascript-format
 msgid "from %s"
 msgstr "从%s开始"
 
-#: ext/classic/src/view/import/tracking/Grid.js:115
+#: ext/classic/src/view/import/tracking/Grid.js:152
 msgid "Page"
 msgstr "页码"
 
-#: ext/classic/src/view/import/tracking/Grid.js:121
+#: ext/classic/src/view/import/tracking/Grid.js:158
 msgid "Last Page"
 msgstr "最后的页码"
 
-#: ext/classic/src/view/import/tracking/Grid.js:128
+#: ext/classic/src/view/import/tracking/Grid.js:165
 msgid "Total"
 msgstr "总共"
 
-#: ext/classic/src/view/import/tracking/Grid.js:134
+#: ext/classic/src/view/import/tracking/Grid.js:171
 msgid "Quantity"
 msgstr "数量"
 
-#: ext/classic/src/view/import/tracking/Grid.js:140
+#: ext/classic/src/view/import/tracking/Grid.js:177
 msgid "Errors"
 msgstr "错误"
 

@@ -31,6 +31,38 @@ Ext.define('SRX.view.import.tracking.Grid', {
     },
 
     tbar: [
+        T.__('Type') + ':',
+        {
+            xtype: 'combo',
+            name: 'type',
+            store: Ext.create('Ext.data.Store', {
+                fields: ['type', 'display'],
+                autoLoad: true,
+                proxy: {
+                    type: 'ajax',
+                    url: Cake.api.path + '/import/json/listTypes',
+                    // actionMethods: {
+                    //     read: 'POST'
+                    // },
+                    reader: {
+                        type: 'json',
+                        rootProperty: 'data'
+                    }
+                }
+            }),
+            width: 100,
+            queryMode: 'local',
+            displayField: 'display',
+            valueField: 'type',
+            bind: {
+                value: '{type}'
+            },
+            editable: false,
+            forceSelection: true,
+            listeners: {
+                change: 'onChangeFilter'
+            }
+        },
         T.__('Date') + ': ',
         {
             xtype: 'datefield',
@@ -93,6 +125,11 @@ Ext.define('SRX.view.import.tracking.Grid', {
             renderer: function (date) {
                 return Glb.Date.displayDateFromString(date, ' H:i:s');
             }
+        },
+        {
+            text: T.__("Type"),
+            dataIndex: 'type',
+            width: 100
         },
         {
             text: T.__("Plenty Updated"),

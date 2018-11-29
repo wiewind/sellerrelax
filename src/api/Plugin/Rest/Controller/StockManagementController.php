@@ -151,12 +151,21 @@ class StockManagementController extends RestAppController
         $this->SmLocationStock->save($oData);
     }
 
+    function renewAllWarehouses () {
+        $this->Item->query('TRUNCATE TABLE sm_warehouses;');
+        $this->Item->query('TRUNCATE TABLE sm_dimensions;');
+        $this->Item->query('TRUNCATE TABLE sm_levels;');
+        $this->Item->query('TRUNCATE TABLE sm_locations;');
+        $this->importWarehouses(true);
+    }
 
-    function importWarehouses () {
+
+    function importWarehouses ($deepImport=false) {
         $this->autoRender = false;
         $now = date('Y-m-d H:i:s');
 
         CakeLog::write('import',  "Import warehouses beginn...");
+        ini_set("memory_limit","1024M");
 
         $url = $this->restAdress['warehouses'];
         $data = $this->Rest->callAPI('GET', $url);
@@ -168,7 +177,7 @@ class StockManagementController extends RestAppController
             $dataSource = $this->SmWarehouse->getDataSource();
             $dataSource->begin();
             try {
-                $this->__doImportWarehouseData($item, $now);
+                $this->__doImportWarehouseData($item, $now, $deepImport);
                 $dataSource->commit();
             } catch (Exception $e) {
                 $dataSource->rollback();
@@ -190,7 +199,7 @@ class StockManagementController extends RestAppController
         CakeLog::write('import', "Import warehouses end with " . count($data) . " record(s)!");
     }
 
-    private function __doImportWarehouseData ($data, $now="") {
+    private function __doImportWarehouseData ($data, $now="", $deepImport=false) {
         if (!$now) $now = date('Y-m-d H:i:s');
 
         $address = $data->address;
@@ -246,9 +255,11 @@ class StockManagementController extends RestAppController
 
         $this->SmWarehouse->save($savedata);
 
-        $this->importLocations($savedata['extern_id']);
-        $this->importDimensions($savedata['extern_id']);
-        $this->importLevels($savedata['extern_id']);
+        if ($deepImport) {
+            $this->importLocations($savedata['extern_id']);
+            $this->importDimensions($savedata['extern_id']);
+            $this->importLevels($savedata['extern_id']);
+        }
     }
 
     function importLocations ($warehouseId, $page=1) {

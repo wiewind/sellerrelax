@@ -72,7 +72,10 @@ class ImportController extends AppController
     function getImports () {
         $this->checkLogin();
         $params = $this->request->data;
-        $conditions = ['type' => 'orders'];
+
+        if ($params['type'] !== 'all') {
+            $conditions = ['type' => $params['type']];
+        }
         if (isset($params['from']) && $params['from']) {
             $conditions['update_from >= '] = $params['from'] . ' 00:00:00';
         }
@@ -80,7 +83,6 @@ class ImportController extends AppController
             $conditions['update_to <= '] = $params['to'] . ' 23:59:59';
         }
         if (isset($params['hasMenge']) && $params['hasMenge'] === 'true') {
-            $conditions['menge > '] = 0;
             $conditions['menge > '] = 0;
         }
 
@@ -98,6 +100,35 @@ class ImportController extends AppController
         return [
             'total' => $total,
             'data' => $data
+        ];
+    }
+
+    function listTypes () {
+        $this->checkLogin();
+        $data = $this->Import->find('all', [
+            'fields' => 'type',
+            'group' => 'type',
+            'sort' => 'type'
+        ]);
+        $res = [
+            [
+                'type' => 'all',
+                'display' => __('All')
+            ]
+        ];
+        $total = 1;
+        if ($data) {
+            $total = count($data) + 1;
+            foreach ($data as $d) {
+                $res[] = [
+                    'type' => $d['Import']['type'],
+                    'display' => $d['Import']['type']
+                ];
+            }
+        }
+        return [
+            'data' => $res,
+            'total' => $total
         ];
     }
 }
