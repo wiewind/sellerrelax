@@ -29,7 +29,7 @@ class ChartController extends AppController
         }
 
         $options = [
-            fields => [
+            'fields' => [
                 $dateFormat . ' as date',
                 'count(id) as sum'
             ],
@@ -77,7 +77,7 @@ class ChartController extends AppController
         }
 
         $options = [
-            fields => [
+            'fields' => [
                 $dateFormat . ' as date',
                 'ROUND(sum(' . $sumField . ' / (IF(exchange_rate>0, exchange_rate, 1))), 2) as sum'
             ],
@@ -131,7 +131,7 @@ class ChartController extends AppController
         }
 
         $options = [
-            fields => [
+            'fields' => [
                 'date_format(enty_date, "%Y-%m") as date',
                 'ROUND(sum(' . $sumField . ' / (IF(exchange_rate>0, exchange_rate, 1))), 2) as sum'
             ],

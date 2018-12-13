@@ -25,7 +25,22 @@ class RestAppController extends AppController
         'SmLocation',
         'SmDimension',
         'SmLevel',
-        'SmLocationStock'
+        'SmLocationStock',
+
+        'Address',
+        'Account',
+        'AccountsContact',
+        'Contact',
+        'ContactClass',
+        'ContactOptionType',
+        'ContactOptionSubType',
+        'ContactPosition',
+        'ContactType',
+        'AddressRelationType',
+        'AddressOptionType',
+        'ContactOption',
+        'AddressOption',
+        'ContactAddress'
     ];
 
     var $components = ['MySession', 'MyCookie', 'Rest'];
@@ -90,5 +105,33 @@ class RestAppController extends AppController
             'page' => $page,
             'install' => ($update_from <= 0)
         ];
+    }
+
+    function sendRestError ($err, $url, $importId=0) {
+        $Email = new CakeEmail();
+        $Email->from(Configure::read('system.admin.frommail'));
+        $Email->to(Configure::read('system.dev.email'));
+
+        $Email->subject("Rest Fehler!");
+        $Email->emailFormat('html');
+        $Email->template('resterror');
+
+        if (isset($err->message)) {
+            $err = $err->message;
+        } else {
+            $err = "unknown error";
+        }
+        $Email->viewVars(array(
+            'url' => $url,
+            'err' =>$err
+        ));
+        $Email->send();
+
+        if ($importId > 0) {
+            $this->Import->save([
+                'id' => $importId,
+                'errors' => "['".$err."']"
+            ]);
+        }
     }
 }

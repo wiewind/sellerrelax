@@ -54,10 +54,12 @@ class GlbF {
 	}
 
 	public static function date2Iso ($str_date) {
+        if (!$str_date) return null;
         return date('c', strtotime($str_date));
     }
 
     public static function iso2Date ($str_date) {
+        if (!$str_date) return null;
         return date('Y-m-d H:i:s', strtotime($str_date));
     }
 

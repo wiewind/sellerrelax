@@ -295,6 +295,7 @@ class ImportStockController extends AppController
             'warehouse_id' => $warehouse_id,
             'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
             'variation_id' =>($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
+            'number' => $data[0],
             'ean' => $data[1],
             'quantity' => $data[6],
             'be_down' => $this->__getBoolean($data[5]),
@@ -324,7 +325,6 @@ class ImportStockController extends AppController
 
     function importLine3 ($data, $warehouse_id, $fdate, $time) {
         $variation = $this->ItemsVariation->findByNumber($data[0]);
-        //if (!$variation) return;
 
         $saveData = [
             'warehouse_id' => $warehouse_id,
@@ -356,7 +356,9 @@ class ImportStockController extends AppController
     }
 
     private function __getBoolean ($data) {
-        if (in_array(strtolower($data), ['1', 1, 'j', 'ja', 'y', 'yes', 'ok', 'on', 'true', true])) return 1;
+        if ($data === true) return 1;
+        if ($data === 1) return 1;
+        if (in_array(strtolower($data), ['1', 'j', 'ja', 'y', 'yes', 'ok', 'on', 'true'])) return 1;
         return 0;
     }
 

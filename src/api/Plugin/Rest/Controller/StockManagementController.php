@@ -74,6 +74,10 @@ class StockManagementController extends RestAppController
         $data = $this->Rest->callAPI('GET', $url, $params);
 
         $data = json_decode($data);
+        if (isset($data->error)) {
+            $this->sendRestError($data->error, $url, $saveImportId);
+            ErrorCode::throwException($data->error->message);
+        }
 
         $items = $data->entries;
 
@@ -171,6 +175,10 @@ class StockManagementController extends RestAppController
         $data = $this->Rest->callAPI('GET', $url);
 
         $data = json_decode($data);
+        if (isset($data->error)) {
+            $this->sendRestError($data->error, $url);
+            ErrorCode::throwException($data->error->message);
+        }
 
         $errors = [];
         foreach ($data as $item) {
@@ -275,6 +283,11 @@ class StockManagementController extends RestAppController
         $data = $this->Rest->callAPI('GET', $url, $params);
 
         $data = json_decode($data);
+        if (isset($data->error)) {
+            $this->sendRestError($data->error, $url);
+            ErrorCode::throwException($data->error->message);
+        }
+
         $errors = [];
         foreach ($data->entries as $item) {
             $dataSource = $this->SmLocation->getDataSource();
@@ -347,6 +360,10 @@ class StockManagementController extends RestAppController
 
 
         $data = json_decode($data);
+        if (isset($data->error)) {
+            $this->sendRestError($data->error, $url);
+            ErrorCode::throwException($data->error->message);
+        }
         $errors = [];
 
         foreach ($data as $item) {
@@ -413,6 +430,10 @@ class StockManagementController extends RestAppController
         $data = $this->Rest->callAPI('GET', $url, $params);
 
         $data = json_decode($data);
+        if (isset($data->error)) {
+            $this->sendRestError($data->error, $url);
+            ErrorCode::throwException($data->error->message);
+        }
         $errors = [];
         foreach ($data as $item) {
             $dataSource = $this->SmLevel->getDataSource();
