@@ -28,13 +28,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import ContactTypes beginn...");
 
         $url = $this->restAdress['contactTypes'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $item) {
             $saveData = [
@@ -77,13 +72,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import ContactPosition beginn...");
 
         $url = $this->restAdress['contactPositions'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $item) {
             $saveData = [
@@ -125,13 +115,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import ContactClasses beginn...");
 
         $url = $this->restAdress['contactClasses'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $key => $item) {
             $saveData = [
@@ -160,13 +145,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import ContactOptionTypes beginn...");
 
         $url = $this->restAdress['contactOptionTypes'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $item) {
             $saveData = [
@@ -209,13 +189,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import ContactOptionSubTypes beginn...");
 
         $url = $this->restAdress['contactOptionSubTypes'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $item) {
             $saveData = [
@@ -258,13 +233,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import AddressOptionTypes beginn...");
 
         $url = $this->restAdress['addressOptionTypes'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $item) {
             $saveData = [
@@ -307,13 +277,8 @@ class AccountsController extends RestAppController
         CakeLog::write('import',  "Import AddressRelationTypes beginn...");
 
         $url = $this->restAdress['addressReletionTypes'];
-        $data = $this->Rest->callAPI('GET', $url);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         foreach ($data as $item) {
             $saveData = [
@@ -384,13 +349,8 @@ class AccountsController extends RestAppController
         $saveImportId = $this->Import->getLastInsertID();
 
         $url = $this->restAdress['accounts'];
-        $data = $this->Rest->callAPI('GET', $url, $params);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url, $saveImportId);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url, $params, 'GET', $saveImportId);
 
         $items = $data->entries;
 
@@ -498,17 +458,17 @@ class AccountsController extends RestAppController
         if ($newImport['from']) {
             $from = GlbF::date2Iso($newImport['from']);
             if ($newImport['install']) {
-                $params['createdAtAfter'] = GlbF::get_print_date($from);
+                $params['createdAtAfter'] = GlbF::date2Iso($from);
             } else {
-                $params['updatedAtAfter'] = GlbF::get_print_date($from);
+                $params['updatedAtAfter'] = GlbF::date2Iso($from);
             }
         }
         if ($newImport['to']) {
             $to = GlbF::date2Iso($newImport['to']);
             if ($newImport['install']) {
-                $params['createdAtBefore'] = GlbF::get_print_date($to);
+                $params['createdAtBefore'] = GlbF::date2Iso($to);
             } else {
-                $params['updatedAtBefore'] = GlbF::get_print_date($to);
+                $params['updatedAtBefore'] = GlbF::date2Iso($to);
             }
         }
 
@@ -531,13 +491,8 @@ class AccountsController extends RestAppController
         $saveImportId = $this->Import->getLastInsertID();
 
         $url = $this->restAdress['contacts'];
-        $data = $this->Rest->callAPI('GET', $url, $params);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url, $saveImportId);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url, $params, 'GET', $saveImportId);
 
         $items = $data->entries;
 

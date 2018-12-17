@@ -67,14 +67,9 @@ class ImportController extends RestAppController
         $this->Import->create();
         $this->Import->save($importData);
         $saveImportId = $this->Import->getLastInsertID();
+        $url = $this->restAdress['orders'];
 
-        $data = $this->Rest->callAPI('GET', $this->restAdress['orders'], $params);
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $this->restAdress['orders'], $saveImportId);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url, $params, 'GET', $saveImportId);
 
         $orders = $data->entries;
 
@@ -275,14 +270,8 @@ class ImportController extends RestAppController
         ini_set("memory_limit","1024M");
 
         $resturl = str_replace('rest/orders/', 'rest/orders/'.$order_id, $this->restAdress['orders']);
-        $data = json_decode($this->Rest->callAPI('GET', $resturl));
 
-        if (isset($data->error)) {
-            if (isset($data->error)) {
-                $this->sendRestError($data->error, $resturl);
-            }
-            ErrorCode::throwException($data->error->message, ErrorCode::ErrorCodeBadRequest);
-        }
+        $data = $this->callJsonRest($resturl);
 
         $this->__doImportOrderData($data);
 
@@ -358,14 +347,9 @@ class ImportController extends RestAppController
         $this->Import->create();
         $this->Import->save($importData);
         $importData['id'] = $this->Import->getLastInsertID();
+        $url = $this->restAdress['items'];
 
-        $data = $this->Rest->callAPI('GET', $this->restAdress['items'], $params);
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $this->restAdress['items'], $importData['id']);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url, $params, 'GET', $importData['id']);
 
         $items = $data->entries;
 
@@ -463,11 +447,8 @@ class ImportController extends RestAppController
             'item_id' => $item_id
         ]);
         $urlVa = str_replace('rest/items/variation', 'rest/items/'.$item_id.'/variation', $this->restAdress['variations']);
-        $data = json_decode($this->Rest->callAPI('GET', $urlVa));
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $urlVa);
-            ErrorCode::throwException($data->error->message);
-        }
+
+        $data = $this->callJsonRest($urlVa);
 
         $variations = $data->entries;
         foreach ($variations as $var) {
@@ -528,13 +509,8 @@ class ImportController extends RestAppController
         $this->Import->save($importData);
         $importData['id'] = $this->Import->getLastInsertID();
 
-        $data = $this->Rest->callAPI('GET', $this->restAdress['variations'], $params);
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $this->restAdress['variations'], $importData['id']);
-            ErrorCode::throwException($data->error->message);
-        }
+        $url = $this->restAdress['variations'];
+        $data = $this->callJsonRest($url, $params, 'GET', $importData['id']);
 
         $items = $data->entries;
 
@@ -669,16 +645,9 @@ class ImportController extends RestAppController
             'page' => 1,
             'itemsPerPage' => 1000
         ];
-        try {
-            $data = $this->Rest->callAPI('GET', $this->restAdress['units'], $params);
-        } catch (Exception $e) {
-            return $e->getCode() . ': ' . $e->getMessage();
-        }
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $this->restAdress['units']);
-            ErrorCode::throwException($data->error->message);
-        }
+
+        $url = $this->restAdress['units'];
+        $data = $this->callJsonRest($url);
 
         $recs = $data->entries;
         $now = date('Y-m-d H:i:s');
@@ -715,16 +684,9 @@ class ImportController extends RestAppController
             'page' => 1,
             'itemsPerPage' => 1000
         ];
-        try {
-            $data = $this->Rest->callAPI('GET', $this->restAdress['barcode_types'], $params);
-        } catch (Exception $e) {
-            return $e->getCode() . ': ' . $e->getMessage();
-        }
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $this->restAdress['barcode_types']);
-            ErrorCode::throwException($data->error->message);
-        }
+        $url = $this->restAdress['barcode_types'];
+        $data = $this->callJsonRest($url, $params);
+
         $recs = $data->entries;
         $now = date('Y-m-d H:i:s');
         foreach ($recs as $u) {

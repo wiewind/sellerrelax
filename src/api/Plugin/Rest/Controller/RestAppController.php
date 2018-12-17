@@ -107,7 +107,7 @@ class RestAppController extends AppController
         ];
     }
 
-    function sendRestError ($err, $url, $importId=0) {
+    function sendRestError ($err, $url, $params=[], $importId=0) {
         $Email = new CakeEmail();
         $Email->from(Configure::read('system.admin.frommail'));
         $Email->to(Configure::read('system.dev.email'));
@@ -121,9 +121,11 @@ class RestAppController extends AppController
         } else {
             $err = "unknown error";
         }
+
         $Email->viewVars(array(
             'url' => $url,
-            'err' =>$err
+            'err' =>$err,
+            'params' => $params
         ));
         $Email->send();
 
@@ -133,5 +135,16 @@ class RestAppController extends AppController
                 'errors' => "['".$err."']"
             ]);
         }
+    }
+
+    function callJsonRest ($url, $params = false, $method = 'GET', $importId=0) {
+        $data = $this->Rest->callAPI($method, $url, $params);
+        $data = json_decode($data);
+
+        if (isset($data->error)) {
+            $this->sendRestError($data->error, $url, $params, $importId);
+            ErrorCode::throwException($data->error->message);
+        }
+        return $data;
     }
 }

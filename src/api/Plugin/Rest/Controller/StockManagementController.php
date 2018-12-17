@@ -71,13 +71,8 @@ class StockManagementController extends RestAppController
         $saveImportId = $this->Import->getLastInsertID();
 
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['lcStocks']);
-        $data = $this->Rest->callAPI('GET', $url, $params);
 
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url, $saveImportId);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url, $params, 'GET', $saveImportId);
 
         $items = $data->entries;
 
@@ -172,13 +167,7 @@ class StockManagementController extends RestAppController
         ini_set("memory_limit","1024M");
 
         $url = $this->restAdress['warehouses'];
-        $data = $this->Rest->callAPI('GET', $url);
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         $errors = [];
         foreach ($data as $item) {
@@ -280,13 +269,7 @@ class StockManagementController extends RestAppController
         $params['page'] = $page;
 
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['locations']);
-        $data = $this->Rest->callAPI('GET', $url, $params);
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
 
         $errors = [];
         foreach ($data->entries as $item) {
@@ -356,14 +339,7 @@ class StockManagementController extends RestAppController
 
         $params['itemsPerPage'] = 3000;
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['dimensions']);
-        $data = $this->Rest->callAPI('GET', $url, $params);
-
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
         $errors = [];
 
         foreach ($data as $item) {
@@ -427,13 +403,7 @@ class StockManagementController extends RestAppController
 
         $params['itemsPerPage'] = 3000;
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['levels']);
-        $data = $this->Rest->callAPI('GET', $url, $params);
-
-        $data = json_decode($data);
-        if (isset($data->error)) {
-            $this->sendRestError($data->error, $url);
-            ErrorCode::throwException($data->error->message);
-        }
+        $data = $this->callJsonRest($url);
         $errors = [];
         foreach ($data as $item) {
             $dataSource = $this->SmLevel->getDataSource();
