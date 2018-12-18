@@ -36,6 +36,9 @@ $config['system']['rest']['username']       = '';
 $config['system']['rest']['password']       = '';
 $config['system']['rest']['limitPerImport'] = 2000;
 
+$config['system']['dev']['name']  = 'Benying Zou';
+$config['system']['dev']['code']  = 'bzou';
+$config['system']['dev']['email']  = 'zoubenying@hotmail.com';
 
 $config['Glb']['formatting'] = [
     'zho' => [

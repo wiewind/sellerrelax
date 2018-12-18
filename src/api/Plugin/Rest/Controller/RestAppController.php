@@ -110,7 +110,8 @@ class RestAppController extends AppController
     function sendRestError ($err, $url, $params=[], $importId=0) {
         $Email = new CakeEmail();
         $Email->from(Configure::read('system.admin.frommail'));
-        $Email->to(Configure::read('system.dev.email'));
+        $Email->to(Configure::read('system.admin.tomail'));
+        $Email->cc(Configure::read('system.dev.email'));
 
         $Email->subject("Rest Fehler!");
         $Email->emailFormat('html');
