@@ -10,15 +10,15 @@ class ImportController extends RestAppController
 {
     var $restAdress = [
         'orders' => 'rest/orders/?with[]=orderItems.variation&with[]=orderItems.variationBarcodes',
-        'items' => 'rest/items',
+        'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles',
         'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices',
         'units' => 'rest/items/units',
-        'barcode_types' => 'rest/items/barcodes',
-        'lcStocks' => 'rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocations'
+        'barcode_types' => 'rest/items/barcodes'
     ];
 
     function importOrdersOnce () {
         $this->autoRender = false;
+        $this->checkIP();
         ini_set("memory_limit","1024M");
         $newImport = $this->makeNewImport('orders');
 
@@ -264,6 +264,21 @@ class ImportController extends RestAppController
         }
     }
 
+    function importOrdersFull () {
+        $importStep = 0;
+        $sum = 0;
+        do {
+            try {
+                $data = $this->importOrdersOnce();
+            } catch (Exception $e) {
+                return $e->getCode() . ': ' . $e->getMessage();
+            }
+            $sum += $data['menge'];
+            $importStep++;
+        } while ($importStep < 2 && !$data['is_last_page'] && $data['total'] > 0);
+        return "import summe: " . $sum;
+    }
+
     function importOrderById ($order_id = 0) {
 //        $this->checkLogin();  // für conjob, darf es kein logingeben
 
@@ -295,17 +310,15 @@ class ImportController extends RestAppController
         $this->Item->query('TRUNCATE TABLE orders;');
         $this->Item->query('TRUNCATE TABLE order_items;');
         $this->Item->query('TRUNCATE TABLE order_properties;');
-        $this->Item->query('TRUNCATE TABLE imports;');
+        $this->Item->query('delete from imports where type = "orders";');
     }
 
     function importItems () {
         $this->autoRender = false;
+        $this->checkIP();
         ini_set("memory_limit","1024M");
 
         $newImport = $this->makeNewImport('items');
-        if ($newImport['install'] && $newImport['page'] === 1) {
-            $this->Item->query('TRUNCATE TABLE items;');
-        }
 
         if ($newImport === false) return;
 
@@ -315,19 +328,9 @@ class ImportController extends RestAppController
         $params['itemsPerPage'] = $newImport['itemsPerPage'];
 
         if ($newImport['from']) {
-            $from = GlbF::date2Iso($newImport['from']);
-            if ($newImport['install']) {
-                $params['createdAtFrom'] = $from;
-            } else {
-                $params['updatedAtFrom'] = $from;
-            }
-        }
-        if ($newImport['to']) {
-            $to = GlbF::date2Iso($newImport['to']);
-            if ($newImport['install']) {
-                $params['createdAtTo'] = $to;
-            } else {
-                $params['updatedAtTo'] = $to;
+            $params['updatedBetween'] = strtotime($newImport['from']);
+            if ($newImport['to']) {
+                $params['updatedBetween'] .= ',' . strtotime($newImport['to']);
             }
         }
 
@@ -342,7 +345,9 @@ class ImportController extends RestAppController
             'update_to' => $newImport['to'],
             'page' =>  $newImport['page'],
             'import_beginn' => $now,
-            'version' => $this->version
+            'version' => $this->version,
+            'url' => $_SERVER['SCRIPT_URI'],
+            'ip' => $_SERVER['REMOTE_ADDR']
         ];
         $this->Import->create();
         $this->Import->save($importData);
@@ -394,8 +399,60 @@ class ImportController extends RestAppController
     private function __doImportItemData ($item) {
         $data = [
             'extern_id' => $item->id + 0,
+            'add_cms_page' => $item->add_cms_page,
+            'age_restriction' => $item->ageRestriction,
+            'amazon_fba_platform' => $item->amazonFbaPlatform,
+            'amazon_fedas' => $item->amazonFedas,
+            'amazon_product_type' => $item->amazonProductType,
+            'condition' => $item->condition,
+            'condition_api' => $item->conditionApi,
+            'coupon_restriction' => $item->couponRestriction,
+            'customs_tariff_number' => $item->customsTariffNumber,
+            'ebay_category' => $item->ebayCategory,
+            'ebay_category2' => $item->ebayCategory2,
+            'ebay_presetid' => $item->ebayPresetId,
+            'ebay_store_category' => $item->ebayStoreCategory,
+            'ebay_store_category2' => $item->ebayStoreCategory2,
+            'feedback' => $item->feedback,
+            'flag1' => $item->flagOne,
+            'flag2' => $item->flagTwo,
+            'free1' => $item->free1,
+            'free2' => $item->free2,
+            'free3' => $item->free3,
+            'free4' => $item->free4,
+            'free5' => $item->free5,
+            'free6' => $item->free6,
+            'free7' => $item->free7,
+            'free8' => $item->free8,
+            'free9' => $item->free9,
+            'free10' => $item->free10,
+            'free11' => $item->free11,
+            'free12' => $item->free12,
+            'free13' => $item->free13,
+            'free14' => $item->free14,
+            'free15' => $item->free15,
+            'free16' => $item->free16,
+            'free17' => $item->free17,
+            'free18' => $item->free18,
+            'free19' => $item->free19,
+            'free20' => $item->free20,
+            'is_serial_number' => $item->isSerialNumber,
+            'is_shippable_by_amazon' => $item->isShippableByAmazon,
+            'is_shipping_package' => $item->isShippingPackage,
+            'is_subscribable' => $item->isSubscribable,
+            'max_order_quantity' => $item->maximumOrderQuantity,
+            'owner_id' => $item->ownerId,
+            'position' => $item->position,
+            'producing_country_id' => $item->producingCountryId,
+            'rakuten_category_id' => $item->rakutenCategoryId,
+            'revenue_account' => $item->revenueAccount,
+            'stock_type' => $item->stockType,
+            'store_special' => $item->storeSpecial,
+
             'manufacturer_id' => $item->manufacturerId + 0,
             'main_variation_id' => $item->mainVariationId + 0,
+            'created' => GlbF::iso2Date($item->createdAt),
+            'modified' => GlbF::iso2Date($item->updatedAt),
             'imported' => date('Y-m-d H:i:s')
         ];
         $name = '';
@@ -427,13 +484,60 @@ class ImportController extends RestAppController
             $this->Item->create();
         }
         $this->Item->save($data);
+
+        if (isset($item->itemShippingProfiles)) {
+            $this->ItemShippingProfile->deleteAll(['item_id' => $data['extern_id']]);
+            foreach ($item->itemShippingProfiles as $shippingProfile) {
+                $this->ItemShippingProfile->create();
+                $this->ItemShippingProfile->save([
+                    'extern_id' => $shippingProfile->id,
+                    'item_id' => $shippingProfile->itemId,
+                    'profile_id' => $shippingProfile->profileId,
+                    'modified' => $shippingProfile->updated_at
+                ]);
+            }
+        }
+
+        if (isset($item->itemCrossSelling)) {
+            //GlbF::printArray($item->itemCrossSelling);
+            $this->ItemCrossSelling->deleteAll(['item_id' => $data['extern_id']]);
+            foreach ($item->itemCrossSelling as $crossSelling) {
+                $this->ItemCrossSelling->create();
+                $this->ItemCrossSelling->save([
+                    'item_id' => $crossSelling->itemId,
+                    'cross_item_id' => $crossSelling->crossItemId,
+                    'is_dynamic' => $crossSelling->isDynamic,
+                    'relationship' => $crossSelling->relationship,
+                    'modified' => $crossSelling->last_update_timestamp
+                ]);
+            }
+        }
+    }
+
+    function importItemsAll () {
+        $sum = 0;
+        do {
+            $data = $this->importItems();
+            $sum += $data['menge'];
+        } while (!$data['is_last_page']);
+        return $sum;
+    }
+
+    function clearItemImports () {
+        $this->checkLogin();
+        $this->Item->query('TRUNCATE TABLE items;');
+        $this->Item->query('TRUNCATE TABLE items_variations;');
+        $this->Item->query('TRUNCATE TABLE items_variations_barcodes;');
+        $this->Item->query('TRUNCATE TABLE item_shipping_profiles;');
+        $this->Item->query('TRUNCATE TABLE item_cross_sellings;');
+        $this->Item->query('delete from imports where type in ("items", "variations");');
     }
 
     function importItemById ($item_id) {
 //        $this->checkLogin();
         ini_set("memory_limit","1024M");
 
-        $url = str_replace('rest/items', 'rest/items/'.$item_id, $this->restAdress['items']);
+        $url = str_replace($this->restAdress['items'], 'rest/items/'.$item_id, $this->restAdress['items']);
         $data = json_decode($this->Rest->callAPI('GET', $url));
 
         if (isset($data->error)) {
@@ -446,7 +550,7 @@ class ImportController extends RestAppController
         $this->ItemsVariation->deleteAll([
             'item_id' => $item_id
         ]);
-        $urlVa = str_replace('rest/items/variation', 'rest/items/'.$item_id.'/variation', $this->restAdress['variations']);
+        $urlVa = str_replace($this->restAdress['variations'], 'rest/items/'.$item_id.'/variation', $this->restAdress['variations']);
 
         $data = $this->callJsonRest($urlVa);
 
@@ -459,13 +563,10 @@ class ImportController extends RestAppController
 
     function importVariations () {
         $this->autoRender = false;
+        $this->checkIP();
         ini_set("memory_limit","1024M");
 
         $newImport = $this->makeNewImport('variations');
-        if ($newImport['page'] === 1) {
-            $this->Item->query('TRUNCATE TABLE items_variations;');
-            $this->Item->query('TRUNCATE TABLE items_variations_barcodes;');
-        }
 
         if ($newImport === false) return;
 
@@ -475,19 +576,9 @@ class ImportController extends RestAppController
         $params['itemsPerPage'] = $newImport['itemsPerPage'];
 
         if ($newImport['from']) {
-            $from = GlbF::date2Iso($newImport['from']);
-            if ($newImport['install']) {
-                $params['createdAtFrom'] = $from;
-            } else {
-                $params['updatedAtFrom'] = $from;
-            }
-        }
-        if ($newImport['to']) {
-            $to = GlbF::date2Iso($newImport['to']);
-            if ($newImport['install']) {
-                $params['createdAtTo'] = $to;
-            } else {
-                $params['updatedAtTo'] = $to;
+            $params['updatedBetween'] = strtotime($newImport['from']);
+            if ($newImport['to']) {
+                $params['updatedBetween'] .= ',' . strtotime($newImport['to']);
             }
         }
 
@@ -502,7 +593,9 @@ class ImportController extends RestAppController
             'update_to' => $newImport['to'],
             'page' =>  $newImport['page'],
             'import_beginn' => $now,
-            'version' => $this->version
+            'version' => $this->version,
+            'url' => $_SERVER['SCRIPT_URI'],
+            'ip' => $_SERVER['REMOTE_ADDR']
         ];
 
         $this->Import->create();
@@ -589,7 +682,7 @@ class ImportController extends RestAppController
         if ($var->variationBarcodes)
         foreach ($var->variationBarcodes as $barcode) {
             $bcd = [
-                'variation_id' => $barcode->variationId ? $barcode->variationId + 0 : $var->id + 0,
+                'variation_id' => $barcode->variationId + 0,
                 'barcode_type_id' => $barcode->barcodeId + 0,
                 'code' => $barcode->code,
             ];
@@ -599,37 +692,8 @@ class ImportController extends RestAppController
 
     }
 
-    function importOrdersFull () {
-        $importStep = 0;
-        $sum = 0;
-        do {
-            try {
-                $data = $this->importOrdersOnce();
-            } catch (Exception $e) {
-                return $e->getCode() . ': ' . $e->getMessage();
-            }
-            $sum += $data['menge'];
-            $importStep++;
-        } while ($importStep < 2 && !$data['is_last_page'] && $data['total'] > 0);
-        return "import summe: " . $sum;
-    }
-
-    function importItemsAll () {
-        $sum = 0;
-        $this->Item->query('TRUNCATE TABLE items;');
-        $this->Item->query('TRUNCATE TABLE items_variations;');
-        $this->Item->query('TRUNCATE TABLE items_variations_barcodes;');
-        do {
-            $data = $this->importItems();
-            $sum += $data['menge'];
-        } while (!$data['is_last_page']);
-        return $sum;
-    }
-
     function importVariationsAll () {
         $sum = 0;
-        $this->Item->query('TRUNCATE TABLE items_variations;');
-        $this->Item->query('TRUNCATE TABLE items_variations_barcodes;');
         do {
             $data = $this->importVariations();
             $sum += $data['menge'];

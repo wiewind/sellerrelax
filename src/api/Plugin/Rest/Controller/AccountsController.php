@@ -317,6 +317,7 @@ class AccountsController extends RestAppController
 
     function importAccounts ($allImport=true) {
         $this->autoRender = false;
+        $this->checkIP();
         ini_set("memory_limit","1024M");
 
         $importType = 'accounts';
@@ -441,6 +442,7 @@ class AccountsController extends RestAppController
 
     function importContacts () {
         $this->autoRender = false;
+        $this->checkIP();
         ini_set("memory_limit","1024M");
         set_time_limit(200);
 

@@ -29,6 +29,7 @@ class StockManagementController extends RestAppController
 
     function importLocationStocks ($warehouseId=1) {
         $this->autoRender = false;
+        $this->checkIP();
         ini_set("memory_limit","1024M");
 
         $importType = 'lcst' . $warehouseId;

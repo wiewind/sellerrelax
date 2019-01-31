@@ -19,6 +19,8 @@ class RestAppController extends AppController
         'Unit',
         'ItemsVariation',
         'ItemsVariationsBarcode',
+        'ItemCrossSelling',
+        'ItemShippingProfile',
         'BarcodeType',
 
         'SmWarehouse',
@@ -44,6 +46,11 @@ class RestAppController extends AppController
     ];
 
     var $components = ['MySession', 'MyCookie', 'Rest'];
+
+    var $allowdIPs = [
+        '194.172.160.76',
+        '134.119.253.18'
+    ];
 
     var $version = '1.02';
 
@@ -147,5 +154,11 @@ class RestAppController extends AppController
             ErrorCode::throwException($data->error->message);
         }
         return $data;
+    }
+
+    function checkIP () {
+        if (!in_array($_SERVER['REMOTE_ADDR'], $this->allowdIPs)) {
+            die("Juggler!!!");
+        }
     }
 }
