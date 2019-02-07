@@ -27,7 +27,7 @@ class TestController extends AppController
 
             $params = (isset($this->request->data['params'])) ?  $this->request->data['params'] : [];
 
-            if (is_array($params)) {
+            if (is_array($params) && $methode == 'GET') {
                 if (isset($this->request->data['itemsPerPage']) && $this->request->data['itemsPerPage'] > 0) {
                     $params['itemsPerPage'] = $this->request->data['itemsPerPage'];
                 }

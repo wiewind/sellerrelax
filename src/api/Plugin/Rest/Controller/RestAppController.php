@@ -15,6 +15,7 @@ class RestAppController extends AppController
         'Item',
         'OrderItem',
         'OrderProperty',
+        'OrderStatus',
         'RestToken',
         'Unit',
         'ItemsVariation',
