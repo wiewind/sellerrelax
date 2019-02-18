@@ -35,7 +35,7 @@ class OrdersController extends AppController
                     'table' => Inflector::tableize('OrderProperty'),
                     'alias' => 'OrderShippingProfile',
                     'conditions' => array(
-                        'Order.extern_id' => 'OrderShippingProfile.order_id',
+                        'Order.extern_id = OrderShippingProfile.order_id',
                         'OrderShippingProfile.type_id' => 2
                     ),
                     'type' => 'LEFT'
