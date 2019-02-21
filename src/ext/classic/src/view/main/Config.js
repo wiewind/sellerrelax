@@ -10,7 +10,12 @@ Ext.define('SRX.view.main.Config', {
         import: {text: T.__('Import'), logo: 'x-fa fa-ge'},
         export: {text: T.__('Export'), logo: 'x-fa fa-ge'},
         article: {text: T.__('Articles'), logo: 'x-fa fa-cube'},
-        order: {text: T.__('Orders'), logo: 'x-fa fa-file-text-o', fn: 'noEvent'},
+        //order: {text: T.__('Orders'), logo: 'x-fa fa-file-text-o', fn: 'noEvent'},
+        stock: {text: T.__('Stock'), logo: 'x-fa fa-database', fn: 'noEvent', menu: {
+            outstock: {text: T.__('Out Stock'), logo: 'x-fa fa-database'},
+            innerstock: {text: T.__('Inner Stock'), logo: 'x-fa fa-database', fn: 'noEvent'}
+        }},
+        //trans: {text: T.__('Transport'), logo: 'x-fa fa-truck', fn: 'noEvent'},
         settings: {text: T.__('Settings'), logo: 'x-fa fa-cog'}
     },
 
@@ -18,8 +23,12 @@ Ext.define('SRX.view.main.Config', {
     moduleDelimiter: '_',
 
     openModule: function (module) {
-        var m = MainConfig.modules[module],
-            strModule = module.toLowerCase(),
+        nodes = module.split('.');
+        var m = MainConfig.modules[nodes[0]];
+        for (var i=1; i<nodes.length; i++) {
+            m = m.menu[nodes[i]];
+        }
+        var strModule = module.toLowerCase(),
             modules = strModule.split(MainConfig.moduleDelimiter),
             panel_xtype = '',
             panel_classname = '';

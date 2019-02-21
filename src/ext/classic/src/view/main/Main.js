@@ -25,6 +25,7 @@ Ext.define('SRX.view.main.Main', {
         'SRX.view.article.MainPanel',
         'SRX.view.export.MainPanel',
         'SRX.view.settings.MainPanel',
+        'SRX.view.stock.outstock.MainPanel',
 
         'SRX.view.main.HeaderPanel'
     ],

@@ -238,6 +238,7 @@ class ImportStockController extends AppController
                         $this->saveToHistory($stock, $now);
                         $stock['Stock'] = array_merge($stock['Stock'], [
                             'quantity' => 0,
+                            'changed_quantity' => (0 - $stock['Stock']),
                             'next_receipt' => 0,
                             'next_receipt_on' => null,
                             'reserved' => 0,
@@ -291,6 +292,10 @@ class ImportStockController extends AppController
             ]
         ]);
 
+        if (!$variation && !empty($data[0])) {
+            $variation = $this->ItemsVariation->findByNumber($data[0]);
+        }
+
         $saveData = [
             'warehouse_id' => $warehouse_id,
             'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
@@ -298,6 +303,7 @@ class ImportStockController extends AppController
             'number' => $data[0],
             'ean' => $data[1],
             'quantity' => $data[6],
+            'changed_quantity' => $data[6],
             'be_down' => $this->__getBoolean($data[5]),
             'next_receipt' => $data[7],
             'next_receipt_on' => $this->__getDate($data[8]),
@@ -313,7 +319,7 @@ class ImportStockController extends AppController
         ]);
         if ($stock) {
             $saveData['id'] = $stock['Stock']['id'];
-
+            $saveData['changed_quantity'] = $saveData['quantity'] - $stock['Stock']['quantity'];
             //save history
             $this->saveToHistory($stock, $time);
         } else {
@@ -332,6 +338,7 @@ class ImportStockController extends AppController
             'variation_id' => ($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
             'number' => $data[0],
             'quantity' => $data[2],
+            'changed_quantity' => $data[2],
             'reserved' => $data[3],
             'fdate' => $fdate,
             'imported' => $time
@@ -345,7 +352,7 @@ class ImportStockController extends AppController
         ]);
         if ($stock) {
             $saveData['id'] = $stock['Stock']['id'];
-
+            $saveData['changed_quantity'] = $saveData['quantity'] - $stock['Stock']['quantity'];
             //save history
             $this->saveToHistory($stock, $time);
         } else {
@@ -381,6 +388,7 @@ class ImportStockController extends AppController
             'variation_id' => $stock['Stock']['variation_id'],
             'be_down' => $stock['Stock']['be_down'],
             'quantity' => $stock['Stock']['quantity'],
+            'changed_quantity' => $stock['Stock']['changed_quantity'],
             'next_receipt' => $stock['Stock']['next_receipt'],
             'next_receipt_on' => $stock['Stock']['next_receipt_on'],
             'reserved' => $stock['Stock']['reserved'],

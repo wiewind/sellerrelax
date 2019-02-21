@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2018-11-26 15:47+0100\n"
+"POT-Creation-Date: 2019-02-21 10:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;___;T.__\n"
 "X-Poedit-Basepath: ../../../..\n"
@@ -25,6 +25,7 @@ msgid "Invalid username or password, please try again."
 msgstr "用户名或密码不正确，请重试。"
 
 #: api/Controller/ImportController.php:116
+#: api/Controller/OutstocksController.php:71
 msgid "All"
 msgstr "全部"
 
@@ -106,59 +107,59 @@ msgstr "此文件夹名称已在使用中。"
 msgid "An unknown error has occurred."
 msgstr "出现未知错误。"
 
-#: api/Lib/GlbF.php:132
+#: api/Lib/GlbF.php:134
 #, php-format
 msgid "Error by set folder [%s]."
 msgstr "设置文件夹 [%s] 出错。"
 
-#: api/Lib/GlbF.php:135
+#: api/Lib/GlbF.php:137
 #, php-format
 msgid "Error by set permissions [%s]."
 msgstr "设置权限 [%s] 出错。"
 
-#: api/Lib/GlbF.php:177
+#: api/Lib/GlbF.php:179
 #, php-format
 msgid "Error by delete Folder [%s]."
 msgstr "删除文件夹 [%s] 时出错。"
 
-#: api/Lib/GlbF.php:180
+#: api/Lib/GlbF.php:182
 #, php-format
 msgid "Error by delete File [%s]."
 msgstr "删除文件 [%s] 时出错。"
 
-#: api/Lib/GlbF.php:217
+#: api/Lib/GlbF.php:219
 msgid "email applied"
 msgstr "使用电子邮件"
 
-#: api/Lib/GlbF.php:219
+#: api/Lib/GlbF.php:221
 msgid "tele applied"
 msgstr "使用电话"
 
-#: api/Lib/GlbF.php:221
+#: api/Lib/GlbF.php:223
 msgid "post applied"
 msgstr "使用邮寄信件"
 
-#: api/Lib/GlbF.php:223
+#: api/Lib/GlbF.php:225
 msgid "tele interview"
 msgstr "电话面试"
 
-#: api/Lib/GlbF.php:225
+#: api/Lib/GlbF.php:227
 msgid "interview"
 msgstr "面试"
 
-#: api/Lib/GlbF.php:227
+#: api/Lib/GlbF.php:229
 msgid "offered"
 msgstr "提供"
 
-#: api/Lib/GlbF.php:229
+#: api/Lib/GlbF.php:231
 msgid "reject"
 msgstr "拒绝"
 
-#: api/Lib/GlbF.php:231
+#: api/Lib/GlbF.php:233
 msgid "indifferent"
 msgstr "冷漠"
 
-#: api/Lib/GlbF.php:233
+#: api/Lib/GlbF.php:235
 msgid "new job"
 msgstr "新工作"
 
@@ -397,6 +398,7 @@ msgstr "上传你的照片……"
 #: ext/classic/src/view/import/robots/Grid.js:30
 #: ext/classic/src/view/import/tracking/Grid.js:24
 #: ext/classic/src/view/import/tracking/Grid.js:30
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:25
 msgid "This list is empty."
 msgstr "该列表为空。"
 
@@ -726,10 +728,12 @@ msgid "Type"
 msgstr "类别"
 
 #: ext/classic/src/view/import/tracking/Grid.js:66
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:50
 msgid "Date"
 msgstr "日期"
 
 #: ext/classic/src/view/import/tracking/Grid.js:79
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:60
 msgid " - "
 msgstr " - "
 
@@ -791,11 +795,19 @@ msgstr "导入"
 msgid "Articles"
 msgstr "商品"
 
-#: ext/classic/src/view/main/Config.js:13
-msgid "Orders"
-msgstr "订单"
-
 #: ext/classic/src/view/main/Config.js:14
+msgid "Stock"
+msgstr "库存"
+
+#: ext/classic/src/view/main/Config.js:15
+msgid "Out Stock"
+msgstr "外部库存"
+
+#: ext/classic/src/view/main/Config.js:16
+msgid "Inner Stock"
+msgstr "内部库存"
+
+#: ext/classic/src/view/main/Config.js:19
 #: ext/classic/src/view/settings/MainPanel.js:16
 msgid "Settings"
 msgstr "设置"
@@ -813,6 +825,49 @@ msgstr "系统更新"
 #: ext/classic/src/view/settings/MainPanel.js:48
 msgid "Rest Test"
 msgstr "Rest测试"
+
+#: ext/classic/src/view/stock/outstock/MainPanel.js:36
+msgid "Hot sales"
+msgstr "热销榜"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:35
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:145
+msgid "Lager"
+msgstr "仓库"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:70
+msgid "Sort by"
+msgstr "排序"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:77
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:160
+msgid "Sales quantity"
+msgstr "销量"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:78
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:165
+msgid "Purchase"
+msgstr "进货"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:91
+msgid "TOP"
+msgstr "TOP"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:135
+msgid "Number"
+msgstr "Number"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:140
+msgid "EAN"
+msgstr "EAN"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:150
+msgid "Item"
+msgstr "Item"
+
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:155
+msgid "Variation"
+msgstr "Variation"
 
 #: ext/modern/overrides/picker/Date.js:18
 #: ext/modern/overrides/picker/Picker.js:11
@@ -842,6 +897,9 @@ msgstr "密码"
 #: api/View/System/login.ctp:9
 msgid "Please enter your password"
 msgstr "请输入您的密码"
+
+#~ msgid "Orders"
+#~ msgstr "订单"
 
 #~ msgid "Gross"
 #~ msgstr "税前"

@@ -25,22 +25,39 @@ Ext.define ('SRX.view.main.HeaderPanel', {
         this.callParent();
     },
 
-    buildItems: function () {
+    buildBtn: function (modules, parent) {
+        parent = parent || '';
         var btns = [];
-        for (var key in MainConfig.modules) {
-            var m = MainConfig.modules[key];
-            btns.push({
+        for (var key in modules) {
+            var m = modules[key];
+            var theNode = (parent) ? parent + '.'+key : key;
+            var btn = {
                 text: m.text,
                 tooltip: m.text,
                 iconCls: m.logo,
-                cls: 'app-header-btn',
-                margin: 2,
-                padding: 7,
-                width: 80,
-                module: key,
+                module: theNode,
                 handler: Wiewind.isEmpty(m.fn) ? 'onOpenModule' : m.fn
-            });
+            };
+            if (!parent) {
+                Ext.apply(btn, {
+                    cls: 'app-header-btn',
+                    margin: 2,
+                    padding: 7,
+                    width: (Wiewind.isEmpty(m.menu)) ? 80 : 100
+                });
+            }
+
+            if (!Wiewind.isEmpty(m.menu)) {
+                btn.menu = this.buildBtn(m.menu, theNode);
+
+            }
+            btns.push(btn);
         }
+        return btns;
+    },
+
+    buildItems: function () {
+        var btns = this.buildBtn(MainConfig.modules);
 
         return [
             {
