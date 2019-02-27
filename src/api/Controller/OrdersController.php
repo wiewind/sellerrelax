@@ -13,7 +13,8 @@ class OrdersController extends AppController
         'Item',
         'OrderItem',
         'OrderProperty',
-        'ItemShippingProfile'
+        'ItemShippingProfile',
+        'AlterOrderStatusLog'
     ];
 
     var $components = ['MySession', 'MyCookie', 'Rest'];
@@ -139,5 +140,99 @@ class OrdersController extends AppController
         }
 
         echo "</table>";
+    }
+
+    public function checkOrderShippingProfiel ($statusIdForCheck = "3.2") {
+        $this->autoRender = false;
+
+        $data = $this->Order->find('all', [
+            'fields' => [
+                'Order.extern_id',
+                'Order.type_id',
+                'Order.status_id',
+                'Order.created',
+                'Order.updated',
+                'OrderItem.item_id',
+                'OrderShippingProfile.value',
+                //'ItemShippingProfile.profile_id'
+            ],
+            'joins' => array(
+                array(
+                    'table' => Inflector::tableize('OrderItem'),
+                    'alias' => 'OrderItem',
+                    'conditions' => array(
+                        'Order.extern_id = OrderItem.order_id',
+                        'OrderItem.item_id > 0'
+                    ),
+                    'type' => 'LEFT'
+                ),
+                array(
+                    'table' => Inflector::tableize('OrderProperty'),
+                    'alias' => 'OrderShippingProfile',
+                    'conditions' => array(
+                        'Order.extern_id = OrderShippingProfile.order_id',
+                        'OrderShippingProfile.type_id' => 2
+                    ),
+                    'type' => 'LEFT'
+                )
+            ),
+            'conditions' => [
+                'Order.type_id' => [1, 2, 5, 6],
+                'Order.status_id' => $statusIdForCheck
+            ]
+        ]);
+
+        $orders = [];
+        if ($data) {
+            foreach ($data as $d) {
+                $orders[$d['Order']['extern_id']]['extern_id'] = $d['Order']['extern_id'];
+                $orders[$d['Order']['extern_id']]['type_id'] = $d['Order']['type_id'];
+                $orders[$d['Order']['extern_id']]['status_id'] = $d['Order']['status_id'];
+                $orders[$d['Order']['extern_id']]['created'] = $d['Order']['created'];
+                $orders[$d['Order']['extern_id']]['updated'] = $d['Order']['updated'];
+                $orders[$d['Order']['extern_id']]['orderShippingProfile']=$d['OrderShippingProfile']['value'];
+                $item_id = $d['OrderItem']['item_id'];
+                $data1 = $this->ItemShippingProfile->find('all', [
+                    'fields' => 'profile_id',
+                    'conditions' => [
+                        'item_id' => $item_id
+                    ]
+                ]);
+
+                $itemProfiles = [];
+                if ($data1) {
+                    $itemProfiles = Set::extract('/ItemShippingProfile/profile_id', $data1);
+                }
+                $orders[$d['Order']['extern_id']]['itemShippingProfile'][$item_id] = $itemProfiles;
+            }
+
+            foreach ($orders as $order_id => $oData) {
+                $this->__checkOrderShippingProfiel($oData);
+            }
+        }
+    }
+
+    private function __checkOrderShippingProfiel ($oData) {
+        foreach ($oData['itemShippingProfile'] as $itemShippingProfiles) {
+            if (!in_array($oData['orderShippingProfile'], $itemShippingProfiles)) {
+                $this->__alterStatus($oData['extern_id'], $oData['status_id'], '4.9');
+                return;
+            }
+        }
+    }
+
+    private function __alterStatus ($order_id, $old_status, $new_status) {
+        $user = ($this->username) ? $this->username : 'sys';
+        $this->AlterOrderStatusLog->save([
+            'order_id' => $order_id,
+            'old_status' => $old_status,
+            'new_status' => $new_status,
+            'changed' => date('Y-m-d H:i:s'),
+            'changed_by' => $user
+        ]);
+        $data = $this->Rest->callAPI('put', 'rest/orders/' . $order_id, [
+            'statusId' => 4.9
+        ]);
+        echo $data;
     }
 }

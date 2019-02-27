@@ -43,9 +43,10 @@ class OutstocksController extends AppController
         $tb = "select tb.stock_id, tb.number, tb.ean, tb.warehouse_id, tb.item_id, tb.variation_id, " .
             "sum(if(tb.changed_quantity < 0, abs(tb.changed_quantity), 0)) as sales, " .
             "sum(if(tb.changed_quantity > 0, tb.changed_quantity, 0)) as purchase, " .
-            "warehouses.name as warehouse_name " .
+            "if (sm_warehouses.name is not null, sm_warehouses.name, warehouses.name) as warehouse_name " .
             "from ($tb) tb " .
             "join warehouses on tb.warehouse_id = warehouses.id " .
+            "left join sm_warehouses on warehouses.extern_id = sm_warehouses.extern_id " .
             "group by tb.stock_id ";
 
         $sql = "select * from ($tb) HotSales order by {$data['sort']} desc limit {$data['limit']}";
@@ -57,12 +58,24 @@ class OutstocksController extends AppController
     public function showWarehouses () {
         $data = $this->Warehouse->find('all', [
             'fields' => [
-                'id',
-                'name',
-                'protokoll',
-                'fdate'
+                'Warehouse.id',
+                'Warehouse.extern_id',
+                'Warehouse.name',
+                'Warehouse.protokoll',
+                'Warehouse.fdate',
+                'SmWarehouse.name'
             ],
-            'order' => 'name'
+            'joins' => [
+                [
+                    'table' => Inflector::tableize('SmWarehouse'),
+                    'alias' => 'SmWarehouse',
+                    'conditions' => array(
+                        'Warehouse.extern_id = SmWarehouse.extern_id',
+                    ),
+                    'type' => 'inner'
+                ]
+            ],
+            'order' => 'SmWarehouse.name, Warehouse.name'
         ]);
         $res = [
             [
@@ -74,7 +87,13 @@ class OutstocksController extends AppController
         ];
         if ($data) {
             foreach ($data as $w) {
-                $res[] = $w;
+                if (!empty($w['SmWarehouse']['name'])) {
+                    $w['Warehouse']['name'] = $w['SmWarehouse']['name'];
+                }
+
+                $res[] = [
+                    'Warehouse' => $w['Warehouse']
+                ];
             }
         }
         return $res;

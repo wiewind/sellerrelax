@@ -51,7 +51,7 @@ Ext.define('SRX.view.stock.outstock.hotsales.Grid', {
                 store: '{warehouses}',
                 value: '{warehouse_id}'
             },
-            width: 100,
+            width: 200,
             queryMode: 'local',
             displayField: 'name',
             valueField: 'id',
@@ -155,7 +155,7 @@ Ext.define('SRX.view.stock.outstock.hotsales.Grid', {
         {
             text: T.__("Lager"),
             dataIndex: 'warehouse_name',
-            width: 100
+            width: 200
         },
         {
             text: T.__("Item"),
