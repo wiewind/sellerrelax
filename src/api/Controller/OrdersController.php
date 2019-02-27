@@ -142,7 +142,7 @@ class OrdersController extends AppController
         echo "</table>";
     }
 
-    public function checkOrderShippingProfiel ($statusIdForCheck = "3.2") {
+    public function checkOrderShippingProfile ($statusIdForCheck = "3.2") {
         $this->autoRender = false;
 
         $data = $this->Order->find('all', [
