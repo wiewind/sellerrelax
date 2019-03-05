@@ -19,7 +19,9 @@ class AccountsController extends RestAppController
         'contactOptionSubTypes' => 'rest/accounts/contacts/option_sub_types',
 
         'addressReletionTypes'  => 'rest/accounts/addresses/relation_types',
-        'addressOptionTypes'    => 'rest/accounts/addresses/option_types'
+        'addressOptionTypes'    => 'rest/accounts/addresses/option_types',
+
+        'address'    => 'rest/accounts/addresses/<address_id>'
     ];
 
     function importContactTypes () {
@@ -525,7 +527,7 @@ class AccountsController extends RestAppController
             CakeLog::write('import', $logStr);
         }
 
-        $importData = [
+        $importData2 = [
             'id' => $saveImportId,
             'menge' => $mengeOfPage,
             'is_last_page' => $data->isLastPage,
@@ -534,9 +536,11 @@ class AccountsController extends RestAppController
             'errors' => json_encode($errors),
             'import_end' => $now2
         ];
-        $this->Import->save($importData);
+        $this->Import->save($importData2);
 
         CakeLog::write('import', "Import Contacts (page {$params['page']}) end with $mengeOfPage record(s)!");
+
+        return array_merge($importData, $importData2);
     }
 
     private function __doImportContactsData ($data, $now="") {
@@ -685,35 +689,41 @@ class AccountsController extends RestAppController
     }
 
     private function __doImportAddressesData ($data, $now) {
-        $address = $data->address1;
-        if ($address && $data->address2) {
-            $address .= ' ' . $data->address2;
-        }
-        if ($address && $data->address3) {
-            $address .= ' ' . $data->address3;
-        }
-        if ($address && $data->address4) {
-            $address .= ' ' . $data->address4;
-        }
-        $name = $data->name1;
-        if ($name && $data->name2) {
-            $name .= ' ' . $data->name2;
-        }
-        if ($name && $data->name3) {
-            $name .= ' ' . $data->name3;
-        }
-        if ($name && $data->name4) {
-            $name .= ' ' . $data->name4;
-        }
+//        $address = $data->address1;
+//        if ($address && $data->address2) {
+//            $address .= ' ' . $data->address2;
+//        }
+//        if ($address && $data->address3) {
+//            $address .= ' ' . $data->address3;
+//        }
+//        if ($address && $data->address4) {
+//            $address .= ' ' . $data->address4;
+//        }
+//        $name = $data->name1;
+//        if ($name && $data->name2) {
+//            $name .= ' ' . $data->name2;
+//        }
+//        if ($name && $data->name3) {
+//            $name .= ' ' . $data->name3;
+//        }
+//        if ($name && $data->name4) {
+//            $name .= ' ' . $data->name4;
+//        }
         $saveData = [
             'id' => $data->id,
             'extern_id' => $data->id,
-            'address' => ($address) ? $address : "",
+            'address1' => ($data->address1) ? $data->address1 : null,
+            'address2' => ($data->address2) ? $data->address2 : null,
+            'address3' => ($data->address3) ? $data->address3 : null,
+            'address4' => ($data->address4) ? $data->address4 : null,
             'postcode' => ($data->postalCode) ? $data->postalCode : null,
             'town' => ($data->town) ? $data->town : null,
             'contry_id' => ($data->countryId) ? $data->countryId : 0,
             'gender' => ($data->gender) ? $data->gender : null,
-            'name' => ($name) ? $name : "",
+            'name1' => ($data->name1) ? $data->name1 : null,
+            'name2' => ($data->name2) ? $data->name2 : null,
+            'name3' => ($data->name3) ? $data->name3 : null,
+            'name4' => ($data->name4) ? $data->name4 : null,
             'state_id' => ($data->stateId) ? $data->stateId : null,
             'checked' => ($data->checkedAt) ? $data->checkedAt : null,
             'created' => ($data->createdAt) ? GlbF::iso2Date($data->createdAt) : null,
@@ -734,4 +744,17 @@ class AccountsController extends RestAppController
             $this->__doImportContactAddressData($data->pivot);
         }
     }
+
+    public function importAddress ($addressId) {
+        $this->autoRender = false;
+        ini_set("memory_limit","1024M");
+
+        $resturl = str_replace('<address_id>', $addressId, $this->restAdress['address']);
+
+        $data = $this->callJsonRest($resturl);
+
+        $this->__doImportAddressesData($data);
+        return true;
+    }
+
 }
