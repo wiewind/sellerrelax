@@ -15,17 +15,32 @@ class ImportStockController extends AppController
         'ItemsVariationsBarcode',
         'BarcodeType',
         'Warehouse',
-        'StockHistory'
+        'StockHistory',
+        'WarehouseImport'
     ];
 
     function download ($warehouse_id) {
+        $this->autoRender = false;
         $warehouse = $this->Warehouse->findById($warehouse_id);
         $res = false;
         if ($warehouse) {
             $warehouse = $warehouse['Warehouse'];
             switch ($warehouse['protokoll']) {
                 case 'ftp':
-                    $res = $this->downloadPerFtp($warehouse['host'], $warehouse['username'], $warehouse['password'], $warehouse['server_file'], $warehouse['local_file'], $warehouse['downloaded'], $warehouse['id']);
+                    $newImport = [
+                        'warehouse_id' => $warehouse_id,
+                        'access_at' => date('Y-m-d H:i:s'),
+                        'success' => 1
+                    ];
+                    try {
+                        $res = $this->downloadPerFtp($warehouse['host'], $warehouse['username'], $warehouse['password'], $warehouse['server_file'], $warehouse['local_file'], $warehouse['downloaded'], $warehouse['id']);
+                    } catch (Exception $e) {
+                        $newImport['success'] = 0;
+                        $newImport['message'] = $e->getMessage();
+                    }
+                    $this->WarehouseImport->create();
+                    $this->WarehouseImport->save($newImport);
+
                     break;
                 case 'email':
                     $res = $this->downloadPerEmail($warehouse['host'], $warehouse['username'], $warehouse['password'], $warehouse['server_file'], $warehouse['local_file'], $warehouse['downloaded'], $warehouse['id']);

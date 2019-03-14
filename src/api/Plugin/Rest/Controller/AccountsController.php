@@ -688,7 +688,7 @@ class AccountsController extends RestAppController
         $this->ContactAddress->save($saveData);
     }
 
-    private function __doImportAddressesData ($data, $now) {
+    private function __doImportAddressesData ($data, $now, $savePivot=1) {
 //        $address = $data->address1;
 //        if ($address && $data->address2) {
 //            $address .= ' ' . $data->address2;
@@ -740,7 +740,7 @@ class AccountsController extends RestAppController
                 $this->__doImportAddressesOptionsData($op, $now);
             }
         }
-        if (isset($data->pivot)) {
+        if ($savePivot && isset($data->pivot)) {
             $this->__doImportContactAddressData($data->pivot);
         }
     }

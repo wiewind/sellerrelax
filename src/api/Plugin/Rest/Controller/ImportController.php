@@ -9,7 +9,7 @@
 class ImportController extends RestAppController
 {
     var $restAdress = [
-        'orders' => 'rest/orders/?with[]=orderItems.variation&with[]=orderItems.variationBarcodes',
+        'orders' => 'rest/orders/?with[]=orderItems.variation&with[]=orderItems.variationBarcodes&with[]=addresses',
         'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles',
         'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices',
         'units' => 'rest/items/units',
@@ -175,6 +175,12 @@ class ImportController extends RestAppController
                         $oData['delivery_address_id'] = $ar->addressId;
                         break;
                 }
+            }
+        }
+
+        if ($order->addresses) {
+            foreach ($order->addresses as $ar) {
+                 $this->Address->doSaveAddress($ar, $now, 0);
             }
         }
 
