@@ -689,6 +689,7 @@ class AccountsController extends RestAppController
     }
 
     private function __doImportAddressesData ($data, $now, $savePivot=1) {
+        $this->Address->doSaveAddress($data, $now, $savePivot);
 //        $address = $data->address1;
 //        if ($address && $data->address2) {
 //            $address .= ' ' . $data->address2;
@@ -709,40 +710,40 @@ class AccountsController extends RestAppController
 //        if ($name && $data->name4) {
 //            $name .= ' ' . $data->name4;
 //        }
-        $saveData = [
-            'id' => $data->id,
-            'extern_id' => $data->id,
-            'address1' => ($data->address1) ? $data->address1 : null,
-            'address2' => ($data->address2) ? $data->address2 : null,
-            'address3' => ($data->address3) ? $data->address3 : null,
-            'address4' => ($data->address4) ? $data->address4 : null,
-            'postcode' => ($data->postalCode) ? $data->postalCode : null,
-            'town' => ($data->town) ? $data->town : null,
-            'contry_id' => ($data->countryId) ? $data->countryId : 0,
-            'gender' => ($data->gender) ? $data->gender : null,
-            'name1' => ($data->name1) ? $data->name1 : null,
-            'name2' => ($data->name2) ? $data->name2 : null,
-            'name3' => ($data->name3) ? $data->name3 : null,
-            'name4' => ($data->name4) ? $data->name4 : null,
-            'state_id' => ($data->stateId) ? $data->stateId : null,
-            'checked' => ($data->checkedAt) ? $data->checkedAt : null,
-            'created' => ($data->createdAt) ? GlbF::iso2Date($data->createdAt) : null,
-            'updated' => ($data->updatedAt) ? GlbF::iso2Date($data->updatedAt) : null,
-            'imported' => $now
-        ];
-        $this->Address->save($saveData);
-
-        if (isset($data->options) && $data->options) {
-            $this->AddressOption->deleteAll([
-                'address_id' => $data->id
-            ]);
-            foreach ($data->options as $op) {
-                $this->__doImportAddressesOptionsData($op, $now);
-            }
-        }
-        if ($savePivot && isset($data->pivot)) {
-            $this->__doImportContactAddressData($data->pivot);
-        }
+//        $saveData = [
+//            'id' => $data->id,
+//            'extern_id' => $data->id,
+//            'address1' => ($data->address1) ? $data->address1 : null,
+//            'address2' => ($data->address2) ? $data->address2 : null,
+//            'address3' => ($data->address3) ? $data->address3 : null,
+//            'address4' => ($data->address4) ? $data->address4 : null,
+//            'postcode' => ($data->postalCode) ? $data->postalCode : null,
+//            'town' => ($data->town) ? $data->town : null,
+//            'contry_id' => ($data->countryId) ? $data->countryId : 0,
+//            'gender' => ($data->gender) ? $data->gender : null,
+//            'name1' => ($data->name1) ? $data->name1 : null,
+//            'name2' => ($data->name2) ? $data->name2 : null,
+//            'name3' => ($data->name3) ? $data->name3 : null,
+//            'name4' => ($data->name4) ? $data->name4 : null,
+//            'state_id' => ($data->stateId) ? $data->stateId : null,
+//            'checked' => ($data->checkedAt) ? $data->checkedAt : null,
+//            'created' => ($data->createdAt) ? GlbF::iso2Date($data->createdAt) : null,
+//            'updated' => ($data->updatedAt) ? GlbF::iso2Date($data->updatedAt) : null,
+//            'imported' => $now
+//        ];
+//        $this->Address->save($saveData);
+//
+//        if (isset($data->options) && $data->options) {
+//            $this->AddressOption->deleteAll([
+//                'address_id' => $data->id
+//            ]);
+//            foreach ($data->options as $op) {
+//                $this->__doImportAddressesOptionsData($op, $now);
+//            }
+//        }
+//        if ($savePivot && isset($data->pivot)) {
+//            $this->__doImportContactAddressData($data->pivot);
+//        }
     }
 
     public function importAddress ($addressId) {
