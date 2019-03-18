@@ -171,7 +171,7 @@ class OrdersController extends AppController
                     'conditions' => array(
                         'Order.extern_id = OrderItem.order_id',
                         'OrderItem.item_id > 0',
-                        'OrderItem.type_id' => 1
+                        'OrderItem.type_id' => [1,2,3]
                     ),
                     'type' => 'LEFT'
                 ),
