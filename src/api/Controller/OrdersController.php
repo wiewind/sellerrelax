@@ -171,7 +171,7 @@ class OrdersController extends AppController
                     'conditions' => array(
                         'Order.extern_id = OrderItem.order_id',
                         'OrderItem.item_id > 0',
-                        'OrderItem.type_id' => [1,2,3]
+                        'OrderItem.type_id' => [1,2]
                     ),
                     'type' => 'LEFT'
                 ),
@@ -219,7 +219,7 @@ class OrdersController extends AppController
                 $orders[$d['Order']['extern_id']]['updated'] = $d['Order']['updated'];
                 $orders[$d['Order']['extern_id']]['orderShippingProfile']=$d['OrderShippingProfile']['value'];
                 $orders[$d['Order']['extern_id']]['DeliveryAddress2']=$d['DeliveryAddress']['address2'];
-                $orders[$d['Order']['extern_id']]['VariationWeight'][$d['OrderItem']['item_variation_id']]=$d['ItemsVariation']['weight'] * $d['ItemsVariation']['quantity'];
+                $orders[$d['Order']['extern_id']]['VariationWeight'][$d['OrderItem']['item_variation_id']]=$d['ItemsVariation']['weight'] * $d['OrderItem']['quantity'];
                 $item_id = $d['OrderItem']['item_id'];
                 $data1 = $this->ItemShippingProfile->find('all', [
                     'fields' => 'profile_id',
