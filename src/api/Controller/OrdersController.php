@@ -159,10 +159,10 @@ class OrdersController extends AppController
                 'Order.updated',
                 'OrderItem.item_id',
                 'OrderItem.item_variation_id',
-                'OrderItem.quantity',
-                'OrderShippingProfile.value',
                 'DeliveryAddress.address2',
-                'ItemsVariation.weight'
+                'OrderShippingProfile.value',
+                'OrderItemQuantity.value',
+                'OrderItemWeight.value'
             ],
             'joins' => array(
                 array(
@@ -171,7 +171,7 @@ class OrdersController extends AppController
                     'conditions' => array(
                         'Order.extern_id = OrderItem.order_id',
                         'OrderItem.item_id > 0',
-                        'OrderItem.type_id' => [1,2]
+                        'OrderItem.type_id' => [1, 2, 3]
                     ),
                     'type' => 'LEFT'
                 ),
@@ -189,6 +189,24 @@ class OrdersController extends AppController
                     'conditions' => array(
                         'Order.extern_id = OrderShippingProfile.order_id',
                         'OrderShippingProfile.type_id' => 2
+                    ),
+                    'type' => 'LEFT'
+                ),
+                array(
+                    'table' => Inflector::tableize('OrderProperty'),
+                    'alias' => 'OrderItemWeight',
+                    'conditions' => array(
+                        'Order.extern_id = OrderShippingProfile.order_id',
+                        'OrderShippingProfile.type_id' => 11
+                    ),
+                    'type' => 'LEFT'
+                ),
+                array(
+                    'table' => Inflector::tableize('OrderProperty'),
+                    'alias' => 'OrderItemQuantity',
+                    'conditions' => array(
+                        'Order.extern_id = OrderShippingProfile.order_id',
+                        'OrderShippingProfile.type_id' => 21
                     ),
                     'type' => 'LEFT'
                 ),
@@ -219,7 +237,9 @@ class OrdersController extends AppController
                 $orders[$d['Order']['extern_id']]['updated'] = $d['Order']['updated'];
                 $orders[$d['Order']['extern_id']]['orderShippingProfile']=$d['OrderShippingProfile']['value'];
                 $orders[$d['Order']['extern_id']]['DeliveryAddress2']=$d['DeliveryAddress']['address2'];
-                $orders[$d['Order']['extern_id']]['VariationWeight'][$d['OrderItem']['item_variation_id']]=$d['ItemsVariation']['weight'] * $d['OrderItem']['quantity'];
+                $weight = ($d['OrderItemWeight']['value']) ? $d['OrderItemWeight']['value'] : 0;
+                $quantity = ($d['OrderItemQuantity']['value']) ? $d['OrderItemQuantity']['value'] : 0;
+                $orders[$d['Order']['extern_id']]['VariationWeight'][$d['OrderItem']['item_variation_id']]= $weight * $quantity;
                 $item_id = $d['OrderItem']['item_id'];
                 $data1 = $this->ItemShippingProfile->find('all', [
                     'fields' => 'profile_id',
