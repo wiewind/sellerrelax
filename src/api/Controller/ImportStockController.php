@@ -253,7 +253,7 @@ class ImportStockController extends AppController
                         $this->saveToHistory($stock, $now);
                         $stock['Stock'] = array_merge($stock['Stock'], [
                             'quantity' => 0,
-                            'changed_quantity' => (0 - $stock['Stock']),
+                            'changed_quantity' => (0 - $stock['Stock']['quantity']),
                             'next_receipt' => 0,
                             'next_receipt_on' => null,
                             'reserved' => 0,

@@ -237,6 +237,36 @@ class ImportController extends RestAppController
             $this->OrderItem->create();
             $this->OrderItem->save($oiData);
 
+            if (isset($orderItem->properties)) {
+                $this->OrderItemProperty->deleteAll(['order_item_id' => $orderItem->id]);
+                foreach ($orderItem->properties as $orderItemProperty) {
+                    $this->OrderItemProperty->create();
+                    $this->OrderItemProperty->save([
+                        'extern_id' => $orderItemProperty->id,
+                        'order_item_id' => $orderItemProperty->orderItemId,
+                        'type_id' => $orderItemProperty->typeId,
+                        'value' => $orderItemProperty->value,
+                        'created' => GlbF::iso2Date($orderItemProperty->createdAt),
+                        'modified' => GlbF::iso2Date($orderItemProperty->updatedAt)
+                    ]);
+                }
+            }
+
+            if (isset($orderItem->references)) {
+                $this->OrderItemReference->deleteAll(['order_item_id' => $orderItem->id]);
+                foreach ($orderItem->references as $orderItemReference) {
+                    $this->OrderItemReference->create();
+                    $this->OrderItemReference->save([
+                        'extern_id' => $orderItemReference->id,
+                        'order_item_id' => $orderItemReference->orderItemId,
+                        'reference_type' => $orderItemReference->referenceType,
+                        'reference_order_item_id' => $orderItemReference->referenceOrderItemId,
+                        'created' => GlbF::iso2Date($orderItemReference->createdAt),
+                        'modified' => GlbF::iso2Date($orderItemReference->updatedAt)
+                    ]);
+                }
+            }
+
             // check Item, when not found, import item!
             if ($withItems && isset($orderItem->variation)) {
                 $iv = $this->ItemsVariation->find('first', [
