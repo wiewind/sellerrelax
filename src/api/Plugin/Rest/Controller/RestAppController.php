@@ -104,7 +104,7 @@ class RestAppController extends AppController
                 $update_from = $lastImport['Import']['update_from'];
                 $update_to = $lastImport['Import']['update_to'];
             } else {
-                $update_from = date("Y-m-d h:i:s",strtotime($lastImport['Import']['update_to']." -2 minute"));
+                $update_from = date("Y-m-d H:i:s",strtotime($lastImport['Import']['update_to']." -2 minute"));
             }
         }
 
