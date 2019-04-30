@@ -25,6 +25,7 @@ class RestAppController extends AppController
         'ItemCrossSelling',
         'ItemShippingProfile',
         'BarcodeType',
+        'Availability',
 
         'SmWarehouse',
         'SmLocation',
@@ -63,7 +64,7 @@ class RestAppController extends AppController
      * @param int $importId, when importId > 0 than import only this, others import all
      * @return array|bool
      */
-    function makeNewImport ($type, $importId = 0) {
+    function makeNewImport ($type, $importId = 0, $newImport = false) {
 
         if ($importId > 0) {
             $lastImport = $this->Import->findById($importId);
@@ -76,35 +77,37 @@ class RestAppController extends AppController
             ];
         }
 
-        $lastImport = $this->Import->find('first', [
-            'conditions' => [
-                'type' => $type
-            ],
-            'order' => 'id desc'
-        ]);
-
         $update_from = '';
         $update_to = date('Y-m-d H:i:s');
         $page = 1;
 
-        if ($lastImport) {
-            if (!$lastImport['Import']['import_end']) {
-                if (strtotime($lastImport['Import']['import_beginn']) >= strtotime('-3 minute')) {
-                    return false;
-                }
-            }
+        if (!$newImport) {
+            $lastImport = $this->Import->find('first', [
+                'conditions' => [
+                    'type' => $type
+                ],
+                'order' => 'id desc'
+            ]);
 
-            if (!$lastImport['Import']['is_last_page'] && !$lastImport['Import']['last_page_no']) {
-                CakeLog::write('import',  "***********************  reimport ". $lastImport['Import']['page'] ."  **************************");
-                $page = $lastImport['Import']['page'];
-                $update_from = $lastImport['Import']['update_from'];
-                $update_to = $lastImport['Import']['update_to'];
-            } else if ($lastImport['Import']['last_page_no'] > $lastImport['Import']['page']) {
-                $page = $lastImport['Import']['page'] + 1;
-                $update_from = $lastImport['Import']['update_from'];
-                $update_to = $lastImport['Import']['update_to'];
-            } else {
-                $update_from = date("Y-m-d H:i:s",strtotime($lastImport['Import']['update_to']." -2 minute"));
+            if ($lastImport) {
+                if (!$lastImport['Import']['import_end']) {
+                    if (strtotime($lastImport['Import']['import_beginn']) >= strtotime('-3 minute')) {
+                        return false;
+                    }
+                }
+
+                if (!$lastImport['Import']['is_last_page'] && !$lastImport['Import']['last_page_no']) {
+                    CakeLog::write('import',  "***********************  reimport ". $lastImport['Import']['page'] ."  **************************");
+                    $page = $lastImport['Import']['page'];
+                    $update_from = $lastImport['Import']['update_from'];
+                    $update_to = $lastImport['Import']['update_to'];
+                } else if ($lastImport['Import']['last_page_no'] > $lastImport['Import']['page']) {
+                    $page = $lastImport['Import']['page'] + 1;
+                    $update_from = $lastImport['Import']['update_from'];
+                    $update_to = $lastImport['Import']['update_to'];
+                } else {
+                    $update_from = date("Y-m-d H:i:s",strtotime($lastImport['Import']['update_to']." -2 minute"));
+                }
             }
         }
 

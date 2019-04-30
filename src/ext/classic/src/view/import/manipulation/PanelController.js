@@ -25,35 +25,65 @@ Ext.define('SRX.view.import.manipulation.PanelController', {
     },
 
     onImportItems: function () {
+        var me = this;
         ABox.confirm(
             T.__('All items will be removed and the data re-imported. Are you sure you want to do this?'),
             function () {
-                Glb.common.mask();
-                timeout: 300000,
-                Glb.Ajax({
-                    url: Cake.api.path + '/rest/import/transjson/importItemsAll',
-                    success: function (response, options) {
-                        ABox.info(T.__('Items have been updated!'));
-                    }
-                });
+                me.doImportItems(1);
             }
         );
     },
 
+    doImportItems: function (newImport) {
+        newImport = newImport || 0;
+        Glb.common.mask();
+        var me = this;
+        Glb.Ajax({
+            url: Cake.api.path + '/rest/import/transjson/importItems/' + newImport,
+            timeout: 300000,
+            success: function (response, options) {
+                var resp = Ext.decode(response.responseText);
+                if (resp.success) {
+                    var data = resp.data;
+                    if (!Wiewind.isEmpty(data) && data.is_last_page) {
+                        ABox.info(T.__('Items have been updated!'));
+                    } else {
+                        me.doImportItems(0)
+                    }
+                }
+            }
+        });
+    },
+
     onImportVariations: function () {
+        var me = this;
         ABox.confirm(
             T.__('All variations will be removed and the data re-imported. Are you sure you want to do this?'),
             function () {
-                Glb.common.mask();
-                Glb.Ajax({
-                    url: Cake.api.path + '/rest/import/transjson/importVariationsAll',
-                    timeout: 300000,
-                    success: function (response, options) {
-                        ABox.info(T.__('Variations have been updated!'));
-                    }
-                });
+                me.doImportVariations(1);
             }
         );
+    },
+
+    doImportVariations: function (newImport) {
+        newImport = newImport || 0;
+        Glb.common.mask();
+        var me = this;
+        Glb.Ajax({
+            url: Cake.api.path + '/rest/import/transjson/importVariations/' + newImport,
+            timeout: 300000,
+            success: function (response, options) {
+                var resp = Ext.decode(response.responseText);
+                if (resp.success) {
+                    var data = resp.data;
+                    if (!Wiewind.isEmpty(data) && data.is_last_page) {
+                        ABox.info(T.__('Variations have been updated!'));
+                    } else {
+                        me.doImportVariations(0)
+                    }
+                }
+            }
+        });
     },
 
     onImportAllWarehouses: function () {

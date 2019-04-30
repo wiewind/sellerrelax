@@ -13,14 +13,15 @@ class ImportController extends RestAppController
         'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles',
         'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices',
         'units' => 'rest/items/units',
-        'barcode_types' => 'rest/items/barcodes'
+        'barcode_types' => 'rest/items/barcodes',
+        'availabilities' => 'rest/availabilities'
     ];
 
-    function importOrdersOnce () {
+    function importOrdersOnce ($newImport=false) {
         $this->autoRender = false;
         $this->checkIP();
         ini_set("memory_limit","1024M");
-        $newImport = $this->makeNewImport('orders');
+        $newImport = $this->makeNewImport('orders', 0, $newImport);
 
         if ($newImport === false) return;
 
@@ -349,12 +350,12 @@ class ImportController extends RestAppController
         $this->Item->query('delete from imports where type = "orders";');
     }
 
-    function importItems () {
+    function importItems ($newImport=false) {
         $this->autoRender = false;
         $this->checkIP();
         ini_set("memory_limit","1024M");
 
-        $newImport = $this->makeNewImport('items');
+        $newImport = $this->makeNewImport('items', 0, $newImport);
 
         if ($newImport === false) return;
 
@@ -597,12 +598,12 @@ class ImportController extends RestAppController
         return true;
     }
 
-    function importVariations () {
+    function importVariations ($newImport=false) {
         $this->autoRender = false;
         $this->checkIP();
         ini_set("memory_limit","1024M");
 
-        $newImport = $this->makeNewImport('variations');
+        $newImport = $this->makeNewImport('variations', 0, $newImport);
 
         if ($newImport === false) return;
 
@@ -695,6 +696,31 @@ class ImportController extends RestAppController
             'model' => $var->model,
             'number' => $var->number,
             'picking' => $var->picking,
+
+            'availability' => $var->availability,
+            'availability_updated' => GlbF::iso2Date($var->availabilityUpdatedAt),
+            'available_until' => $var->availableUntil,
+            'bundke_type' => $var->bundleType,
+            'default_shipping_cost' => $var->defaultShippingCosts + 0,
+            'purchase_price' => $var->purchasePrice + 0,
+
+            'is_active' => $var->isActive,
+            'is_main' => $var->isMain,
+            'interval_oder_quantity' => $var->intervalOrderQuantity,
+            'max_order_quantity' => $var->maximumOrderQuantity,
+            'min_order_quantity' => $var->minimumOrderQuantity,
+            'parent_variation_id' => $var->parentVariationId,
+            'parent_variation_quantity' => $var->parentVariationQuantity,
+            'price_caclulation_id' => $var->priceCalculationId + 0,
+            'operating_cost' => $var->operatingCosts + 0,
+            'transportation_cost' => $var->transportationCosts + 0,
+            'storage_cost' => $var->storageCosts + 0,
+            'single_item_count' => $var->singleItemCount + 0,
+            'stock_limit' => $var->stockLimitation + 0,
+            'unit_combination_id' => $var->unitCombinationId + 0,
+            'units_contained' => $var->unitsContained + 0,
+            'vat_id' => $var->vatId + 0,
+
             'updated_at' => GlbF::iso2Date($var->updatedAt),
             'imported' => date('Y-m-d H:i:s')
         ];
@@ -839,5 +865,26 @@ class ImportController extends RestAppController
         }
 
         CakeLog::write('import', "Todo finished!");
+    }
+
+    function importAvailabilities () {
+        $url = $this->restAdress['availabilities'];
+        $data = $this->callJsonRest($url);
+        if ($data) {
+            $this->Availability->query('TRUNCATE TABLE availabilities;');
+            foreach ($data as $d) {
+                $savedata = [
+                    'id' => $d->id,
+                    'average_days' => $d->averageDays,
+                ];
+                if (isset($d->names)) {
+                    foreach ($d->names as $name) {
+                        $savedata['name_' . $name->lang] = $name->name;
+                    }
+                }
+                $this->Availability->create();
+                $this->Availability->save($savedata);
+            }
+        }
     }
 }
