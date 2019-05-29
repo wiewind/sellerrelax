@@ -11,19 +11,26 @@ class RestAppController extends AppController
     var $uses = [
         'Import',
         'ImportTodo',
-        'Item',
         'Order',
         'OrderProperty',
         'OrderStatus',
         'OrderItem',
         'OrderItemProperty',
         'OrderItemReference',
+
         'RestToken',
         'Unit',
+
+        'Item',
         'ItemsVariation',
         'ItemsVariationsBarcode',
         'ItemCrossSelling',
         'ItemShippingProfile',
+        'ItemProperty',
+        'ItemPropertyType',
+        'ItemPropertyGroup',
+        'ItemPropertyMarketComponent',
+        'ItemPropertySelection',
         'BarcodeType',
         'Availability',
 

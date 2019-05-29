@@ -9,12 +9,14 @@
 class ImportController extends RestAppController
 {
     var $restAdress = [
-        'orders' => 'rest/orders/?with[]=orderItems.variation&with[]=orderItems.variationBarcodes&with[]=addresses',
-        'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles',
+        'orders' => 'rest/orders?with[]=orderItems.variation&with[]=orderItems.variationBarcodes&with[]=addresses',
+        'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles,itemProperties',
         'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices',
         'units' => 'rest/items/units',
         'barcode_types' => 'rest/items/barcodes',
-        'availabilities' => 'rest/availabilities'
+        'availabilities' => 'rest/availabilities',
+        'item_property_groups' => 'rest/items/property_groups',
+        'item_property_types' => 'rest/items/properties?with=marketComponents,selections'
     ];
 
     function importOrdersOnce ($newImport=false) {
@@ -321,7 +323,7 @@ class ImportController extends RestAppController
 
         ini_set("memory_limit","1024M");
 
-        $resturl = str_replace('rest/orders/', 'rest/orders/'.$order_id, $this->restAdress['orders']);
+        $resturl = str_replace('rest/orders', 'rest/orders/'.$order_id, $this->restAdress['orders']);
 
         $data = $this->callJsonRest($resturl);
 
@@ -536,7 +538,6 @@ class ImportController extends RestAppController
         }
 
         if (isset($item->itemCrossSelling)) {
-            //GlbF::printArray($item->itemCrossSelling);
             $this->ItemCrossSelling->deleteAll(['item_id' => $data['extern_id']]);
             foreach ($item->itemCrossSelling as $crossSelling) {
                 $this->ItemCrossSelling->create();
@@ -547,6 +548,38 @@ class ImportController extends RestAppController
                     'relationship' => $crossSelling->relationship,
                     'modified' => $crossSelling->last_update_timestamp
                 ]);
+            }
+        }
+
+        if (isset($item->itemProperties)) {
+            $this->ItemProperty->deleteAll(['item_id' => $data['extern_id']]);
+            foreach ($item->itemProperties as $pps) {
+                $this->ItemProperty->create();
+                $savePps = [
+                    'extern_id' => $pps->id,
+                    'item_id' => $pps->itemId,
+                    'property_id' => $pps->propertyId,
+                    'surcharge' => $pps->surcharge,
+                    'property_selection_id' => $pps->propertySelectionId ? $pps->propertySelectionId : null,
+                    'value_file' => $pps->valueFile ? $pps->valueFile : null,
+                    'value_float' => $pps->valueFloat ? $pps->valueFloat : null,
+                    'value_int' => $pps->valueInt ? $pps->valueInt : null,
+                    'value_text' => "",
+                    'created' => GlbF::iso2Date($pps->createdAt),
+                    'updated' => GlbF::iso2Date($pps->updatedAt)
+                ];
+                if (isset($pps->valueTexts) && $pps->valueTexts) {
+                    foreach ($pps->valueTexts as $aText) {
+                        if ($aText->lang == "de") {
+                            $savePps['value_text'] = $aText->value;
+                        }
+                    }
+                    if ($savePps['value_text'] == "") {
+                        $savePps['value_text'] = $pps->valueTexts[0]->value;
+                    }
+
+                }
+                $this->ItemProperty->save($savePps);
             }
         }
     }
@@ -574,7 +607,7 @@ class ImportController extends RestAppController
 //        $this->checkLogin();
         ini_set("memory_limit","1024M");
 
-        $url = str_replace($this->restAdress['items'], 'rest/items/'.$item_id, $this->restAdress['items']);
+        $url = str_replace('rest/items', 'rest/items/'.$item_id, $this->restAdress['items']);
         $data = json_decode($this->Rest->callAPI('GET', $url));
 
         if (isset($data->error)) {
@@ -885,6 +918,91 @@ class ImportController extends RestAppController
                 $this->Availability->create();
                 $this->Availability->save($savedata);
             }
+        }
+    }
+
+    function importItemPropertyGroups () {
+        $url = $this->restAdress['item_property_groups'];
+        $data = $this->callJsonRest($url);
+        if ($data->entries) {
+            $this->ItemPropertyGroup->query('TRUNCATE TABLE item_property_groups;');
+            foreach ($data->entries as $d) {
+                $savedata = [
+                    'extern_id' => $d->id,
+                    'backend_name' => $d->backendName,
+                    'is_surcharge_percental' => $d->isSurchargePercental ? $d->isSurchargePercental : 0,
+                    'order_property_grouping_type' => $d->orderPropertyGroupingType,
+                    'otto_component' => $d->ottoComponent,
+                    'updated' => GlbF::iso2Date($d->updatedAt),
+                ];
+                $this->ItemPropertyGroup->create();
+                $this->ItemPropertyGroup->save($savedata);
+            }
+        }
+    }
+
+    function importItemPropertyTypes ($page = 1) {
+        $this->importItemPropertyGroups();
+
+        $url = $this->restAdress['item_property_types'];
+        $data = $this->callJsonRest($url, ['itemsPerPage' => 250, 'page' => $page]);
+
+        if ($data->entries) {
+            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_types;');
+            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_market_components;');
+            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_selections;');
+            foreach ($data->entries as $d) {
+                $savedata = [
+                    'extern_id' => $d->id,
+                    'backend_name' => $d->backendName,
+                    'property_group_id' => $d->propertyGroupId ? $d->propertyGroupId : 0,
+                    'value_type' => $d->valueType,
+                    'comment' => $d->comment,
+                    'is_oder_property' => $d->isOderProperty,
+                    'is_searchable' => $d->isSearchable,
+                    'is_shown_as_additional_costs' => $d->isShownAsAdditionalCosts,
+                    'is_shown_at_checkout' => $d->isShownAtCheckout,
+                    'is_shown_in_pdf' => $d->isShownInPdf,
+                    'is_shown_on_item_list' => $d->isShownOnItemList,
+                    'is_shown_on_item_page' => $d->isShownOnItemPage,
+                    'position' => $d->position,
+                    'surcharge' => $d->surcharge,
+                    'unit' => $d->unit ? $d->unit : null,
+                    'updated' => GlbF::iso2Date($d->updatedAt),
+                ];
+                $this->ItemPropertyType->create();
+                $this->ItemPropertyType->save($savedata);
+
+                if (isset($d->marketComponents)) {
+                    foreach ($d->marketComponents as $mc) {
+                        $this->ItemPropertyMarketComponent->create();
+                        $this->ItemPropertyMarketComponent->save([
+                            'property_idd' => $mc->propertyId,
+                            'market_id' => $mc->marketId,
+                            'component_id' => $mc->componentId,
+                            'external_component' => $mc->externalComponent
+                        ]);
+                    }
+                }
+
+                if (isset($d->selections)) {
+                    foreach ($d->selections as $sel) {
+                        GlbF::printArray($sel);
+                        $this->ItemPropertySelection->create();
+                        $this->ItemPropertySelection->save([
+                            'extern_id' => $sel->id,
+                            'propertyId' => $sel->propertyId,
+                            'name' => $sel->name,
+                            'description' => $sel->description,
+                            'lang' => $sel->lang
+                        ]);
+                    }
+                }
+            }
+        }
+
+        if (!$data->isLastPage) {
+            $this->importItemPropertyTypes($page++);
         }
     }
 }
