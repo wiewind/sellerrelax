@@ -105,17 +105,19 @@ class DeletedOrdersController extends RestAppController
                 'status_id'
             ],
             'conditions' => [
-                'extern_id' => $order->OrderId
+                'extern_id' => $order->orderId
             ]
         ]);
 
         if ($odata && $odata['Order']['status_id'] != '20') {
-            $this->Order->save([
+            $do = [
                 'id' => $odata['Order']['id'],
                 'status_id' => 20,
                 'updated' => GlbF::iso2Date($order->createdAt),
+                'deleted' => 1,
                 'imported' => $now
-            ]);
+            ];
+            $this->Order->save($do);
         }
     }
 }
