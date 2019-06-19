@@ -154,8 +154,10 @@ class ItemsController extends AppController
         $putData = [];
         foreach ($varProps as $itemId => $varData) {
             foreach ($varData as $variationId => $propData) {
-                $propIds = array_keys($propData);
                 foreach ($items[$itemId] as $propId => $value) {
+                    if ($value == "") {
+                        $value = "-";
+                    }
                     if (isset($propData[$propId])) {
                         // add in put
                         $putData[] = [

@@ -204,17 +204,15 @@ class ImportController extends AppController
                                     'status' => 1
                                 ]
                             );
-                            if ($value) {
-                                $this->ImportItemProperty->create();
-                                $this->ImportItemProperty->save([
-                                    'item_id' => $itemId,
-                                    'property_id' => $propertyId,
-                                    'value' => $value,
-                                    'status' => 1,
-                                    'created' => $now,
-                                    'modified' => $now
-                                ]);
-                            }
+                            $this->ImportItemProperty->create();
+                            $this->ImportItemProperty->save([
+                                'item_id' => $itemId,
+                                'property_id' => $propertyId,
+                                'value' => $value,
+                                'status' => 1,
+                                'created' => $now,
+                                'modified' => $now
+                            ]);
                         }
                     }
                 }
