@@ -180,7 +180,7 @@ class ImportController extends AppController
         $now = date('Y-m-d H:i:s');
         if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
             $propertyIds = [];
-            while (($data = fgetcsv($handle, 1024, "~")) !== FALSE) {
+            while (($data = fgetcsv($handle, 20480, "~")) !== FALSE) {
                 $num = count($data);
                 if ($num > 3) {
                     $row++;
