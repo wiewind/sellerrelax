@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2019-02-21 10:47+0100\n"
+"POT-Creation-Date: 2019-06-18 10:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -24,42 +24,50 @@ msgstr ""
 msgid "Invalid username or password, please try again."
 msgstr "用户名或密码不正确，请重试。"
 
-#: api/Controller/ImportController.php:116
-#: api/Controller/OutstocksController.php:71
+#: api/Controller/ImportController.php:120
+#: api/Controller/OutstocksController.php:84
+#: ext/classic/src/view/import/itemproperties/Grid.js:35
 msgid "All"
 msgstr "全部"
 
-#: api/Controller/ImportStockController.php:40
+#: api/Controller/ImportStockController.php:55
 #, php-format
 msgid "Successfully written to %s!"
 msgstr "已成功写入 %s!"
 
-#: api/Controller/ImportStockController.php:41
+#: api/Controller/ImportStockController.php:56
 #, php-format
 msgid "There are not new file for warehouse %s!"
 msgstr "仓库%s没有新文件！"
 
-#: api/Controller/ImportStockController.php:55
+#: api/Controller/ImportStockController.php:70
 #, php-format
 msgid "FTP connect error at warehouse %s!"
 msgstr "仓库%s的FTP服务器出现连接错误！"
 
-#: api/Controller/ImportStockController.php:65
+#: api/Controller/ImportStockController.php:80
 #, php-format
 msgid "FTP transport error at warehouse %s!"
 msgstr "仓库%s出现传输错误！"
 
-#: api/Controller/ImportStockController.php:74
+#: api/Controller/ImportStockController.php:89
 #, php-format
 msgid "FTP login error at warehouse %s!"
 msgstr "仓库%s出现登录错误！"
 
-#: api/Controller/ImportStockController.php:93
+#: api/Controller/ImportStockController.php:108
 #, php-format
 msgid "The emailbox %s can not be login!"
 msgstr "信箱%s无法正常登录！"
 
-#: api/Lib/ErrorCode.php:18 ext/app/ux/AMessageBox.js:44
+#: api/Controller/ItemsController.php:292
+#, php-format
+msgid "The PropertyId '%s' is not exist."
+msgstr "属性Id '%s' 不存在。"
+
+#: api/Lib/ErrorCode.php:18 ext/app/store/ImportItemProperties.js:18
+#: ext/app/ux/AMessageBox.js:44
+#: ext/classic/src/view/import/itemproperties/Grid.js:37
 msgid "Success"
 msgstr "成功"
 
@@ -172,6 +180,26 @@ msgstr "新版本已经上线！"
 msgid "Unknown"
 msgstr "未知"
 
+#: ext/app/store/ImportItemProperties.js:17 ext/app/utils/Global.js:22
+#: ext/classic/src/view/import/itemproperties/Grid.js:36
+msgid "New"
+msgstr "新建"
+
+#: ext/app/store/ImportItemProperties.js:19 ext/app/ux/AMessageBox.js:85
+#: ext/classic/src/view/import/itemproperties/Grid.js:38
+msgid "Failure"
+msgstr "失败"
+
+#: ext/app/store/ImportItemProperties.js:20
+#: ext/classic/src/view/import/itemproperties/Grid.js:39
+msgid "Overridden"
+msgstr "被覆盖"
+
+#: ext/app/store/ImportItemProperties.js:21
+#: ext/classic/src/view/import/itemproperties/Grid.js:40
+msgid "Deleted"
+msgstr "已删除"
+
 #: ext/app/utils/Global.js:9
 msgid "Submit"
 msgstr "提交"
@@ -199,10 +227,6 @@ msgstr "保存并关闭"
 msgid "Close"
 msgstr "关闭"
 
-#: ext/app/utils/Global.js:22
-msgid "New"
-msgstr "新建"
-
 #: ext/app/utils/Global.js:24
 msgid "Add"
 msgstr "添加"
@@ -212,6 +236,7 @@ msgid "Edit"
 msgstr "编辑"
 
 #: ext/app/utils/Global.js:28 ext/classic/src/ux/SearchText.js:9
+#: ext/classic/src/view/import/itemproperties/Grid.js:77
 msgid "Search"
 msgstr "查询"
 
@@ -330,6 +355,7 @@ msgid "December"
 msgstr "十二月"
 
 #: ext/app/ux/AMessageBox.js:55
+#: ext/classic/src/view/import/itemproperties/Grid.js:128
 msgid "Info"
 msgstr "信息"
 
@@ -340,10 +366,6 @@ msgstr "错误"
 #: ext/app/ux/AMessageBox.js:75
 msgid "Warning"
 msgstr "警告"
-
-#: ext/app/ux/AMessageBox.js:85
-msgid "Failure"
-msgstr "失败"
 
 #: ext/app/ux/AMessageBox.js:94
 msgid "Attention"
@@ -394,11 +416,14 @@ msgstr "上传你的照片……"
 #: ext/classic/src/view/export/fbacustomers/Grid.js:31
 #: ext/classic/src/view/export/skuarticles/Grid.js:25
 #: ext/classic/src/view/export/skuarticles/Grid.js:31
+#: ext/classic/src/view/import/itemproperties/Grid.js:24
+#: ext/classic/src/view/import/itemproperties/Grid.js:95
 #: ext/classic/src/view/import/robots/Grid.js:24
 #: ext/classic/src/view/import/robots/Grid.js:30
 #: ext/classic/src/view/import/tracking/Grid.js:24
 #: ext/classic/src/view/import/tracking/Grid.js:30
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:25
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:42
 msgid "This list is empty."
 msgstr "该列表为空。"
 
@@ -439,6 +464,7 @@ msgid "Old Value"
 msgstr "旧值"
 
 #: ext/classic/src/view/export/EditWindow.js:58
+#: ext/classic/src/view/import/itemproperties/Grid.js:118
 msgid "Value"
 msgstr "值"
 
@@ -516,19 +542,23 @@ msgid "Drag file to this area..."
 msgstr "将文件拖入该区域……"
 
 #: ext/classic/src/view/export/skuarticles/UploadPanelController.js:47
+#: ext/classic/src/view/import/itemproperties/GridController.js:44
 msgid "You may upload only one file."
 msgstr "您仅可以上传一个文件。"
 
 #: ext/classic/src/view/export/skuarticles/UploadPanelController.js:57
+#: ext/classic/src/view/import/itemproperties/GridController.js:54
 msgid "You may upload only csv file."
 msgstr "您仅可以上传CSV文件。"
 
 #: ext/classic/src/view/export/skuarticles/UploadPanelController.js:61
+#: ext/classic/src/view/import/itemproperties/GridController.js:58
 #, javascript-format
 msgid "Upload file: %s <br /> filesize: %d"
 msgstr "上传文件：%s<br />文件大小：%d"
 
 #: ext/classic/src/view/export/skuarticles/UploadPanelController.js:74
+#: ext/classic/src/view/import/itemproperties/GridController.js:70
 #, javascript-format
 msgid "%s record(s) are imported!"
 msgstr "已导入%s条记录！"
@@ -598,64 +628,125 @@ msgstr "三年销售额"
 msgid "Years"
 msgstr "年份"
 
-#: ext/classic/src/view/import/MainPanel.js:38
+#: ext/classic/src/view/import/MainPanel.js:39
 msgid "Tracking"
 msgstr "追踪"
 
-#: ext/classic/src/view/import/MainPanel.js:44
+#: ext/classic/src/view/import/MainPanel.js:45
 msgid "Manipulation"
 msgstr "手工导入"
 
-#: ext/classic/src/view/import/MainPanel.js:50
+#: ext/classic/src/view/import/MainPanel.js:51
 msgid "Robots"
 msgstr "爬虫机器人"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:30
+#: ext/classic/src/view/import/MainPanel.js:57
+msgid "Item Properties"
+msgstr "商品属性"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:27
+msgid "Choose Status"
+msgstr "选择状态"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:47
+#: ext/classic/src/view/import/itemproperties/Grid.js:108
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:161
+msgid "Item"
+msgstr "商品"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:56
+msgid "Created"
+msgstr "创建于"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:66
+#: ext/classic/src/view/import/tracking/Grid.js:79
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:71
+msgid " - "
+msgstr " - "
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:82
+msgid "to Plenty"
+msgstr "传至Plenty"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:86
+#: ext/classic/src/view/import/itemproperties/GridController.js:84
+msgid "CSV Upload"
+msgstr "上传CSV"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:100
+msgid "Created at"
+msgstr "创建于"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:113
+msgid "Property"
+msgstr "属性"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:123
+msgid "Status"
+msgstr "状态"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:133
+msgid "Imported at"
+msgstr "导入于"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:141
+msgid "Modified at"
+msgstr "最后修改"
+
+#: ext/classic/src/view/import/itemproperties/GridController.js:84
+msgid "Drag the csv file into the table to upload it."
+msgstr "将csv文件拖曳到表格里就可以实现上传。"
+
+#: ext/classic/src/view/import/itemproperties/GridController.js:92
+msgid "Finished!"
+msgstr "完成！"
+
+#: ext/classic/src/view/import/manipulation/Panel.js:36
 msgid "Exact Import"
 msgstr "精确导入"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:41
+#: ext/classic/src/view/import/manipulation/Panel.js:49
 msgid "Enter ID..."
 msgstr "输入ID......"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:68
+#: ext/classic/src/view/import/manipulation/Panel.js:78
 msgid "Reset Orders"
 msgstr "订单重置"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:84
-#: ext/classic/src/view/import/manipulation/Panel.js:93
+#: ext/classic/src/view/import/manipulation/Panel.js:98
+#: ext/classic/src/view/import/manipulation/Panel.js:109
 msgid "Import Items"
 msgstr "导入商品原型"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:98
+#: ext/classic/src/view/import/manipulation/Panel.js:114
 msgid "Import Variations"
 msgstr "导入商品细类"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:105
+#: ext/classic/src/view/import/manipulation/Panel.js:123
 msgid "Stock managment"
 msgstr "库存管理"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:114
+#: ext/classic/src/view/import/manipulation/Panel.js:134
 msgid "Import together"
 msgstr "统一导入"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:123
+#: ext/classic/src/view/import/manipulation/Panel.js:143
 msgid "Import separately"
 msgstr "分别导入"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:134
+#: ext/classic/src/view/import/manipulation/Panel.js:159
 msgid "Warehouses"
 msgstr "仓库"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:139
+#: ext/classic/src/view/import/manipulation/Panel.js:164
 msgid "Dimensions"
 msgstr "坐标"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:144
+#: ext/classic/src/view/import/manipulation/Panel.js:169
 msgid "Levels"
 msgstr "层"
 
-#: ext/classic/src/view/import/manipulation/Panel.js:149
+#: ext/classic/src/view/import/manipulation/Panel.js:174
 msgid "Locations"
 msgstr "区域"
 
@@ -671,34 +762,34 @@ msgstr "您确信要重置数据库吗？"
 msgid "The database is empty, it will refill at next run of import conjob!"
 msgstr "数据库已经清空，下一次conjob运行时它将被再次填写!"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:29
+#: ext/classic/src/view/import/manipulation/PanelController.js:30
 msgid ""
 "All items will be removed and the data re-imported. Are you sure you want to "
 "do this?"
 msgstr "清空全部商品并重新导入。您确信要这样做吗？"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:36
+#: ext/classic/src/view/import/manipulation/PanelController.js:49
 msgid "Items have been updated!"
 msgstr "商品更新完毕！"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:45
+#: ext/classic/src/view/import/manipulation/PanelController.js:61
 msgid ""
 "All variations will be removed and the data re-imported. Are you sure you "
 "want to do this?"
 msgstr "清空全部商品细类并重新导入。您确信要这样做吗？"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:52
+#: ext/classic/src/view/import/manipulation/PanelController.js:80
 msgid "Variations have been updated!"
 msgstr "商品细类更新完毕！"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:61
+#: ext/classic/src/view/import/manipulation/PanelController.js:91
 msgid ""
 "All warehouses (inc. dimensions, levels and locations) will be removed and "
 "the data re-imported. Are you sure you want to do this?"
 msgstr ""
 "所有仓库（包括坐标，层和区域）信息将被删除并重新导入。您确定要这么做吗？"
 
-#: ext/classic/src/view/import/manipulation/PanelController.js:68
+#: ext/classic/src/view/import/manipulation/PanelController.js:98
 msgid "All warehouses have been updated!"
 msgstr "所有仓库信息更新完毕！"
 
@@ -728,14 +819,9 @@ msgid "Type"
 msgstr "类别"
 
 #: ext/classic/src/view/import/tracking/Grid.js:66
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:50
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:61
 msgid "Date"
 msgstr "日期"
-
-#: ext/classic/src/view/import/tracking/Grid.js:79
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:60
-msgid " - "
-msgstr " - "
 
 #: ext/classic/src/view/import/tracking/Grid.js:96
 msgid "realy import"
@@ -830,42 +916,38 @@ msgstr "Rest测试"
 msgid "Hot sales"
 msgstr "热销榜"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:35
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:145
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:46
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:156
 msgid "Lager"
 msgstr "仓库"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:70
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:81
 msgid "Sort by"
 msgstr "排序"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:77
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:160
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:88
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:171
 msgid "Sales quantity"
 msgstr "销量"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:78
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:165
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:89
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:176
 msgid "Purchase"
 msgstr "进货"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:91
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:102
 msgid "TOP"
 msgstr "TOP"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:135
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:146
 msgid "Number"
 msgstr "Number"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:140
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:151
 msgid "EAN"
 msgstr "EAN"
 
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:150
-msgid "Item"
-msgstr "Item"
-
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:155
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:166
 msgid "Variation"
 msgstr "Variation"
 
@@ -897,6 +979,9 @@ msgstr "密码"
 #: api/View/System/login.ctp:9
 msgid "Please enter your password"
 msgstr "请输入您的密码"
+
+#~ msgid "CSV Uploadt"
+#~ msgstr "上传CSV"
 
 #~ msgid "Orders"
 #~ msgstr "订单"

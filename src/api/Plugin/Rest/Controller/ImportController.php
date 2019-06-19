@@ -11,7 +11,7 @@ class ImportController extends RestAppController
     var $restAdress = [
         'orders' => 'rest/orders?with[]=orderItems.variation&with[]=orderItems.variationBarcodes&with[]=addresses',
         'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles,itemProperties',
-        'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices',
+        'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices,variationProperties',
         'units' => 'rest/items/units',
         'barcode_types' => 'rest/items/barcodes',
         'availabilities' => 'rest/availabilities',

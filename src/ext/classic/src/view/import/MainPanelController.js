@@ -56,5 +56,15 @@ Ext.define('SRX.view.import.MainPanelController', {
             xtype: 'importrobotsgrid'
         });
         this.afterClick('robots');
+    },
+
+    onClickItemProperties: function () {
+        var view = this.getView(),
+            container = view.down('container[itemId="importMainCt"]');
+        container.removeAll();
+        container.add({
+            xtype: 'importitempropertiesgrid'
+        });
+        this.afterClick('itemproperties');
     }
 });

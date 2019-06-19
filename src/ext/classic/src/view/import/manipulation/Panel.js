@@ -18,8 +18,14 @@ Ext.define('SRX.view.import.manipulation.Panel', {
             collapsible: true,
             collapseToolText: T.__('Collapse'),
             expandToolText: T.__('Expand'),
+            layout: 'vbox',
             defaults: {
-                margin: 10
+                xtype: 'container',
+                margin: 5,
+                layout: 'hbox',
+                defaults: {
+                    margin: 5
+                }
             }
         }
     },
@@ -36,30 +42,34 @@ Ext.define('SRX.view.import.manipulation.Panel', {
             layout: 'hbox',
             items: [
                 {
-                    xtype: 'textfield',
-                    name: 'id',
-                    emptyText: T.__('Enter ID...'),
-                    width: '400',
-                    listeners: {
-                        specialkey: 'submitOnEnter'
-                    }
-                },
-                {
-                    xtype: 'radiogroup',
-                    columns: 2,
-                    vertical: true,
-                    defaults: {
-                        margin: '0 10px 0 0'
-                    },
                     items: [
-                        { boxLabel: 'Order', name: 'type', inputValue: 'order', checked: true },
-                        { boxLabel: 'Item', name: 'type', inputValue: 'item' }
+                        {
+                            xtype: 'textfield',
+                            name: 'id',
+                            emptyText: T.__('Enter ID...'),
+                            width: '400',
+                            listeners: {
+                                specialkey: 'submitOnEnter'
+                            }
+                        },
+                        {
+                            xtype: 'radiogroup',
+                            columns: 2,
+                            vertical: true,
+                            defaults: {
+                                margin: '0 10px 0 0'
+                            },
+                            items: [
+                                { boxLabel: 'Order', name: 'type', inputValue: 'order', checked: true },
+                                { boxLabel: 'Item', name: 'type', inputValue: 'item' }
+                            ]
+                        },
+                        {
+                            xtype: 'button',
+                            text: Glb.btnSetting.submitText,
+                            handler: 'onSubmit'
+                        }
                     ]
-                },
-                {
-                    xtype: 'button',
-                    text: Glb.btnSetting.submitText,
-                    handler: 'onSubmit'
                 }
             ]
         },
@@ -73,9 +83,13 @@ Ext.define('SRX.view.import.manipulation.Panel', {
             collapsed: true,
             items: [
                 {
-                    xtype: 'button',
-                    text: Glb.btnSetting.resetText,
-                    handler: 'onReset'
+                    items: [
+                        {
+                            xtype: 'button',
+                            text: Glb.btnSetting.resetText,
+                            handler: 'onReset'
+                        }
+                    ]
                 }
             ]
         },
@@ -85,18 +99,22 @@ Ext.define('SRX.view.import.manipulation.Panel', {
             width: '100%',
             border: 1,
             bodyPadding: 10,
-            layout: 'hbox',
+            layout: 'vbox',
             collapsed: true,
             items: [
                 {
-                    xtype: 'button',
-                    text: T.__('Import Items'),
-                    handler: 'onImportItems'
-                },
-                {
-                    xtype: 'button',
-                    text: T.__('Import Variations'),
-                    handler: 'onImportVariations'
+                    items: [
+                        {
+                            xtype: 'button',
+                            text: T.__('Import Items'),
+                            handler: 'onImportItems'
+                        },
+                        {
+                            xtype: 'button',
+                            text: T.__('Import Variations'),
+                            handler: 'onImportVariations'
+                        }
+                    ]
                 }
             ]
         },
@@ -106,22 +124,29 @@ Ext.define('SRX.view.import.manipulation.Panel', {
             width: '100%',
             border: 1,
             layout: 'vbox',
-            // collapsed: true,
+            collapsed: true,
             bodyPadding: 10,
             items: [
                 {
-                    xtype: 'button',
-                    text: T.__('Import together'),
-                    handler: 'onImportAllWarehouses'
+                    items: [
+                        {
+                            xtype: 'button',
+                            text: T.__('Import together'),
+                            handler: 'onImportAllWarehouses'
+                        }
+                    ]
                 },
                 {
-                    xtype: 'container',
-                    layout: 'vbox',
-                    hidden: true,
+                    padding: '10px 0 0 0',
                     items: [
                         {
                             html: '<B>' + T.__('Import separately') + ': </B>'
-                        },
+                        }
+                    ]
+                },
+                {
+                    //hidden: true,
+                    items: [
                         {
                             xtype: 'container',
                             layout: 'hbox',

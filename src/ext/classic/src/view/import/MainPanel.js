@@ -9,6 +9,7 @@ Ext.define('SRX.view.import.MainPanel', {
         'SRX.view.import.tracking.Grid',
         'SRX.view.import.manipulation.Panel',
         'SRX.view.import.robots.Grid',
+        'SRX.view.import.itemproperties.Grid',
         'SRX.view.import.MainPanelController'
     ],
 
@@ -51,6 +52,12 @@ Ext.define('SRX.view.import.MainPanel', {
                     iconCls: 'x-fa fa-android',
                     itemId: 'robots',
                     handler: 'onClickRobots'
+                },
+                {
+                    text: T.__('Item Properties'),
+                    iconCls: 'x-fa fa-tag',
+                    itemId: 'itemproperties',
+                    handler: 'onClickItemProperties'
                 }
             ]
         },

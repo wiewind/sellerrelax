@@ -8,6 +8,10 @@
  */
 class ImportController extends AppController
 {
+    var $uses = [
+        'Import',
+        'ImportItemProperty'
+    ];
     function getRobots () {
         $this->checkLogin();
         $params = $this->request->data;
@@ -130,5 +134,93 @@ class ImportController extends AppController
             'data' => $res,
             'total' => $total
         ];
+    }
+
+    function getImportItemPropertiesList () {
+        $this->checkLogin();
+        $params = $this->request->data;
+        $conditions = [];
+
+        if ($params['status'] > 0) {
+            $conditions['status'] = $params['status'];
+        }
+
+        if ($params['itemId'] > 0) {
+            $conditions['item_id'] = $params['itemId'];
+        }
+
+        if (isset($params['from']) && $params['from']) {
+            $conditions['created >= '] = $params['from'] . ' 00:00:00';
+        }
+        if (isset($params['to']) && $params['to']) {
+            $conditions['created <= '] = $params['to'] . ' 23:59:59';
+        }
+
+        $total = $this->ImportItemProperty->find('count', [
+            'conditions' => $conditions
+        ]);
+
+        $data = $this->ImportItemProperty->find('all', [
+            'conditions' => $conditions,
+            'order' => ['ImportItemProperty.created DESC, ImportItemProperty.item_id, ImportItemProperty.property_id'],
+            'page' => $params['page'],
+            'limit' => $params['limit']
+        ]);
+
+        return [
+            'data' => $data,
+            'total' => $total
+        ];
+    }
+
+    public function importItemPropertiesCsv() {
+        $this->checkLogin();
+        $file = $this->request->params['form']['fileToUpload'];
+        $row = 0;
+        $now = date('Y-m-d H:i:s');
+        if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
+            $propertyIds = [];
+            while (($data = fgetcsv($handle, 1024, "~")) !== FALSE) {
+                $num = count($data);
+                if ($num > 3) {
+                    $row++;
+                    if ($row === 1) {
+                        for ($i=3; $i<$num; $i++) {
+                            $propertyIds[] = substr($data[$i], strpos($data[$i], '%')+1);
+                        }
+                    } else {
+                        $itemId = $data[2];
+                        for ($i=3; $i<$num; $i++) {
+                            $propertyId = $propertyIds[$i-3];
+                            $value = $data[$i];
+                            $this->ImportItemProperty->updateAll(
+                                [
+                                    'status' => 4,
+                                    'modified' => '"'.$now.'"'
+                                ],
+                                [
+                                    'item_id' => $itemId,
+                                    'property_id' => $propertyId,
+                                    'status' => 1
+                                ]
+                            );
+                            if ($value) {
+                                $this->ImportItemProperty->create();
+                                $this->ImportItemProperty->save([
+                                    'item_id' => $itemId,
+                                    'property_id' => $propertyId,
+                                    'value' => $value,
+                                    'status' => 1,
+                                    'created' => $now,
+                                    'modified' => $now
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+            fclose($handle);
+        }
+        return $row;
     }
 }
