@@ -2,3 +2,4 @@
 tools/
 src/api/Controller/ZoController.php
 src/api/webroot/test.txt
+*.log
