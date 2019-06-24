@@ -177,7 +177,7 @@ class ItemsController extends AppController
         $putData = [];
         foreach ($varProps as $variationId => $varData) {
             $hasPropIds = array_keys($varData);
-            foreach ($variations[$variationId] as $properyId => $imVarProp) {
+            foreach ($variations[$variationId] as $propertyId => $imVarProp) {
                 if (in_array($propertyId, $hasPropIds)) {
                     $oldPropData = $varData[$propertyId];
                     $valueId = $oldPropData['valueId'];
