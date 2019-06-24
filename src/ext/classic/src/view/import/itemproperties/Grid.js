@@ -127,8 +127,18 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
             width: 100
         },
         {
+            text: T.__("Variation"),
+            dataIndex: 'variationId',
+            width: 100
+        },
+        {
             text: T.__('Property'),
             dataIndex: 'propertyId',
+            width: 100
+        },
+        {
+            text: T.__("Language"),
+            dataIndex: 'lang',
             width: 100
         },
         {

@@ -182,16 +182,18 @@ class ImportController extends AppController
             $propertyIds = [];
             while (($data = fgetcsv($handle, 20480, "~")) !== FALSE) {
                 $num = count($data);
-                if ($num > 3) {
+                if ($num > 5) {
                     $row++;
                     if ($row === 1) {
-                        for ($i=3; $i<$num; $i++) {
+                        for ($i=5; $i<$num; $i++) {
                             $propertyIds[] = substr($data[$i], strpos($data[$i], '%')+1);
                         }
                     } else {
                         $itemId = $data[2];
-                        for ($i=3; $i<$num; $i++) {
-                            $propertyId = $propertyIds[$i-3];
+                        $variationId = $data[3];
+                        $lang = $data[4];
+                        for ($i=5; $i<$num; $i++) {
+                            $propertyId = $propertyIds[$i-5];
                             $value = $data[$i];
                             $this->ImportItemProperty->updateAll(
                                 [
@@ -200,14 +202,18 @@ class ImportController extends AppController
                                 ],
                                 [
                                     'item_id' => $itemId,
+                                    'variation_id' => $variationId,
                                     'property_id' => $propertyId,
+                                    'lang' => $lang,
                                     'status' => 1
                                 ]
                             );
                             $this->ImportItemProperty->create();
                             $this->ImportItemProperty->save([
                                 'item_id' => $itemId,
+                                'variation_id' => $variationId,
                                 'property_id' => $propertyId,
+                                'lang' => $lang,
                                 'value' => $value,
                                 'status' => 1,
                                 'created' => $now,
@@ -219,6 +225,6 @@ class ImportController extends AppController
             }
             fclose($handle);
         }
-        return $row;
+        return $row-1;
     }
 }

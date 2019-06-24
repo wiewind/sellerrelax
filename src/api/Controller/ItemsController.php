@@ -94,54 +94,77 @@ class ItemsController extends AppController
             'conditions' => [
                 'status' => 1
             ],
-            'order' => 'item_id, created DESC',
+            'order' => 'variation_id, created DESC',
             'limit' => $countImportToPlenty
         ]);
 
-        $items = [];
+        $variations = [];
         $propertyIds = [];
         foreach ($importData as $data) {
             $data = $data['ImportItemProperty'];
-            $items[$data['item_id']][$data['property_id']] = $data['value'];
+            $variations[$data['variation_id']][$data['property_id']][$data['lang']] = [
+                'itemId' => $data['item_id'],
+                'variationId' => $data['variation_id'],
+                'propertyId' => $data['property_id'],
+                'lang' => $data['lang'],
+                'value' => $data['value']
+             ];
 
             if (!in_array($data['property_id'], $propertyIds)) {
                 $propertyIds[] = $data['property_id'];
             }
         }
+//        GlbF::printArray($variations);
 
         $url = $this->restAdress['variations'];
-        $data = $this->Rest->callAPI('GET', $url, ['itemId' => implode(',', array_keys($items)) ]);
-        $variations = json_decode($data)->entries;
+        $data = $this->Rest->callAPI('GET', $url, ['id' => implode(',', array_keys($variations)) ]);
+        $restVariations = json_decode($data)->entries;
         $varProps = [];
-        foreach ($variations as $variation) {
+        foreach ($restVariations as $variation) {
             $variationId = $variation->id;
             $itemId = $variation->itemId;
             if ($variation->variationProperties) {
                 foreach ($variation->variationProperties as $prop) {
-                    $varProps[$itemId][$variationId][$prop->propertyId] = [
-                        'valueId' => $prop->id
+//                    $varProps[$variationId][$itemId][$prop->propertyId] = [
+//                        'valueId' => $prop->id
+//                    ];
+                    $propertyId = $prop->propertyId;
+                    $valueId = $prop->id;
+                    $tmp = [
+                        'itemId' => $itemId,
+                        'variationId' => $variationId,
+                        'propertyId' => $propertyId,
+                        'valueId' => $valueId,
+                        'values' => []
                     ];
+                    if ($prop->names) {
+                        foreach ($prop->names as $val) {
+                            $tmp['values'][$val->lang] = $val->value;
+                        }
+                    }
+                    $varProps[$variationId][$propertyId] = $tmp;
                 }
             } else {
-                $varProps[$itemId][$variationId] = [];
+                $varProps[$variationId] = [];
             }
         }
+//        GlbF::printArray($varProps);
 
         //check, if items is not deleted
-        $losItemIds = [];
-        if (count($items) > count($varProps)) {
-            $importItemIds = array_keys($items);
-            $plentyItemIds = array_keys($varProps);
-            foreach ($importItemIds as $itemId) {
-                if (!in_array($itemId, $plentyItemIds)) {
-                    $losItemIds[] = $itemId;
+        $losVariationIds = [];
+        if (count($variations) > count($varProps)) {
+            $importVariationIds = array_keys($variations);
+            $plentyVariationIds = array_keys($varProps);
+            foreach ($importVariationIds as $variationId) {
+                if (!in_array($variationId, $plentyVariationIds)) {
+                    $losVariationIds[] = $variationId;
                     $this->ImportItemProperty->updateAll(
                         [
                             'status' => 5,
                             'modified' => 'now()'
                         ],
                         [
-                            'item_id' => $itemId,
+                            'variation_id' => $variationId,
                             'status' => 1
                         ]
                     );
@@ -149,43 +172,47 @@ class ItemsController extends AppController
             }
         }
 
-        //check pot or put
+        //check post or put
         $postData = [];
         $putData = [];
-        foreach ($varProps as $itemId => $varData) {
-            foreach ($varData as $variationId => $propData) {
-                foreach ($items[$itemId] as $propId => $value) {
-                    if ($value == "") {
-                        $value = "-";
-                    }
-                    if (isset($propData[$propId])) {
-                        // add in put
-                        $putData[] = [
-                            "itemId" => $itemId,
-                            "variationId" => $variationId,
-                            "propertyId" => $propId,
-                            "valueTexts" => [
-                                [
-                                    'valueId' => $propData[$propId]['valueId'],
-                                    'lang' => 'de',
-                                    'value' => $value
-                                ]
-                            ]
-                        ];
-                    } else {
-                        // add in post
-                        $postData[] = [
-                            "itemId" => $itemId,
-                            "variationId" => $variationId,
-                            "propertyId" => $propId,
-                            "valueTexts" => [
-                                [
-                                    'lang' => 'de',
-                                    'value' => $value
-                                ]
-                            ]
+        foreach ($varProps as $variationId => $varData) {
+            $hasPropIds = array_keys($varData);
+            foreach ($variations[$variationId] as $properyId => $imVarProp) {
+                if (in_array($propertyId, $hasPropIds)) {
+                    $oldPropData = $varData[$propertyId];
+                    $valueId = $oldPropData['valueId'];
+                    $hasLangs = array_keys($oldPropData['values']);
+
+                    $imData = [
+                        "variationId" => $variationId,
+                        "propertyId" => $propertyId,
+                        "valueTexts" => []
+                    ];
+                    foreach ($imVarProp as $lang => $propData) {
+                        $imData['itemId'] = $propData['itemId'];
+                        $value = $propData['value'] == "" ? "-" : $propData['value'];
+                        $imData['valueTexts'][] = [
+                            'valueId' => $valueId,
+                            'lang' => $lang,
+                            'value' => $value
                         ];
                     }
+                    $putData[] = $imData;
+                } else {
+                    $imData = [
+                        "variationId" => $variationId,
+                        "propertyId" => $propertyId,
+                        "valueTexts" => []
+                    ];
+                    foreach ($imVarProp as $lang => $propData) {
+                        $imData['itemId'] = $propData['itemId'];
+                        $value = $propData['value'] == "" ? "-" : $propData['value'];
+                        $imData['valueTexts'][] = [
+                            'lang' => $lang,
+                            'value' => $value
+                        ];
+                    }
+                    $postData[] = $imData;
                 }
             }
         }
@@ -209,7 +236,7 @@ class ItemsController extends AppController
         return [
             'ountSuccess' => $successCount,
             'countFailed' => $failedCount,
-            'countDeletedItems' => count($losItemIds)
+            'countDeletedItems' => count($losVariationIds)
         ];
 
     }
@@ -219,25 +246,32 @@ class ItemsController extends AppController
         $sucess = 0;
         $failed = 0;
 
-        GlbF::printArray($imData);
-        GlbF::printArray($data);
+//        GlbF::printArray($imData);
+//        GlbF::printArray($data);
 
         if (isset($data->success)) {
             foreach($data->success as $key => $value) {
                 $itemId = $imData[$key-1]['itemId'];
+                $varationId = $imData[$key-1]['variationId'];
                 $propertyId = $imData[$key-1]['propertyId'];
-                $this->ImportItemProperty->updateAll(
-                    [
-                        'status' => 2,
-                        'imported' => 'now()',
-                        'modified' => 'now()'
-                    ],
-                    [
-                        'item_id' => $itemId,
-                        'property_id' => $propertyId,
-                        'status' => 1
-                    ]
-                );
+                $valueTexts = $imData[$key-1]['valueTexts'];
+                foreach ($valueTexts as $textData) {
+                    $lang = $textData;
+                    $this->ImportItemProperty->updateAll(
+                        [
+                            'status' => 2,
+                            'imported' => 'now()',
+                            'modified' => 'now()'
+                        ],
+                        [
+                            'item_id' => $itemId,
+                            'variation_id' => $varationId,
+                            'property_id' => $propertyId,
+                            'lang' => $lang,
+                            'status' => 1
+                        ]
+                    );
+                }
             }
             $sucess = count($data->success);
         }
@@ -245,18 +279,25 @@ class ItemsController extends AppController
         if (isset($data->failed)) {
             foreach($data->failed as $key => $value) {
                 $itemId = $imData[$key-1]['itemId'];
+                $varationId = $imData[$key-1]['variationId'];
                 $propertyId = $imData[$key-1]['propertyId'];
-                $this->ImportItemProperty->updateAll(
-                    [
-                        'status' => 3,
-                        'modified' => 'now()'
-                    ],
-                    [
-                        'item_id' => $itemId,
-                        'property_id' => $propertyId,
-                        'status' => 1
-                    ]
-                );
+                $valueTexts = $imData[$key-1]['valueTexts'];
+                foreach ($valueTexts as $textData) {
+                    $lang = $textData;
+                    $this->ImportItemProperty->updateAll(
+                        [
+                            'status' => 3,
+                            'modified' => 'now()'
+                        ],
+                        [
+                            'item_id' => $itemId,
+                            'variation_id' => $varationId,
+                            'property_id' => $propertyId,
+                            'lang' => $lang,
+                            'status' => 1
+                        ]
+                    );
+                }
             }
             $failed = count($data->failed);
         }
@@ -279,120 +320,16 @@ class ItemsController extends AppController
                 $err = "unknown error";
             }
 
+            $d = print_r($imData, 1);
+
             $Email->viewVars(array(
                 'url' => itemProperty2Plenty,
-                'err' =>$err,
+                'err' =>$err . '<br />' . $d,
                 'params' => $imData
             ));
             $Email->send();
         }
 
         return [$sucess, $failed];
-    }
-
-
-    // set onece itemProperty
-    public function setItemProperties ($itemId, $propertyId, $value) {
-        $property = $this->ItemPropertyType->findByExternId($propertyId);
-        if (!$property) {
-            ErrorCode::throwException(sprintf(__("The PropertyId '%s' is not exist."), $propertyId), ErrorCode::ErrorCodeBadRequest);
-        }
-
-        $valueType = $property['ItemPropertyType']['value_type'];
-
-        $url = $this->restAdress['variations'];
-        $data = $this->Rest->callAPI('GET', $url, ['itemId' => $itemId]);
-        $variations = json_decode($data)->entries;
-
-
-
-        $lang = 'de';
-        foreach ($variations as $variation) {
-            $variationId = $variation->id;
-            $hasProperty = false;
-            $hasText = false;
-            foreach ($variation->variationProperties as $prop) {
-                if ($prop->propertyId == $propertyId) {
-                    $valueId = $prop->id;
-
-                    if ($valueType == 'text') {
-                        foreach ($prop->names as $text) {
-                            if ($text->lang == $lang) {
-                                $this->__setPropertyText($itemId, $variationId, $propertyId, $valueId, $lang, $value);
-                            }
-                            $hasText = true;
-                        }
-                        if (!$hasText) {
-                            $this->__addPropertyText($itemId, $variationId, $propertyId, $valueId, $lang, $value);
-                        }
-                    } else {
-                        $url = 'rest/items/'.$itemId.'/variations/'.$variationId.'/variation_properties/'.$propertyId;
-                        $inputData = [
-                            'variationId' => $variationId,
-                            'propertyId' => $propertyId,
-                        ];
-                        switch ($valueType) {
-                            case 'int':
-                                $inputData['valueInt'] = $value;
-                                break;
-                            case 'float':
-                                $inputData['valueFloat'] = $value;
-                                break;
-                            case 'file':
-                                $inputData['valueFile'] = $value;
-                                break;
-                        }
-                        $data = $this->Rest->callAPI('put', $url, $inputData);
-                    }
-
-                    $hasProperty = true;
-                }
-            }
-
-            if (!$hasProperty) {
-                $url = 'rest/items/'.$itemId.'/variations/'.$variationId.'/variation_properties/';
-                if ($valueType == 'text') {
-                    $data = $this->Rest->callAPI('post', $url, [
-                        'variationId' => $variationId,
-                        'propertyId' => $propertyId
-                    ]);
-                    $this->__addPropertyText($itemId, $variationId, $propertyId, $valueId, $lang, $value);
-                } else {
-                    $url = 'rest/items/'.$itemId.'/variations/'.$variationId.'/variation_properties/'.$propertyId;
-                    $inputData = [
-                        'variationId' => $variationId,
-                        'propertyId' => $propertyId,
-                    ];
-                    switch ($valueType) {
-                        case 'int':
-                            $inputData['valueInt'] = $value;
-                            break;
-                        case 'float':
-                            $inputData['valueFloat'] = $value;
-                            break;
-                        case 'file':
-                            $inputData['valueFile'] = $value;
-                            break;
-                    }
-                    $data = $this->Rest->callAPI('post', $url, $inputData);
-                }
-            }
-        }
-    }
-
-    private function __addPropertyText ($itemId, $variationId, $propertyId, $valueId, $lang, $value) {
-        $data = $this->Rest->callAPI('post', 'rest/items/'.$itemId.'/variations/'.$variationId.'/variation_properties/'.$propertyId.'/texts', [
-            'valueId' => $valueId,
-            'lang' => $lang,
-            'value' => $value
-        ]);
-    }
-
-    private function __setPropertyText ($itemId, $variationId, $propertyId, $valueId, $lang, $value) {
-        $data = $this->Rest->callAPI('put', 'rest/items/'.$itemId.'/variations/'.$variationId.'/variation_properties/'.$propertyId.'/texts/'.$lang, [
-            'valueId' => $valueId,
-            'lang' => $lang,
-            'value' => $value
-        ]);
     }
 }

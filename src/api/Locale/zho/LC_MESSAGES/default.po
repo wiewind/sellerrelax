@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2019-06-18 10:36+0200\n"
+"POT-Creation-Date: 2019-06-21 09:35+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;___;T.__\n"
 "X-Poedit-Basepath: ../../../..\n"
@@ -60,14 +60,14 @@ msgstr "仓库%s出现登录错误！"
 msgid "The emailbox %s can not be login!"
 msgstr "信箱%s无法正常登录！"
 
-#: api/Controller/ItemsController.php:292
+#: api/Controller/ItemsController.php:298
 #, php-format
 msgid "The PropertyId '%s' is not exist."
 msgstr "属性Id '%s' 不存在。"
 
-#: api/Lib/ErrorCode.php:18 ext/app/store/ImportItemProperties.js:18
-#: ext/app/ux/AMessageBox.js:44
+#: api/Lib/ErrorCode.php:18 ext/app/ux/AMessageBox.js:44
 #: ext/classic/src/view/import/itemproperties/Grid.js:37
+#: ext/classic/src/view/import/itemproperties/Grid.js:107
 msgid "Success"
 msgstr "成功"
 
@@ -180,26 +180,6 @@ msgstr "新版本已经上线！"
 msgid "Unknown"
 msgstr "未知"
 
-#: ext/app/store/ImportItemProperties.js:17 ext/app/utils/Global.js:22
-#: ext/classic/src/view/import/itemproperties/Grid.js:36
-msgid "New"
-msgstr "新建"
-
-#: ext/app/store/ImportItemProperties.js:19 ext/app/ux/AMessageBox.js:85
-#: ext/classic/src/view/import/itemproperties/Grid.js:38
-msgid "Failure"
-msgstr "失败"
-
-#: ext/app/store/ImportItemProperties.js:20
-#: ext/classic/src/view/import/itemproperties/Grid.js:39
-msgid "Overridden"
-msgstr "被覆盖"
-
-#: ext/app/store/ImportItemProperties.js:21
-#: ext/classic/src/view/import/itemproperties/Grid.js:40
-msgid "Deleted"
-msgstr "已删除"
-
 #: ext/app/utils/Global.js:9
 msgid "Submit"
 msgstr "提交"
@@ -226,6 +206,12 @@ msgstr "保存并关闭"
 #: ext/classic/src/ux/UploadPhotoWindow.js:23
 msgid "Close"
 msgstr "关闭"
+
+#: ext/app/utils/Global.js:22
+#: ext/classic/src/view/import/itemproperties/Grid.js:36
+#: ext/classic/src/view/import/itemproperties/Grid.js:106
+msgid "New"
+msgstr "新建"
 
 #: ext/app/utils/Global.js:24
 msgid "Add"
@@ -266,6 +252,7 @@ msgid "Print"
 msgstr "打印"
 
 #: ext/app/utils/Global.js:49 ext/app/utils/Global.js:163
+#: ext/classic/src/view/import/itemproperties/GridController.js:89
 #: ext/classic/src/view/settings/MainPanelController.js:10
 msgid "Please wait..."
 msgstr "请稍候……"
@@ -355,7 +342,6 @@ msgid "December"
 msgstr "十二月"
 
 #: ext/app/ux/AMessageBox.js:55
-#: ext/classic/src/view/import/itemproperties/Grid.js:128
 msgid "Info"
 msgstr "信息"
 
@@ -366,6 +352,12 @@ msgstr "错误"
 #: ext/app/ux/AMessageBox.js:75
 msgid "Warning"
 msgstr "警告"
+
+#: ext/app/ux/AMessageBox.js:85
+#: ext/classic/src/view/import/itemproperties/Grid.js:38
+#: ext/classic/src/view/import/itemproperties/Grid.js:108
+msgid "Failure"
+msgstr "失败"
 
 #: ext/app/ux/AMessageBox.js:94
 msgid "Attention"
@@ -464,7 +456,7 @@ msgid "Old Value"
 msgstr "旧值"
 
 #: ext/classic/src/view/export/EditWindow.js:58
-#: ext/classic/src/view/import/itemproperties/Grid.js:118
+#: ext/classic/src/view/import/itemproperties/Grid.js:145
 msgid "Value"
 msgstr "值"
 
@@ -648,8 +640,18 @@ msgstr "商品属性"
 msgid "Choose Status"
 msgstr "选择状态"
 
+#: ext/classic/src/view/import/itemproperties/Grid.js:39
+#: ext/classic/src/view/import/itemproperties/Grid.js:109
+msgid "Overridden"
+msgstr "被覆盖"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:40
+#: ext/classic/src/view/import/itemproperties/Grid.js:110
+msgid "Deleted"
+msgstr "已删除"
+
 #: ext/classic/src/view/import/itemproperties/Grid.js:47
-#: ext/classic/src/view/import/itemproperties/Grid.js:108
+#: ext/classic/src/view/import/itemproperties/Grid.js:125
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:161
 msgid "Item"
 msgstr "商品"
@@ -674,22 +676,31 @@ msgid "CSV Upload"
 msgstr "上传CSV"
 
 #: ext/classic/src/view/import/itemproperties/Grid.js:100
-msgid "Created at"
-msgstr "创建于"
-
-#: ext/classic/src/view/import/itemproperties/Grid.js:113
-msgid "Property"
-msgstr "属性"
-
-#: ext/classic/src/view/import/itemproperties/Grid.js:123
 msgid "Status"
 msgstr "状态"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:133
+#: ext/classic/src/view/import/itemproperties/Grid.js:117
+msgid "Created at"
+msgstr "创建于"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:130
+#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:166
+msgid "Variation"
+msgstr "商品细类"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:135
+msgid "Property"
+msgstr "属性"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:140
+msgid "Language"
+msgstr "语言"
+
+#: ext/classic/src/view/import/itemproperties/Grid.js:157
 msgid "Imported at"
 msgstr "导入于"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:141
+#: ext/classic/src/view/import/itemproperties/Grid.js:165
 msgid "Modified at"
 msgstr "最后修改"
 
@@ -697,7 +708,7 @@ msgstr "最后修改"
 msgid "Drag the csv file into the table to upload it."
 msgstr "将csv文件拖曳到表格里就可以实现上传。"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:92
+#: ext/classic/src/view/import/itemproperties/GridController.js:94
 msgid "Finished!"
 msgstr "完成！"
 
@@ -946,10 +957,6 @@ msgstr "Number"
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:151
 msgid "EAN"
 msgstr "EAN"
-
-#: ext/classic/src/view/stock/outstock/hotsales/Grid.js:166
-msgid "Variation"
-msgstr "Variation"
 
 #: ext/modern/overrides/picker/Date.js:18
 #: ext/modern/overrides/picker/Picker.js:11

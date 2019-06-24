@@ -10,7 +10,9 @@ Ext.define('SRX.store.ImportItemProperties', {
     fields: [
         {name: 'id', mapping: 'ImportItemProperty.id', type: 'int'},
         {name: 'itemId', mapping: 'ImportItemProperty.item_id', type: 'int'},
+        {name: 'variationId', mapping: 'ImportItemProperty.variation_id', type: 'int'},
         {name: 'propertyId', mapping: 'ImportItemProperty.property_id', type: 'int'},
+        {name: 'lang', mapping: 'ImportItemProperty.lang'},
         {name: 'value', mapping: 'ImportItemProperty.value'},
         {name: 'status', mapping: 'ImportItemProperty.status', type: 'int'},
         {name: 'info', mapping: 'ImportItemProperty.info'},
