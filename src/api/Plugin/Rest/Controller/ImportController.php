@@ -11,7 +11,7 @@ class ImportController extends RestAppController
     var $restAdress = [
         'orders' => 'rest/orders?with[]=orderItems.variation&with[]=orderItems.variationBarcodes&with[]=addresses',
         'items' => 'rest/items?with=itemCrossSelling,itemShippingProfiles,itemProperties',
-        'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices,variationProperties',
+        'variations' => 'rest/items/variations?with=variationBarcodes,variationSalesPrices,variationProperties,variationSuppliers',
         'units' => 'rest/items/units',
         'barcode_types' => 'rest/items/barcodes',
         'availabilities' => 'rest/availabilities',
@@ -620,8 +620,7 @@ class ImportController extends RestAppController
         $this->ItemsVariation->deleteAll([
             'item_id' => $item_id
         ]);
-        $urlVa = str_replace($this->restAdress['variations'], 'rest/items/'.$item_id.'/variation', $this->restAdress['variations']);
-
+        $urlVa = str_replace('rest/items/variations', 'rest/items/'.$item_id.'/variations', $this->restAdress['variations']);
         $data = $this->callJsonRest($urlVa);
 
         $variations = $data->entries;
@@ -774,17 +773,42 @@ class ImportController extends RestAppController
         $this->ItemsVariationsBarcode->deleteAll([
             'variation_id' => $var->id
         ]);
-        if ($var->variationBarcodes)
-        foreach ($var->variationBarcodes as $barcode) {
-            $bcd = [
-                'variation_id' => $barcode->variationId + 0,
-                'barcode_type_id' => $barcode->barcodeId + 0,
-                'code' => $barcode->code,
-            ];
-            $this->ItemsVariationsBarcode->create();
-            $this->ItemsVariationsBarcode->save($bcd);
+        if ($var->variationBarcodes) {
+            foreach ($var->variationBarcodes as $barcode) {
+                $bcd = [
+                    'variation_id' => $barcode->variationId + 0,
+                    'barcode_type_id' => $barcode->barcodeId + 0,
+                    'code' => $barcode->code,
+                ];
+                $this->ItemsVariationsBarcode->create();
+                $this->ItemsVariationsBarcode->save($bcd);
+            }
         }
 
+        $this->ItemVariationSupplier->deleteAll([
+            'variation_id' => $var->id
+        ]);
+        if ($var->variationSuppliers) {
+            foreach ($var->variationSuppliers as $vs) {
+                $vsd = [
+                    'extern_id' => $vs->id + 0,
+                    'variation_id' => $vs->variationId + 0,
+                    'supplier_id' => $vs->supplierId + 0,
+                    'item_number' => $vs->itemNumber,
+                    'delivery_time_in_days' => $vs->deliveryTimeInDays,
+                    'discount' => $vs->discount,
+                    'is_discountable' => $vs->isDiscountable,
+                    'last_price_query' => ($vs->lastPriceQuery) ? $vs->lastPriceQuery : null,
+                    'min_purchase' => $vs->minimumPurchase,
+                    'packaging_unit' => $vs->packagingUnit,
+                    'purchase_price' => $vs->purchasePrice,
+                    'created' =>  GlbF::iso2Date($vs->createdAt),
+                    'modified' =>  GlbF::iso2Date($vs->lastUpdateTimestamp),
+                ];
+                $this->ItemVariationSupplier->create();
+                $this->ItemVariationSupplier->save($vsd);
+            }
+        }
     }
 
     function importVariationsAll () {

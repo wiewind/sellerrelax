@@ -33,6 +33,7 @@ class RestAppController extends AppController
         'ItemPropertySelection',
         'BarcodeType',
         'Availability',
+        'ItemVariationSupplier',
 
         'SmWarehouse',
         'SmLocation',

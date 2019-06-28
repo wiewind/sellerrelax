@@ -89,6 +89,10 @@ class ItemsController extends AppController
     }
 
     public function itemProperty2PlentyOneTime () {
+        $successCount = 0;
+        $failedCount = 0;
+        $losVariationIds = [];
+
         $countImportToPlenty = 50;
         $importData = $this->ImportItemProperty->find('all', [
             'conditions' => [
@@ -116,122 +120,123 @@ class ItemsController extends AppController
         }
 //        GlbF::printArray($variations);
 
-        $url = $this->restAdress['variations'];
-        $data = $this->Rest->callAPI('GET', $url, ['id' => implode(',', array_keys($variations)) ]);
-        $restVariations = json_decode($data)->entries;
-        $varProps = [];
-        foreach ($restVariations as $variation) {
-            $variationId = $variation->id;
-            $itemId = $variation->itemId;
-            if ($variation->variationProperties) {
-                foreach ($variation->variationProperties as $prop) {
+        if ($variations) {
+
+            $url = $this->restAdress['variations'];
+            $data = $this->Rest->callAPI('GET', $url, ['id' => implode(',', array_keys($variations)) ]);
+            $restVariations = json_decode($data)->entries;
+            $varProps = [];
+            foreach ($restVariations as $variation) {
+                $variationId = $variation->id;
+                $itemId = $variation->itemId;
+                if ($variation->variationProperties) {
+                    foreach ($variation->variationProperties as $prop) {
 //                    $varProps[$variationId][$itemId][$prop->propertyId] = [
 //                        'valueId' => $prop->id
 //                    ];
-                    $propertyId = $prop->propertyId;
-                    $valueId = $prop->id;
-                    $tmp = [
-                        'itemId' => $itemId,
-                        'variationId' => $variationId,
-                        'propertyId' => $propertyId,
-                        'valueId' => $valueId,
-                        'values' => []
-                    ];
-                    if ($prop->names) {
-                        foreach ($prop->names as $val) {
-                            $tmp['values'][$val->lang] = $val->value;
+                        $propertyId = $prop->propertyId;
+                        $valueId = $prop->id;
+                        $tmp = [
+                            'itemId' => $itemId,
+                            'variationId' => $variationId,
+                            'propertyId' => $propertyId,
+                            'valueId' => $valueId,
+                            'values' => []
+                        ];
+                        if ($prop->names) {
+                            foreach ($prop->names as $val) {
+                                $tmp['values'][$val->lang] = $val->value;
+                            }
                         }
+                        $varProps[$variationId][$propertyId] = $tmp;
                     }
-                    $varProps[$variationId][$propertyId] = $tmp;
+                } else {
+                    $varProps[$variationId] = [];
                 }
-            } else {
-                $varProps[$variationId] = [];
             }
-        }
 //        GlbF::printArray($varProps);
 
-        //check, if items is not deleted
-        $losVariationIds = [];
-        if (count($variations) > count($varProps)) {
-            $importVariationIds = array_keys($variations);
-            $plentyVariationIds = array_keys($varProps);
-            foreach ($importVariationIds as $variationId) {
-                if (!in_array($variationId, $plentyVariationIds)) {
-                    $losVariationIds[] = $variationId;
-                    $this->ImportItemProperty->updateAll(
-                        [
-                            'status' => 5,
-                            'modified' => 'now()'
-                        ],
-                        [
-                            'variation_id' => $variationId,
-                            'status' => 1
-                        ]
-                    );
+            //check, if items is not deleted
+            if (count($variations) > count($varProps)) {
+                $importVariationIds = array_keys($variations);
+                $plentyVariationIds = array_keys($varProps);
+                foreach ($importVariationIds as $variationId) {
+                    if (!in_array($variationId, $plentyVariationIds)) {
+                        $losVariationIds[] = $variationId;
+                        $this->ImportItemProperty->updateAll(
+                            [
+                                'status' => 5,
+                                'modified' => 'now()'
+                            ],
+                            [
+                                'variation_id' => $variationId,
+                                'status' => 1
+                            ]
+                        );
+                    }
                 }
+            }
+
+            //check post or put
+            $postData = [];
+            $putData = [];
+            foreach ($varProps as $variationId => $varData) {
+                $hasPropIds = array_keys($varData);
+                foreach ($variations[$variationId] as $propertyId => $imVarProp) {
+                    if (in_array($propertyId, $hasPropIds)) {
+                        $oldPropData = $varData[$propertyId];
+                        $valueId = $oldPropData['valueId'];
+                        $hasLangs = array_keys($oldPropData['values']);
+
+                        $imData = [
+                            "variationId" => $variationId,
+                            "propertyId" => $propertyId,
+                            "valueTexts" => []
+                        ];
+                        foreach ($imVarProp as $lang => $propData) {
+                            $imData['itemId'] = $propData['itemId'];
+                            $value = $propData['value'] == "" ? "-" : $propData['value'];
+                            $imData['valueTexts'][] = [
+                                'valueId' => $valueId,
+                                'lang' => $lang,
+                                'value' => $value
+                            ];
+                        }
+                        $putData[] = $imData;
+                    } else {
+                        $imData = [
+                            "variationId" => $variationId,
+                            "propertyId" => $propertyId,
+                            "valueTexts" => []
+                        ];
+                        foreach ($imVarProp as $lang => $propData) {
+                            $imData['itemId'] = $propData['itemId'];
+                            $value = $propData['value'] == "" ? "-" : $propData['value'];
+                            $imData['valueTexts'][] = [
+                                'lang' => $lang,
+                                'value' => $value
+                            ];
+                        }
+                        $postData[] = $imData;
+                    }
+                }
+            }
+
+            $url = 'rest/items/variations/variation_properties';
+            if ($postData) {
+                $result = $this->Rest->callAPI('post', $url, $postData);
+                list($s,$f) = $this->__afterSaveItemProperties($result, $postData);
+                $successCount += $s;
+                $failedCount += $f;
+            }
+            if ($putData) {
+                $result = $this->Rest->callAPI('put', $url, $putData);
+                list($s,$f) = $this->__afterSaveItemProperties($result, $putData);
+                $successCount += $s;
+                $failedCount += $f;
             }
         }
 
-        //check post or put
-        $postData = [];
-        $putData = [];
-        foreach ($varProps as $variationId => $varData) {
-            $hasPropIds = array_keys($varData);
-            foreach ($variations[$variationId] as $propertyId => $imVarProp) {
-                if (in_array($propertyId, $hasPropIds)) {
-                    $oldPropData = $varData[$propertyId];
-                    $valueId = $oldPropData['valueId'];
-                    $hasLangs = array_keys($oldPropData['values']);
-
-                    $imData = [
-                        "variationId" => $variationId,
-                        "propertyId" => $propertyId,
-                        "valueTexts" => []
-                    ];
-                    foreach ($imVarProp as $lang => $propData) {
-                        $imData['itemId'] = $propData['itemId'];
-                        $value = $propData['value'] == "" ? "-" : $propData['value'];
-                        $imData['valueTexts'][] = [
-                            'valueId' => $valueId,
-                            'lang' => $lang,
-                            'value' => $value
-                        ];
-                    }
-                    $putData[] = $imData;
-                } else {
-                    $imData = [
-                        "variationId" => $variationId,
-                        "propertyId" => $propertyId,
-                        "valueTexts" => []
-                    ];
-                    foreach ($imVarProp as $lang => $propData) {
-                        $imData['itemId'] = $propData['itemId'];
-                        $value = $propData['value'] == "" ? "-" : $propData['value'];
-                        $imData['valueTexts'][] = [
-                            'lang' => $lang,
-                            'value' => $value
-                        ];
-                    }
-                    $postData[] = $imData;
-                }
-            }
-        }
-
-        $url = 'rest/items/variations/variation_properties';
-        $successCount = 0;
-        $failedCount = 0;
-        if ($postData) {
-            $result = $this->Rest->callAPI('post', $url, $postData);
-            list($s,$f) = $this->__afterSaveItemProperties($result, $postData);
-            $successCount += $s;
-            $failedCount += $f;
-        }
-        if ($putData) {
-            $result = $this->Rest->callAPI('put', $url, $putData);
-            list($s,$f) = $this->__afterSaveItemProperties($result, $putData);
-            $successCount += $s;
-            $failedCount += $f;
-        }
 
         return [
             'ountSuccess' => $successCount,
