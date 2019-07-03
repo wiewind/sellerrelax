@@ -66,5 +66,15 @@ Ext.define('SRX.view.import.MainPanelController', {
             xtype: 'importitempropertiesgrid'
         });
         this.afterClick('itemproperties');
+    },
+
+    onClickVariationSuppliers: function () {
+        var view = this.getView(),
+            container = view.down('container[itemId="importMainCt"]');
+        container.removeAll();
+        container.add({
+            xtype: 'importvariationsuppliersgrid'
+        });
+        this.afterClick('variationsuppliers');
     }
 });

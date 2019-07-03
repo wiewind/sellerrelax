@@ -795,7 +795,7 @@ class ImportController extends RestAppController
                     'variation_id' => $vs->variationId + 0,
                     'supplier_id' => $vs->supplierId + 0,
                     'item_number' => $vs->itemNumber,
-                    'delivery_time_in_days' => $vs->deliveryTimeInDays,
+                    'delevery_time_in_days' => $vs->deliveryTimeInDays,
                     'discount' => $vs->discount,
                     'is_discountable' => $vs->isDiscountable,
                     'last_price_query' => ($vs->lastPriceQuery) ? $vs->lastPriceQuery : null,

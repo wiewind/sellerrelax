@@ -10,6 +10,7 @@ Ext.define('SRX.view.import.MainPanel', {
         'SRX.view.import.manipulation.Panel',
         'SRX.view.import.robots.Grid',
         'SRX.view.import.itemproperties.Grid',
+        'SRX.view.import.variationsuppliers.Grid',
         'SRX.view.import.MainPanelController'
     ],
 
@@ -58,6 +59,12 @@ Ext.define('SRX.view.import.MainPanel', {
                     iconCls: 'x-fa fa-tag',
                     itemId: 'itemproperties',
                     handler: 'onClickItemProperties'
+                },
+                {
+                    text: T.__('Variation Suppliers'),
+                    iconCls: 'x-fa fa-tag',
+                    itemId: 'variationsuppliers',
+                    handler: 'onClickVariationSuppliers'
                 }
             ]
         },
