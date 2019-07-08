@@ -125,19 +125,21 @@ class ImportVariationSuppliersController extends AppController
 
         $variations = [];
         foreach ($vsData as $vs) {
-            $variations[$vs['ImportVariationSupplier']['variation_id']][$vs['ImportVariationSupplier']['supplier_id']] = $vs['ImportVariationSupplier'];
+            $variations[$vs['ImportVariationSupplier']['variation_id']][$vs['ImportVariationSupplier']['supplier_id']][$vs['ImportVariationSupplier']['min_purchase']] = $vs['ImportVariationSupplier'];
         }
 
         // 1. check, if variation exist => yes: set id; no: nothing
         $url = $this->restAdress['variations'];
         $data = $this->Rest->callAPI('GET', $url, ['id' => implode(',', array_keys($variations)) ]);
         $restVariations = json_decode($data)->entries;
+
         foreach($restVariations as $var) {
             $variationId = $var->id;
             foreach ($var->variationSuppliers as $vs) {
                 $supplierId = $vs->supplierId;
-                if (isset($variations[$variationId][$supplierId])) {
-                    $variations[$variationId][$supplierId]['id'] = $vs->id;
+                $minimumPurchase = $vs->minimumPurchase;
+                if (isset($variations[$variationId][$supplierId][$minimumPurchase])) {
+                    $variations[$variationId][$supplierId][$minimumPurchase]['vsid'] = $vs->id;
                 }
             }
         }
@@ -158,29 +160,30 @@ class ImportVariationSuppliersController extends AppController
 
         //2.2 update variation suppliers
         foreach ($variations as $variationId => $vData) {
-            foreach ($vData as $supplierId => $vsData) {
-
-                $url = '/rest/items/'.$vsData['item_id'].'/variations/'.$variationId.'/variation_suppliers';
-                $methode = 'post';
-                $importData = [
-                    "variationId" => $variationId,
-                    "supplierId" => $supplierId,
-                    "purchasePrice" => $vsData['purchase_price'],
-                    "minimumPurchase" => $vsData['min_purchase'],
-                    "itemNumber" => $vsData['supplier_item_no'],
-                    "lastPriceQuery" => null,
-                    "deliveryTimeInDays" => $vsData['delivery_time'],
-                    "discount" => 0,
-                    "isDiscountable" => false,
-                    "packagingUnit" => $vsData['packaging_unit']
-                ];
-                if (isset($vsData['id'])) {
-                    $url .= '/'.$vsData['id'];
-                    $methode = 'put';
-                    $importData['id'] = $vsData['id'];
+            foreach ($vData as $supplierId => $vsDataAll) {
+                foreach ($vsDataAll as $minPurchase => $vsData) {
+                    $url = '/rest/items/'.$vsData['item_id'].'/variations/'.$variationId.'/variation_suppliers';
+                    $methode = 'post';
+                    $importData = [
+                        "variationId" => $variationId,
+                        "supplierId" => $supplierId,
+                        "purchasePrice" => $vsData['purchase_price'],
+                        "minimumPurchase" => $vsData['min_purchase'],
+                        "itemNumber" => $vsData['supplier_item_no'],
+                        "lastPriceQuery" => null,
+                        "deliveryTimeInDays" => $vsData['delivery_time'],
+                        "discount" => 0,
+                        "isDiscountable" => false,
+                        "packagingUnit" => $vsData['packaging_unit']
+                    ];
+                    if (isset($vsData['vsid'])) {
+                        $url .= '/'.$vsData['vsid'];
+                        $methode = 'put';
+                        $importData['id'] = $vsData['vsid'];
+                    }
+                    $result = $this->Rest->callAPI($methode, $url, $importData);
+                    $this->__afterSaveItemProperties($result, $importData);
                 }
-                $result = $this->Rest->callAPI($methode, $url, $importData);
-                $this->__afterSaveItemProperties($result, $importData);
             }
         }
 
