@@ -61,7 +61,7 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
         fd.append('fileToUpload', files[0]);
 
         Glb.jqAjax({
-            url: Cake.api.path + '/Import/json/importItemPropertiesCsv',
+            url: Cake.api.path + '/ImportVariationProperties/json/importItemPropertiesCsv',
             data: fd,
             timeout: 60000,
             success: function (data, status, xhr) {
@@ -88,7 +88,7 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
         var me =this;
         Glb.common.mask(T.__('Please wait...'));
         Glb.Ajax({
-            url: Cake.api.path + '/Items/json/itemProperty2Plenty',
+            url: Cake.api.path + '/ImportVariationProperties/json/itemProperty2Plenty',
             timeout: 60000,
             success: function (response, options) {
                 ABox.info(T.__('Finished!'), function () {

@@ -38,6 +38,12 @@ class RestComponent extends Component
                 if ($data)
                     curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
                 break;
+            case "DELETE":
+                //curl_setopt($curl, CURLOPT_PUT, 1);
+                curl_setopt ($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+                if ($data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+                break;
             default:
                 if ($data) {
                     if (strpos($url, '?') === false) {
@@ -47,6 +53,9 @@ class RestComponent extends Component
                     }
                 }
         }
+
+//        echo $method." ";
+//        echo $url . "<br />";
 
         curl_setopt($curl, CURLOPT_HTTPHEADER,['Authorization: ' . $authorization]);
 

@@ -22,6 +22,6 @@ Ext.define('SRX.store.ImportItemProperties', {
     ],
 
     proxy: {
-        url: Cake.api.path + '/import/json/getImportItemPropertiesList'
+        url: Cake.api.path + '/ImportVariationProperties/json/getImportItemPropertiesList'
     }
 });
