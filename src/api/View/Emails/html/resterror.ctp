@@ -1,3 +1,6 @@
+Sehr geehrte Damen und Herren,<br /><br />
+
+es gibt Fehler bei folgender Stelle:<br /><br />
 
 URL: <?= $url ?><br /><br />
 Parameters: 

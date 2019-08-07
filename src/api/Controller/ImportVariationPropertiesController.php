@@ -352,7 +352,7 @@ class ImportVariationPropertiesController extends AppController
             $d = print_r($imData, 1);
 
             $Email->viewVars(array(
-                'url' => itemProperty2Plenty,
+                'url' => 'ImportVariationProperties/itemProperty2Plenty',
                 'err' =>$err . '<br />' . $d,
                 'params' => $imData
             ));
