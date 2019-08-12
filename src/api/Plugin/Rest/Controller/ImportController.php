@@ -966,7 +966,9 @@ class ImportController extends RestAppController
     }
 
     function importItemPropertyTypes ($page = 1) {
-        $this->importItemPropertyGroups();
+        if ($page === 1) {
+            $this->importItemPropertyGroups();
+        }
 
         $url = $this->restAdress['item_property_types'];
         $data = $this->callJsonRest($url, ['itemsPerPage' => 250, 'page' => $page]);
@@ -1015,7 +1017,7 @@ class ImportController extends RestAppController
                         $this->ItemPropertySelection->create();
                         $this->ItemPropertySelection->save([
                             'extern_id' => $sel->id,
-                            'propertyId' => $sel->propertyId,
+                            'propertyId' => $d->id,
                             'name' => $sel->name,
                             'description' => $sel->description,
                             'lang' => $sel->lang
@@ -1026,7 +1028,7 @@ class ImportController extends RestAppController
         }
 
         if (!$data->isLastPage) {
-            $this->importItemPropertyTypes($page++);
+            $this->importItemPropertyTypes(++$page);
         }
     }
 }
