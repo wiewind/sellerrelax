@@ -967,16 +967,17 @@ class ImportController extends RestAppController
 
     function importItemPropertyTypes ($page = 1) {
         if ($page === 1) {
+            // init tables
             $this->importItemPropertyGroups();
+            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_types;');
+            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_market_components;');
+            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_selections;');
         }
 
         $url = $this->restAdress['item_property_types'];
         $data = $this->callJsonRest($url, ['itemsPerPage' => 250, 'page' => $page]);
 
         if ($data->entries) {
-            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_types;');
-            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_market_components;');
-            $this->ItemPropertyType->query('TRUNCATE TABLE item_property_selections;');
             foreach ($data->entries as $d) {
                 $savedata = [
                     'extern_id' => $d->id,
@@ -1003,7 +1004,7 @@ class ImportController extends RestAppController
                     foreach ($d->marketComponents as $mc) {
                         $this->ItemPropertyMarketComponent->create();
                         $this->ItemPropertyMarketComponent->save([
-                            'property_idd' => $mc->propertyId,
+                            'property_id' => $mc->propertyId,
                             'market_id' => $mc->marketId,
                             'component_id' => $mc->componentId,
                             'external_component' => $mc->externalComponent
@@ -1017,7 +1018,7 @@ class ImportController extends RestAppController
                         $this->ItemPropertySelection->create();
                         $this->ItemPropertySelection->save([
                             'extern_id' => $sel->id,
-                            'propertyId' => $d->id,
+                            'property_id' => $sel->propertyId,
                             'name' => $sel->name,
                             'description' => $sel->description,
                             'lang' => $sel->lang
