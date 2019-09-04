@@ -237,6 +237,8 @@ class ImportStockController extends AppController
                     case '3.csv':
                         $this->importCsv($localfile, 'importLine3', $warehouse['id'], $warehouse['fdate'], $now);
                         break;
+                    case 'SE_ART4.csv':
+                        $this->importCsv($localfile, 'importLine4', $warehouse['id'], $warehouse['fdate'], $now, ',');
                 }
 
                 // set all other stock 0
@@ -273,10 +275,10 @@ class ImportStockController extends AppController
         }
     }
 
-    function importCsv ($file, $fn, $warehouse_id, $fdate, $now) {
+    function importCsv ($file, $fn, $warehouse_id, $fdate, $now, $spliter = ';') {
         if (($handle = fopen($file, "r")) !== FALSE) {
             $row = 0;
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, $spliter)) !== FALSE) {
                 $row++;
                 if ($row <= 1) continue;
                 $this->$fn($data, $warehouse_id, $fdate, $now);
@@ -358,6 +360,43 @@ class ImportStockController extends AppController
             'fdate' => $fdate,
             'imported' => $time
         ];
+
+        $stock = $this->Stock->find('first', [
+            'conditions' => [
+                'number' => $data[0],
+                'warehouse_id' => $warehouse_id
+            ]
+        ]);
+        if ($stock) {
+            $saveData['id'] = $stock['Stock']['id'];
+            $saveData['changed_quantity'] = $saveData['quantity'] - $stock['Stock']['quantity'];
+            //save history
+            $this->saveToHistory($stock, $time);
+        } else {
+            $this->Stock->create();
+        }
+
+        $this->Stock->save($saveData);
+    }
+
+    // Schukat
+    function importLine4 ($data, $warehouse_id, $fdate, $time) {
+        $variation = $this->ItemsVariation->findByNumber($data[2]);
+
+        $saveData = [
+            'warehouse_id' => $warehouse_id,
+            'item_id' => ($variation) ? $variation['ItemsVariation']['item_id'] : 0,
+            'variation_id' => ($variation) ? $variation['ItemsVariation']['extern_id'] : 0,
+            'number' => $data[2],
+            'quantity' => $data[18],
+            'changed_quantity' => $data[18],
+            'next_receipt_on' => $data[20],
+            'next_receipt' => $data[21],
+            'fdate' => $fdate,
+            'imported' => $time
+        ];
+
+        //GlbF::printArray($saveData);die();
 
         $stock = $this->Stock->find('first', [
             'conditions' => [

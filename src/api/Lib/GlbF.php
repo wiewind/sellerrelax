@@ -276,6 +276,28 @@ class GlbF {
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor - 1] . 'B';
     }
 
+    public static function is_num_en_format ($num) {
+        $posP = strrpos($num, '.');
+        $posC = strrpos($num, ',');
+        if ($posP === false && $posC === false) return true;
+        if ($posP > $posC) return true;
+        return false;
+    }
+
+    public static function num_format_de ($num) {
+        if (self::is_num_en_format($num)) {
+            return str_replace('.', ',', str_replace(',', '', $num));
+        }
+        return $num;
+    }
+
+    public static function num_format_en ($num) {
+        if (self::is_num_en_format($num)) {
+            return $num;
+        }
+        return str_replace(',', '.', str_replace('.', '', $num));
+    }
+
 
 
 

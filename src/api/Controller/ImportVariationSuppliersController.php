@@ -93,7 +93,7 @@ class ImportVariationSuppliersController extends AppController
                         'item_no' => $data[0],
                         'supplier_item_no' => $data[4],
                         'min_purchase' => $data[5],
-                        'purchase_price' => $data[6],
+                        'purchase_price' => GlbF::num_format_en($data[6]),
                         'delivery_time' => $data[7],
                         'packaging_unit' => $data[8],
                         'free20' => $data[9],

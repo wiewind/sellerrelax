@@ -10,6 +10,16 @@ class SchukatController extends AppController
 {
     var $zipUrl = 'https://www.schukat.com/schukat/schukat_cms_de.nsf/78e3877cd05b8905c1256d3d003c1083/7a494cd3a6009a3bc125754a0036811b/$FILE/SE_ART4.zip';
     var $schukatPath = ROOT.'/__import__/stocks';
+    var $csvFile = 'SE_ART4.csv';
+
+    var $uses = [
+        'ItemsVariation',
+        'Warehouse',
+        'StockHistory',
+        'Stock',
+        'SchukatImport',
+        'Warehouse'
+    ];
 
     public function download () {
         $urlLogin = "https://www.schukat.com/names.nsf?Login";
@@ -80,6 +90,15 @@ class SchukatController extends AppController
         if($statusCode != 200){
             $this->__throwError(__('Zipfile can not be download!'), $statusCode);
         }
+
+        $now = date('Y-m-d H:i:s');
+        $this->Warehouse->save([
+            'id' => 4,
+            'fdate' => $now,
+            'downloaded' => $now
+        ]);
+
+
         return true;
 
     }
@@ -90,15 +109,227 @@ class SchukatController extends AppController
         $Email->to(Configure::read('system.admin.tomail'));
         $Email->cc(Configure::read('system.dev.email'));
 
-        $Email->subject("Fehler bei Import Item Property!");
+        $Email->subject("Fehler bei Schukat Download!");
         $Email->emailFormat('html');
         $Email->template('resterror');
 
         $Email->viewVars(array(
-            'url' => 'schukat/download',
+            'url' => 'schukat/json/download',
             'err' =>$msg,
             'params' => [
                 'zipUrl' => $this->zipUrl
+            ]
+        ));
+        $Email->send();
+
+        ErrorCode::throwException($msg, $code);
+    }
+
+    private function __getLastImportLine ($today) {
+        $data = $this->SchukatImport->find('first', [
+            'fields' => 'line',
+            'conditions' => [
+                'download_date' => $today
+            ],
+            'order' => 'created desc'
+        ]);
+        return ($data) ? $data['SchukatImport']['line'] : 0;
+    }
+
+
+    public function import () {
+        ini_set("memory_limit","1024M");
+        ini_set('max_execution_time', 0);
+
+        $importLine = 500000;
+
+        $path = Configure::read('system.import.stock.path');
+        $archivePath = $path . '/archive';
+        GlbF::mkDir($archivePath);
+        $file = $path . '/' . $this->csvFile;
+        $spliter = ',';
+        $today = date('Y-m-d');
+        $fdate = $today . ' 00:00:00';
+        $lastLine = $this->__getLastImportLine($today);
+        $importData = [];
+        $importRow = $lastLine;
+        $totalRow = 0;
+
+        if (file_exists($file)) {
+            $fdate = date ("Y-m-d H:i:s.", filemtime($file));
+
+            if (($handle = fopen($file, "r")) !== FALSE) {
+                $isHeader = 1;
+                while (($data = fgetcsv($handle, 5000, $spliter)) !== FALSE) {
+                    if ($isHeader) {
+                        $isHeader = 0;
+                    } else {
+                        $totalRow++;
+                        if (($totalRow > $lastLine) && ($totalRow <= ($lastLine + $importLine))) {
+                            $importData[$data[2]] = $data;
+                            $importRow++;
+                        }
+                    }
+                }
+                fclose($handle);
+            }
+        }
+
+        if ($importRow > 0 && $totalRow > 0) {
+            $this->__importData($importData, $fdate);
+            $now = date('Y-m-d H:i:s');
+
+            $this->SchukatImport->create();
+            $this->SchukatImport->save([
+                'download_date' => $today,
+                'line' => $importRow,
+                'total' => $totalRow,
+                'created' => $now
+            ]);
+
+            if ($importRow < $totalRow) {
+                $this->__throwImportError("The import is not finished! Count of imported rows $importRow / $totalRow .", 800);
+            }
+
+            if ($importRow >= $totalRow) {
+                $archiveFile = $archivePath . '/' . $this->csvFile . '_' . date('Ymd_His');
+                @rename($file, $archiveFile);
+                $this->Warehouse->save([
+                    'id' => 4,
+                    'imported' => $now
+                ]);
+            }
+        }
+
+        return [
+            'line' => $importRow,
+            'total' => $totalRow
+        ];
+    }
+
+    private function __importData ($datas, $fdate) {
+        $numbers = array_keys($datas);
+        $dbDatas = [];
+        $variations = [];
+
+        $createValues = '';
+        $saveHistories = '';
+
+        if ($numbers) {
+            $data = $this->Stock->find('all', [
+                'conditions' => [
+                    'number in ' => $numbers
+                ]
+            ]);
+            if ($data) {
+                foreach ($data as $d) {
+                    $dbDatas[$d['Stock']['number']] = $d['Stock'];
+                }
+            }
+
+            // items
+            $data = $this->ItemsVariation->find('all', [
+                'fields' => [
+                    'item_id',
+                    'extern_id',
+                    'number'
+                ],
+                'conditions' => [
+                    'number' => $numbers
+                ]
+            ]);
+            if ($data) {
+                foreach ($data as $d) {
+                    $variations[$d['ItemsVariation']['number']] = $d['ItemsVariation'];
+                }
+            }
+        }
+
+        foreach ($datas as $num => $data) {
+            $changedQuantity = $data[18];
+            // set History
+            if (isset($dbDatas[$num])) {
+                $history = $dbDatas[$num];
+                $changedQuantity = $changedQuantity - $history['quantity'];
+
+                if ($saveHistories != '') $saveHistories .= ',';
+                $saveHistories .= "(".
+                    // stock_id, number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported, deleted
+                    $history['id'].", ".
+                    "'".$history['number']."', ".
+                    $history['warehouse_id'].", ".
+                    $history['item_id'].", ".
+                    $history['variation_id'].", ".
+                    $history['quantity'].", ".
+                    $history['changed_quantity'].", ".
+                    $history['next_receipt'].", ".
+                    ($history['next_receipt_on'] ? "'".$history['next_receipt_on']."'" : "NULL").", ".
+                    "'".$history['fdate']."', ".
+                    "'".$history['imported']."', ".
+                    "'".date('Y-m-d H:i:s')."'".
+                    ")";
+            }
+
+            $itemId = isset($variations[$num]) ? $variations[$num]['item_id'] : 0;
+            $variationId = isset($variations[$num]) ? $variations[$num]['extern_id'] : 0;
+            if ($createValues != '') $createValues .= ',';
+            // number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported
+            $createValues .= "(".
+                "'".$num."', ".                                      // number
+                "4, ".                                               // warehouse_id
+                $itemId.", ".                                        // item_id
+                $variationId.", ".                                   // variation_id
+                ($data[18] ? $data[18] : 0).", ".                    // quantity
+                $changedQuantity.", ".                               // changed_quantity
+                ($data[21] ? $data[21] : 0).", ".                    // next_receipt
+                ($data[20] ? "'".$data[20]."'" : "NULL").", ".       // next_receipt_on
+                "'".$fdate."', ".                                    // fdate
+                "'".date('Y-m-d H:i:s')."'".                         // imported
+                ")";
+        }
+
+        $dataSource =$this->Stock->getDataSource();
+        $dataSource->begin();
+        try {
+            if ($saveHistories != "") {
+                $sql_history = "insert into stock_histories (stock_id, number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported, deleted) values " . $saveHistories;
+                $this->StockHistory->query($sql_history);
+            }
+
+            if ($numbers) {
+                $this->Stock->deleteAll([
+                    'warehouse_id' => 4,
+                    'number' => $numbers
+                ]);
+            }
+
+            if ($createValues != "") {
+                $sql_stock = "insert into stocks (number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported) values " . $createValues;
+                $this->Stock->query($sql_stock);
+            }
+
+            $dataSource->commit();
+        } catch (Exception $e) {
+            $dataSource->rollback();
+            $this->__throwImportError($e->getMessage(), $e->getCode());
+        }
+    }
+
+    private function __throwImportError ($msg, $code) {
+        $Email = new CakeEmail();
+        $Email->from(Configure::read('system.admin.frommail'));
+        $Email->to(Configure::read('system.admin.tomail'));
+        $Email->cc(Configure::read('system.dev.email'));
+
+        $Email->subject("Fehler bei Import Schukat!");
+        $Email->emailFormat('html');
+        $Email->template('resterror');
+
+        $Email->viewVars(array(
+            'url' => 'schukat/json/import',
+            'err' =>$msg,
+            'params' => [
+                'file' => $this->csvFile
             ]
         ));
         $Email->send();
