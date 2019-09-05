@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: benyingz
+ * Import the data from Schukat.
+ * User: benying.zou
  * Date: 30.07.2019
  * Time: 15:06
  */
@@ -175,10 +175,14 @@ class SchukatController extends AppController
             }
         }
 
+        // only when realy import, than do the follows
         if ($importRow > 0 && $totalRow > 0) {
+
+            // 1. import the data
             $this->__importData($importData, $fdate);
             $now = date('Y-m-d H:i:s');
 
+            // 2. save the import log
             $this->SchukatImport->create();
             $this->SchukatImport->save([
                 'download_date' => $today,
@@ -187,11 +191,14 @@ class SchukatController extends AppController
                 'created' => $now
             ]);
 
+            // 3. if import not finished throw error and send mail, otherwise look at 'else'
             if ($importRow < $totalRow) {
                 $this->__throwImportError("The import is not finished! Count of imported rows $importRow / $totalRow .", 800);
-            }
+            } else {
+                // a. the articles, which is not today imported, move into history
+                $this->__clearOldStock($today);
 
-            if ($importRow >= $totalRow) {
+                // b. the csv file move to archive
                 $archiveFile = $archivePath . '/' . $this->csvFile . '_' . date('Ymd_His');
                 @rename($file, $archiveFile);
                 $this->Warehouse->save([
@@ -292,7 +299,7 @@ class SchukatController extends AppController
         $dataSource->begin();
         try {
             if ($saveHistories != "") {
-                $sql_history = "insert into stock_histories (stock_id, number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported, deleted) values " . $saveHistories;
+                $sql_history = $this->__makeInsertHistorySql($saveHistories);
                 $this->StockHistory->query($sql_history);
             }
 
@@ -304,7 +311,7 @@ class SchukatController extends AppController
             }
 
             if ($createValues != "") {
-                $sql_stock = "insert into stocks (number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported) values " . $createValues;
+                $sql_stock = $this->__makeInsertStockSql($createValues);
                 $this->Stock->query($sql_stock);
             }
 
@@ -313,6 +320,54 @@ class SchukatController extends AppController
             $dataSource->rollback();
             $this->__throwImportError($e->getMessage(), $e->getCode());
         }
+    }
+
+    private function __clearOldStock ($date) {
+        $saveHistories = '';
+        $ids = [];
+        $data = $this->Stock->find('all', [
+            'conditions' => [
+                'warehouse_id' => 4,
+                'imported < ' => $date
+            ]
+        ]);
+        if ($data) {
+            foreach ($data as $d) {
+                $history = $d['Stock'];
+                if ($saveHistories != '') $saveHistories .= ',';
+                $saveHistories .= "(".
+                    // stock_id, number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported, deleted
+                    $history['id'].", ".
+                    "'".$history['number']."', ".
+                    $history['warehouse_id'].", ".
+                    $history['item_id'].", ".
+                    $history['variation_id'].", ".
+                    $history['quantity'].", ".
+                    $history['changed_quantity'].", ".
+                    $history['next_receipt'].", ".
+                    ($history['next_receipt_on'] ? "'".$history['next_receipt_on']."'" : "NULL").", ".
+                    "'".$history['fdate']."', ".
+                    "'".$history['imported']."', ".
+                    "'".date('Y-m-d H:i:s')."'".
+                    ")";
+
+                $ids[] = $history['id'];
+            }
+        }
+
+        if ($ids) {
+            $sql_history = $this->__makeInsertHistorySql($saveHistories);
+            $this->StockHistory->query($sql_history);
+            $this->Stock->deleteAll(['id' => $ids]);
+        }
+    }
+
+    private function __makeInsertHistorySql ($strValues) {
+        return "insert into stock_histories (stock_id, number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported, deleted) values " . $strValues;
+    }
+
+    private function __makeInsertStockSql ($strValues) {
+        return "insert into stocks (number, warehouse_id, item_id, variation_id, quantity, changed_quantity, next_receipt, next_receipt_on, fdate, imported) values " . $strValues;
     }
 
     private function __throwImportError ($msg, $code) {
