@@ -72,7 +72,7 @@ class OutstocksController extends AppController
                     'conditions' => array(
                         'Warehouse.extern_id = SmWarehouse.extern_id',
                     ),
-                    'type' => 'inner'
+                    'type' => 'left'
                 ]
             ],
             'order' => 'SmWarehouse.name, Warehouse.name'
