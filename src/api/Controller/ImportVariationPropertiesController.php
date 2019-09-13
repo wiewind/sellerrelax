@@ -5,11 +5,18 @@
  * User: benyingz
  * Date: 10.07.2019
  * Time: 11:03
+ * Operations:
+ *     0: do not insert empty value;
+ *     1: insert empty value;
+ *     2: if value empty than delete the property
  */
 class ImportVariationPropertiesController extends AppController
 {
     var $uses = [
-        'ImportItemProperty'
+        'ImportItemProperty',
+        'ImportItemPropertySetting',
+        'ItemPropertyType',
+        'ItemPropertyGroup'
     ];
 
     var $restAdress = [
@@ -53,6 +60,84 @@ class ImportVariationPropertiesController extends AppController
         ];
     }
 
+    public function uploadCsv () {
+        $this->checkLogin();
+        $file = $this->request->params['form']['fileToUpload'];
+        $row = 0;
+        $propertyIds = [];
+        $tmpFile = $file['tmp_name'];
+        $settings = [];
+        if (($handle = fopen($tmpFile, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 20480, "~")) !== FALSE) {
+                $row++;
+                if ($row === 1) {
+                    $num = count($data);
+                    if ($num > 5) {
+                        for ($i = 5; $i < $num; $i++) {
+                            $propertyIds[] = substr($data[$i], strpos($data[$i], '%') + 1);
+                        }
+                    }
+                }
+            }
+        }
+        if ($propertyIds) {
+            $dbSettings = [];
+            $data = $this->ImportItemPropertySetting->find('all', [
+                'conditions' => [
+                    'property_id' => $propertyIds
+                ]
+            ]);
+            if ($data) {
+                foreach ($data as $d) {
+                    $dbSettings[$d['ImportItemPropertySetting']['property_id']] = $d['ImportItemPropertySetting']['operation'];
+                }
+            }
+
+            foreach ($propertyIds as $propertyId) {
+                $settings[$propertyId]['value'] = (isset($dbSettings[$propertyId])) ? $dbSettings[$propertyId] : 0;
+            }
+
+            $data = $this->ItemPropertyType->find('all', [
+                'fields' => [
+                    'ItemPropertyType.extern_id',
+                    'ItemPropertyType.backend_name',
+                    'ItemPropertyGroup.backend_name'
+                ],
+                'conditions' => [
+                    'ItemPropertyType.extern_id' => $propertyIds
+                ],
+                'joins' => [
+                    [
+                        'table' => Inflector::tableize('ItemPropertyGroup'),
+                        'alias' => 'ItemPropertyGroup',
+                        'conditions' => array(
+                            'ItemPropertyType.property_group_id = ItemPropertyGroup.extern_id'
+                        ),
+                        'type' => 'LEFT'
+                    ]
+                ]
+            ]);
+            if ($data) {
+                foreach ($data as $d) {
+                    $propertyId = $d['ItemPropertyType']['extern_id'];
+                    $name = '';
+                    If (isset($d['ItemPropertyGroup']['backend_name'])) {
+                        $name = $d['ItemPropertyGroup']['backend_name'].'/';
+                    }
+                    $name .= $d['ItemPropertyType']['backend_name'];
+
+                    $settings[$propertyId]['name'] = $name;
+                }
+            }
+        }
+
+        return [
+            'file' => $tmpFile,
+            'variationCount' => $row - 1,
+            'propertyCount' => count($settings),
+            'properties' => $settings
+        ];
+    }
 
     public function importItemPropertiesCsv() {
         $this->checkLogin();
@@ -151,7 +236,6 @@ class ImportVariationPropertiesController extends AppController
                 $propertyIds[] = $data['property_id'];
             }
         }
-//        GlbF::printArray($variations);
 
         if ($variations) {
             $url = $this->restAdress['variations'];
@@ -204,8 +288,6 @@ class ImportVariationPropertiesController extends AppController
                     }
                 }
             }
-
-            //GlbF::printArray($varProps);
 
             //check post or put
             $postData = [];

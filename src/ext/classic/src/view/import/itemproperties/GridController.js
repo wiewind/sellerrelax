@@ -61,6 +61,33 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
         fd.append('fileToUpload', files[0]);
 
         Glb.jqAjax({
+            url: Cake.api.path + '/ImportVariationProperties/json/uploadCsv',
+            data: fd,
+            timeout: 60000,
+            success: function (data, status, xhr) {
+                Glb.common.unmask();
+                data = Ext.decode(data).data;
+                console.log(data);
+
+                console.log(data.file);
+                Ext.create('SRX.view.import.itemproperties.SettingWindow', {
+                    viewModel: {
+                        data: {
+                            file: data.file,
+                            variationCount: data.variationCount,
+                            propertyCount: data.propertyCount,
+                            properties: data.properties
+                        }
+                    }
+                });
+            },
+            complete: function () {
+                box.style.padding = 0;
+            }
+        });
+
+        /*
+        Glb.jqAjax({
             url: Cake.api.path + '/ImportVariationProperties/json/importItemPropertiesCsv',
             data: fd,
             timeout: 60000,
@@ -74,6 +101,7 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
                 box.style.padding = 0;
             }
         });
+        */
     },
 
     onChangeFilter: function () {
