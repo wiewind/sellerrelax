@@ -219,6 +219,18 @@ class ImportVariationPropertiesController extends AppController
         }
     }
 
+    public function denyAll () {
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 5,
+                'modified' => '"'.date('Y-m-d H:i:s').'"'
+            ],
+            [
+                'status' => 1
+            ]
+        );
+    }
+
     public function itemProperty2Plenty () {
         for ($i=0; $i<5; $i++) {
             $res = $this->itemProperty2PlentyOneTime();
@@ -254,6 +266,7 @@ class ImportVariationPropertiesController extends AppController
                 'propertyId' => $data['property_id'],
                 'lang' => $data['lang'],
                 'value' => $data['value'],
+                'operation' => $data['operation'],
                 'importId' => $data['id']
             ];
 

@@ -121,5 +121,23 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
                 });
             }
         });
+    },
+
+    onClickDenyAll: function () {
+        var vm = this.getViewModel();
+        ABox.confirm(
+            T.__('Do you want to deny all the import?'),
+            function () {
+                var store = vm.getStore('importstore');
+                Glb.Ajax({
+                    url: Cake.api.path + '/ImportVariationProperties/json/denyAll',
+                    success: function () {
+                        ABox.info(T.__('The records are denied!'));
+                    }
+                });
+
+                store.loadPage(1);
+            }
+        );
     }
 });

@@ -75,15 +75,23 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
         },
         {
             text: T.__('Search'),
+            tooltip: T.__('Search'),
             handler: 'onChangeFilter'
         },
         '->',
         {
+            text: T.__('Deny all'),
+            tooltip: T.__('Deny all'),
+            handler: 'onClickDenyAll'
+        },
+        {
             text: T.__('to Plenty'),
+            tooltip: T.__('to Plenty'),
             handler: 'onClickToPlenty'
         },
         {
             text: T.__('CSV Upload'),
+            tooltip: T.__('CSV Upload'),
             handler: 'onClickUpload'
         }
     ],
