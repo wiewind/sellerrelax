@@ -23,11 +23,7 @@ Ext.define ('SRX.view.import.itemproperties.SettingWindow', {
     },
 
     configForm: function () {
-        return {
-            defaults: {
-                labelWidth: 100
-            }
-        };
+        return {};
     },
 
     buildFormItems: function () {
@@ -39,15 +35,46 @@ Ext.define ('SRX.view.import.itemproperties.SettingWindow', {
                 {
                     xtype: 'component',
                     html: '<h2>' + Wiewind.String.sprintf(T.__('It would import %d Properties of %d Variations!'), propertyCount, variationCount) + '</h2><hr />'
+                },
+                {
+                    xtype: 'hiddenfield',
+                    name: 'filename',
+                    value: vm.get('file')
+                },
+                {
+                    xtype: 'fieldset',
+                    //title: T.__('Fieldset 1'),
+                    //layout: 'fit',
+                    items: [
+                        {
+                            xtype: 'combobox',
+                            name: 'operation_all',
+                            fieldLabel: T.__('change all of properties'),
+                            labelWidth: 280,
+                            width: '100%',
+                            queryMode: 'local',
+                            displayField: 'display',
+                            valueField: 'operation',
+                            store: [
+                                { operation: 0, display: T.__('without null value') },
+                                { operation: 1, display: T.__('whith null value')},
+                                { operation: 2, display: T.__('delete null value')}
+                            ],
+                            allowBlank: false,
+                            value: 0,
+                            listeners: {
+                                change: 'onChange'
+                            }
+                        }
+                    ]
                 }
             ];
 
         for (var propertyId in properties) {
-            var value = properties[propertyId]['value'],
-                name = properties[propertyId]['name'];
+            var name = properties[propertyId]['name'];
             fields.push({
                 xtype: 'combobox',
-                name: 'operation_' + propertyId,
+                name: 'operation[' + propertyId + ']',
                 fieldLabel: name,
                 labelWidth: 280,
                 width: '100%',
@@ -60,7 +87,7 @@ Ext.define ('SRX.view.import.itemproperties.SettingWindow', {
                     { operation: 2, display: T.__('delete null value')}
                 ],
                 allowBlank: false,
-                value: value
+                value: 0
             });
         }
 

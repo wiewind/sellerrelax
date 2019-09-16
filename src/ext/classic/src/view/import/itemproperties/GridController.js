@@ -67,9 +67,6 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
             success: function (data, status, xhr) {
                 Glb.common.unmask();
                 data = Ext.decode(data).data;
-                console.log(data);
-
-                console.log(data.file);
                 Ext.create('SRX.view.import.itemproperties.SettingWindow', {
                     viewModel: {
                         data: {

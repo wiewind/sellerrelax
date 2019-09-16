@@ -67,7 +67,13 @@ class ImportVariationPropertiesController extends AppController
         $propertyIds = [];
         $tmpFile = $file['tmp_name'];
         $settings = [];
-        if (($handle = fopen($tmpFile, "r")) !== FALSE) {
+
+        $path = Configure::read('system.import.path') . '/itemproperties';
+        GlbF::mkDir($path);
+        $newFilename = $path . '/' . date('Ymd_His_') . $file['name'];
+        @rename($tmpFile, $newFilename);
+
+        if (($handle = fopen($newFilename, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 20480, "~")) !== FALSE) {
                 $row++;
                 if ($row === 1) {
@@ -81,21 +87,21 @@ class ImportVariationPropertiesController extends AppController
             }
         }
         if ($propertyIds) {
-            $dbSettings = [];
-            $data = $this->ImportItemPropertySetting->find('all', [
-                'conditions' => [
-                    'property_id' => $propertyIds
-                ]
-            ]);
-            if ($data) {
-                foreach ($data as $d) {
-                    $dbSettings[$d['ImportItemPropertySetting']['property_id']] = $d['ImportItemPropertySetting']['operation'];
-                }
-            }
-
-            foreach ($propertyIds as $propertyId) {
-                $settings[$propertyId]['value'] = (isset($dbSettings[$propertyId])) ? $dbSettings[$propertyId] : 0;
-            }
+//            $dbSettings = [];
+//            $data = $this->ImportItemPropertySetting->find('all', [
+//                'conditions' => [
+//                    'property_id' => $propertyIds
+//                ]
+//            ]);
+//            if ($data) {
+//                foreach ($data as $d) {
+//                    $dbSettings[$d['ImportItemPropertySetting']['property_id']] = $d['ImportItemPropertySetting']['operation'];
+//                }
+//            }
+//
+//            foreach ($propertyIds as $propertyId) {
+//                $settings[$propertyId]['value'] = (isset($dbSettings[$propertyId])) ? $dbSettings[$propertyId] : 0;
+//            }
 
             $data = $this->ItemPropertyType->find('all', [
                 'fields' => [
@@ -132,7 +138,7 @@ class ImportVariationPropertiesController extends AppController
         }
 
         return [
-            'file' => $tmpFile,
+            'file' => $newFilename,
             'variationCount' => $row - 1,
             'propertyCount' => count($settings),
             'properties' => $settings
@@ -141,10 +147,18 @@ class ImportVariationPropertiesController extends AppController
 
     public function importItemPropertiesCsv() {
         $this->checkLogin();
-        $file = $this->request->params['form']['fileToUpload'];
+        //return $this->request->data;
+        //$file = $this->request->params['form']['fileToUpload'];
+        $file = $this->request->data['filename'];
+        $operation = $this->request->data['operation'];
         $row = 0;
         $now = date('Y-m-d H:i:s');
-        if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
+
+        if (!file_exists($file)) {
+            ErrorCode::throwException(__("The file could not be found!"), ErrorCode::ErrorCodeBadRequest);
+        }
+
+        if (($handle = fopen($file, "r")) !== FALSE) {
             $propertyIds = [];
             while (($data = fgetcsv($handle, 20480, "~")) !== FALSE) {
                 $num = count($data);
@@ -160,6 +174,7 @@ class ImportVariationPropertiesController extends AppController
                         $lang = $data[4];
                         for ($i=5; $i<$num; $i++) {
                             $propertyId = $propertyIds[$i-5];
+                            $thisOperation = $operation[$propertyId];
                             $value = $data[$i];
                             $this->ImportItemProperty->updateAll(
                                 [
@@ -181,6 +196,7 @@ class ImportVariationPropertiesController extends AppController
                                 'property_id' => $propertyId,
                                 'lang' => $lang,
                                 'value' => $value,
+                                'operation' => $thisOperation,
                                 'status' => 1,
                                 'created' => $now,
                                 'modified' => $now
@@ -191,7 +207,16 @@ class ImportVariationPropertiesController extends AppController
             }
             fclose($handle);
         }
+
+        @unlink($file);
         return $row-1;
+    }
+
+    public function deleteCsvFile () {
+        $file = $this->request->data['filename'];
+        if (file_exists($file)) {
+            @unlink($file);
+        }
     }
 
     public function itemProperty2Plenty () {

@@ -154,6 +154,19 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
             }
         },
         {
+            text: T.__("Operation"),
+            dataIndex: 'operation',
+            width: 150,
+            renderer: function (v, meta, rec) {
+                var text = [
+                    T.__('without null value'),
+                    T.__('whith null value'),
+                    T.__('delete null value')
+                ];
+                return text[v];
+            }
+        },
+        {
             text: T.__("Imported at"),
             dataIndex: 'imported',
             width: 200,
