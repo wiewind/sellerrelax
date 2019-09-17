@@ -252,7 +252,7 @@ class ImportVariationPropertiesController extends AppController
             'conditions' => [
                 'status' => 1
             ],
-            'order' => 'variation_id, created DESC',
+            'order' => 'id DESC',
             'limit' => $countImportToPlenty
         ]);
 
@@ -340,13 +340,16 @@ class ImportVariationPropertiesController extends AppController
                             "variationId" => $variationId,
                             "propertyId" => $propertyId
                         ];
+                        $saveIt = true;
+                        $delUrl = "";
+
                         foreach ($imVarProp as $lang => $propData) {
                             $itemId = $propData['itemId'];
                             $imData['itemId'] = $itemId;
                             $imData['importId'] = $propData['importId'];
                             $value = $propData['value'];
                             if (strtolower($value) == "leer") {
-                                $value = "-";
+                                $value = "";
                             }
                             if ($value !== "") {
                                 $imData['valueTexts'][] = [
@@ -354,36 +357,55 @@ class ImportVariationPropertiesController extends AppController
                                     'lang' => $lang,
                                     'value' => $value
                                 ];
-//                            } else {
-//                                if (isset($oldPropData['values'][$lang]) && $oldPropData['values'][$lang] != "") {
-//                                    $delUrl = "rest/items/{$itemId}/variations/{$variationId}/variation_properties/{$valueId}/texts/$lang";
-//                                    $result = $this->Rest->callAPI('delete', $delUrl);
-//                                    //echo $result;
-//                                    GlbF::printArray(json_decode($result));
-//                                }
+                            } else {
+                                if ($propData['operation'] == 0) {
+                                    $saveIt = false;
+                                }
+                                if ($propData['operation'] == 2) {
+                                    $saveIt = false;
+                                    $delUrl = "rest/items/{$itemId}/variations/{$variationId}/variation_properties/{$propertyId}";
+                                }
                             }
                         }
-                        $putData[] = $imData;
+
+                        if ($saveIt) {
+                            $putData[] = $imData;
+                        } else {
+                            $this->__afterDelete($imData['importId']);
+                        }
+                        if ($delUrl) {
+                            $this->Rest->callAPI('delete', $delUrl);
+                        }
                     } else {
                         $imData = [
                             "variationId" => $variationId,
                             "propertyId" => $propertyId
                         ];
+                        $saveIt = true;
                         foreach ($imVarProp as $lang => $propData) {
                             $imData['itemId'] = $propData['itemId'];
                             $imData['importId'] = $propData['importId'];
                             $value = $propData['value'];
                             if (strtolower($value) == "leer") {
-                                $value = "-";
+                                $value = "";
                             }
                             if ($value !== "") {
                                 $imData['valueTexts'][] = [
                                     'lang' => $lang,
                                     'value' => $value
                                 ];
+                            } else {
+                                if ($propData['operation'] == 0 || $propData['operation'] == 2) {
+                                    $saveIt = false;
+                                }
                             }
                         }
-                        $postData[] = $imData;
+
+                        if ($saveIt) {
+                            $postData[] = $imData;
+                        } else {
+                            $this->__afterDelete($imData['importId']);
+                        }
                     }
                 }
             }
@@ -416,9 +438,6 @@ class ImportVariationPropertiesController extends AppController
         $data = json_decode($result);
         $sucess = 0;
         $failed = 0;
-
-//        GlbF::printArray($imData);
-//        GlbF::printArray($data);
 
         if (isset($data->success)) {
             foreach($data->success as $key => $value) {
@@ -480,5 +499,18 @@ class ImportVariationPropertiesController extends AppController
         }
 
         return [$sucess, $failed];
+    }
+
+    private function __afterDelete ($imputId) {
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 5,
+                'imported' => 'now()',
+                'modified' => 'now()'
+            ],
+            [
+                'id' => $imputId
+            ]
+        );
     }
 }
