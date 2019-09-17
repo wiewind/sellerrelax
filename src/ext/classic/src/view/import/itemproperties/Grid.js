@@ -17,6 +17,10 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
     config: {
         forceFit: true,
         scrollable: true,
+        selModel: {
+            selType: 'checkboxmodel',
+            ignoreRightMouseSelection: true
+        },
         bind: {
             store: '{importstore}'
         }
@@ -80,9 +84,25 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
         },
         '->',
         {
-            text: T.__('Deny all'),
-            tooltip: T.__('Deny all'),
-            handler: 'onClickDenyAll'
+            text: T.__('Edit'),
+            tooltip: T.__('Edit'),
+            menu: [
+                {
+                    text: T.__('Renew'),
+                    tooltip: T.__('Renew'),
+                    handler: 'onClickRenew'
+                },
+                {
+                    text: T.__('Deny'),
+                    tooltip: T.__('Deny'),
+                    handler: 'onClickDeny'
+                },
+                {
+                    text: T.__('Deny all'),
+                    tooltip: T.__('Deny all'),
+                    handler: 'onClickDenyAll'
+                }
+            ]
         },
         {
             text: T.__('to Plenty'),

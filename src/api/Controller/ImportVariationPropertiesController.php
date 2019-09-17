@@ -219,6 +219,35 @@ class ImportVariationPropertiesController extends AppController
         }
     }
 
+    public function renew () {
+        $this->checkLogin();
+        $ids = explode(',', $this->request->data['ids']);
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 1,
+                'modified' => '"'.date('Y-m-d H:i:s').'"'
+            ],
+            [
+                'id' => $ids
+            ]
+        );
+    }
+
+    public function deny () {
+        $this->checkLogin();
+        $ids = explode(',', $this->request->data['ids']);
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 5,
+                'modified' => '"'.date('Y-m-d H:i:s').'"'
+            ],
+            [
+                'id' => $ids,
+                'status' => 1
+            ]
+        );
+    }
+
     public function denyAll () {
         $this->ImportItemProperty->updateAll(
             [

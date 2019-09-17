@@ -139,5 +139,51 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
                 store.loadPage(1);
             }
         );
+    },
+
+    onClickRenew: function () {
+        var view = this.getView(),
+            records = view.getSelectionModel().getSelection();
+        if (records.length > 0) {
+            var ids = [];
+            for (var i=0; i<records.length; i++) {
+                ids.push(records[i].get('id'));
+            }
+            Glb.Ajax({
+                url: Cake.api.path + '/ImportVariationProperties/json/renew',
+                params: {
+                    ids: ids.join(',')
+                },
+                success: function () {
+                    view.getStore().reload();
+                    view.getSelectionModel().deselectAll();
+                }
+            });
+        } else {
+            ABox.error(T.__('Please select the records!'));
+        }
+    },
+
+    onClickDeny: function () {
+        var view = this.getView(),
+            records = view.getSelectionModel().getSelection();
+        if (records.length > 0) {
+            var ids = [];
+            for (var i=0; i<records.length; i++) {
+                ids.push(records[i].get('id'));
+            }
+            Glb.Ajax({
+                url: Cake.api.path + '/ImportVariationProperties/json/deny',
+                params: {
+                    ids: ids.join(',')
+                },
+                success: function () {
+                    view.getStore().reload();
+                    view.getSelectionModel().deselectAll();
+                }
+            });
+        } else {
+            ABox.error(T.__('Please select the records!'));
+        }
     }
 });
