@@ -93,14 +93,14 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
                     handler: 'onClickRenew'
                 },
                 {
-                    text: T.__('Deny'),
-                    tooltip: T.__('Deny'),
-                    handler: 'onClickDeny'
+                    text: T.__('Reject'),
+                    tooltip: T.__('Reject'),
+                    handler: 'onClickReject'
                 },
                 {
-                    text: T.__('Deny all'),
-                    tooltip: T.__('Deny all'),
-                    handler: 'onClickDenyAll'
+                    text: T.__('Reject all'),
+                    tooltip: T.__('Reject all'),
+                    handler: 'onClickRejectAll'
                 }
             ]
         },
@@ -109,10 +109,15 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
             tooltip: T.__('to Plenty'),
             handler: 'onClickToPlenty'
         },
+        // {
+        //     text: T.__('CSV Upload'),
+        //     tooltip: T.__('CSV Upload'),
+        //     handler: 'onClickUpload'
+        // },
         {
-            text: T.__('CSV Upload'),
-            tooltip: T.__('CSV Upload'),
-            handler: 'onClickUpload'
+            text: T.__('CSV Download'),
+            tooltip: T.__('CSV Download'),
+            handler: 'onClickDownload'
         }
     ],
 

@@ -17,6 +17,10 @@ Ext.define('SRX.view.import.variationsuppliers.Grid', {
     config: {
         forceFit: true,
         scrollable: true,
+        selModel: {
+            selType: 'checkboxmodel',
+            ignoreRightMouseSelection: true
+        },
         bind: {
             store: '{importstore}'
         }
@@ -78,6 +82,27 @@ Ext.define('SRX.view.import.variationsuppliers.Grid', {
             handler: 'onChangeFilter'
         },
         '->',
+        {
+            text: T.__('Edit'),
+            tooltip: T.__('Edit'),
+            menu: [
+                {
+                    text: T.__('Renew'),
+                    tooltip: T.__('Renew'),
+                    handler: 'onClickRenew'
+                },
+                {
+                    text: T.__('Reject'),
+                    tooltip: T.__('Reject'),
+                    handler: 'onClickReject'
+                },
+                {
+                    text: T.__('Reject all'),
+                    tooltip: T.__('Reject all'),
+                    handler: 'onClickRejectAll'
+                }
+            ]
+        },
         {
             text: T.__('to Plenty'),
             handler: 'onClickToPlenty'

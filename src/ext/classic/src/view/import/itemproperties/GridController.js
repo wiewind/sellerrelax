@@ -105,10 +105,6 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
         this.getViewModel().getStore('importstore').reload({page: 1});
     },
 
-    onClickUpload: function () {
-        ABox.alert(T.__('CSV Upload'), T.__('Drag the csv file into the table to upload it.'));
-    },
-
     onClickToPlenty: function () {
         var me =this;
         Glb.common.mask(T.__('Please wait...'));
@@ -123,14 +119,70 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
         });
     },
 
-    onClickDenyAll: function () {
+    onClickRenew: function () {
+        var view = this.getView(),
+            records = view.getSelectionModel().getSelection();
+        if (records.length > 0) {
+            ABox.confirm(
+                T.__('Do you want to renew the selected import?'),
+                function () {
+                    var ids = [];
+                    for (var i=0; i<records.length; i++) {
+                        ids.push(records[i].get('id'));
+                    }
+                    Glb.Ajax({
+                        url: Cake.api.path + '/ImportVariationProperties/json/renew',
+                        params: {
+                            ids: ids.join(',')
+                        },
+                        success: function () {
+                            view.getStore().reload();
+                            view.getSelectionModel().deselectAll();
+                        }
+                    });
+                }
+            );
+        } else {
+            ABox.error(T.__('Please select the records!'));
+        }
+    },
+
+    onClickReject: function () {
+        var view = this.getView(),
+            records = view.getSelectionModel().getSelection();
+        if (records.length > 0) {
+            ABox.confirm(
+                T.__('Do you want to reject the selected import?'),
+                function () {
+                    var ids = [];
+                    for (var i=0; i<records.length; i++) {
+                        ids.push(records[i].get('id'));
+                    }
+                    Glb.Ajax({
+                        url: Cake.api.path + '/ImportVariationProperties/json/reject',
+                        params: {
+                            ids: ids.join(',')
+                        },
+                        success: function () {
+                            view.getStore().reload();
+                            view.getSelectionModel().deselectAll();
+                        }
+                    });
+                }
+            );
+        } else {
+            ABox.error(T.__('Please select the records!'));
+        }
+    },
+
+    onClickRejectAll: function () {
         var vm = this.getViewModel();
         ABox.confirm(
-            T.__('Do you want to deny all the import?'),
+            T.__('Do you want to reject all the import?'),
             function () {
                 var store = vm.getStore('importstore');
                 Glb.Ajax({
-                    url: Cake.api.path + '/ImportVariationProperties/json/denyAll',
+                    url: Cake.api.path + '/ImportVariationProperties/json/rejectAll',
                     success: function () {
                         ABox.info(T.__('The records are denied!'));
                     }
@@ -141,49 +193,14 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
         );
     },
 
-    onClickRenew: function () {
-        var view = this.getView(),
-            records = view.getSelectionModel().getSelection();
-        if (records.length > 0) {
-            var ids = [];
-            for (var i=0; i<records.length; i++) {
-                ids.push(records[i].get('id'));
-            }
-            Glb.Ajax({
-                url: Cake.api.path + '/ImportVariationProperties/json/renew',
-                params: {
-                    ids: ids.join(',')
-                },
-                success: function () {
-                    view.getStore().reload();
-                    view.getSelectionModel().deselectAll();
-                }
-            });
-        } else {
-            ABox.error(T.__('Please select the records!'));
-        }
+    onClickUpload: function () {
+        ABox.alert(T.__('CSV Upload'), T.__('Drag the csv file into the table to upload it.'));
     },
 
-    onClickDeny: function () {
-        var view = this.getView(),
-            records = view.getSelectionModel().getSelection();
-        if (records.length > 0) {
-            var ids = [];
-            for (var i=0; i<records.length; i++) {
-                ids.push(records[i].get('id'));
-            }
-            Glb.Ajax({
-                url: Cake.api.path + '/ImportVariationProperties/json/deny',
-                params: {
-                    ids: ids.join(',')
-                },
-                success: function () {
-                    view.getStore().reload();
-                    view.getSelectionModel().deselectAll();
-                }
-            });
-        } else {
-            ABox.error(T.__('Please select the records!'));
-        }
+    onClickDownload: function () {
+        Wiewind.Action.click({
+            url: '/api/index.php/ImportVariationProperties/exportCsv',
+            target: '_blank'
+        });
     }
 });

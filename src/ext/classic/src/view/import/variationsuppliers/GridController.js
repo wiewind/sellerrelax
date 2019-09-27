@@ -96,5 +96,79 @@ Ext.define('SRX.view.import.variationsuppliers.GridController', {
                 });
             }
         });
+    },
+
+    onClickRenew: function () {
+        var view = this.getView(),
+            records = view.getSelectionModel().getSelection();
+        if (records.length > 0) {
+            ABox.confirm(
+                T.__('Do you want to renew the selected import?'),
+                function () {
+                    var ids = [];
+                    for (var i=0; i<records.length; i++) {
+                        ids.push(records[i].get('id'));
+                    }
+                    Glb.Ajax({
+                        url: Cake.api.path + '/ImportVariationSuppliers/json/renew',
+                        params: {
+                            ids: ids.join(',')
+                        },
+                        success: function () {
+                            view.getStore().reload();
+                            view.getSelectionModel().deselectAll();
+                        }
+                    });
+                }
+            );
+        } else {
+            ABox.error(T.__('Please select the records!'));
+        }
+    },
+
+    onClickReject: function () {
+        var view = this.getView(),
+            records = view.getSelectionModel().getSelection();
+        if (records.length > 0) {
+            ABox.confirm(
+                T.__('Do you want to reject the selected import?'),
+                function () {
+                    var ids = [];
+                    for (var i=0; i<records.length; i++) {
+                        ids.push(records[i].get('id'));
+                    }
+                    Glb.Ajax({
+                        url: Cake.api.path + '/ImportVariationSuppliers/json/reject',
+                        params: {
+                            ids: ids.join(',')
+                        },
+                        success: function () {
+                            view.getStore().reload();
+                            view.getSelectionModel().deselectAll();
+                        }
+                    });
+                }
+            );
+        } else {
+            ABox.error(T.__('Please select the records!'));
+        }
+    },
+
+    onClickRejectAll: function () {
+        var vm = this.getViewModel();
+        ABox.confirm(
+            T.__('Do you want to reject all the import?'),
+            function () {
+                var store = vm.getStore('importstore');
+                Glb.Ajax({
+                    url: Cake.api.path + '/ImportVariationSuppliers/json/rejectAll',
+                    success: function () {
+                        ABox.info(T.__('The records are denied!'));
+                    }
+                });
+
+                store.loadPage(1);
+            }
+        );
     }
 });

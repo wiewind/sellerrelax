@@ -87,21 +87,6 @@ class ImportVariationPropertiesController extends AppController
             }
         }
         if ($propertyIds) {
-//            $dbSettings = [];
-//            $data = $this->ImportItemPropertySetting->find('all', [
-//                'conditions' => [
-//                    'property_id' => $propertyIds
-//                ]
-//            ]);
-//            if ($data) {
-//                foreach ($data as $d) {
-//                    $dbSettings[$d['ImportItemPropertySetting']['property_id']] = $d['ImportItemPropertySetting']['operation'];
-//                }
-//            }
-//
-//            foreach ($propertyIds as $propertyId) {
-//                $settings[$propertyId]['value'] = (isset($dbSettings[$propertyId])) ? $dbSettings[$propertyId] : 0;
-//            }
 
             $data = $this->ItemPropertyType->find('all', [
                 'fields' => [
@@ -147,8 +132,6 @@ class ImportVariationPropertiesController extends AppController
 
     public function importItemPropertiesCsv() {
         $this->checkLogin();
-        //return $this->request->data;
-        //$file = $this->request->params['form']['fileToUpload'];
         $file = $this->request->data['filename'];
         $operation = $this->request->data['operation'];
         $row = 0;
@@ -217,47 +200,6 @@ class ImportVariationPropertiesController extends AppController
         if (file_exists($file)) {
             @unlink($file);
         }
-    }
-
-    public function renew () {
-        $this->checkLogin();
-        $ids = explode(',', $this->request->data['ids']);
-        $this->ImportItemProperty->updateAll(
-            [
-                'status' => 1,
-                'modified' => '"'.date('Y-m-d H:i:s').'"'
-            ],
-            [
-                'id' => $ids
-            ]
-        );
-    }
-
-    public function deny () {
-        $this->checkLogin();
-        $ids = explode(',', $this->request->data['ids']);
-        $this->ImportItemProperty->updateAll(
-            [
-                'status' => 5,
-                'modified' => '"'.date('Y-m-d H:i:s').'"'
-            ],
-            [
-                'id' => $ids,
-                'status' => 1
-            ]
-        );
-    }
-
-    public function denyAll () {
-        $this->ImportItemProperty->updateAll(
-            [
-                'status' => 5,
-                'modified' => '"'.date('Y-m-d H:i:s').'"'
-            ],
-            [
-                'status' => 1
-            ]
-        );
     }
 
     public function itemProperty2Plenty () {
@@ -541,5 +483,108 @@ class ImportVariationPropertiesController extends AppController
                 'id' => $imputId
             ]
         );
+    }
+
+    public function renew () {
+        $this->checkLogin();
+        $ids = explode(',', $this->request->data['ids']);
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 1,
+                'modified' => '"'.date('Y-m-d H:i:s').'"'
+            ],
+            [
+                'id' => $ids
+            ]
+        );
+    }
+
+    public function reject () {
+        $this->checkLogin();
+        $ids = explode(',', $this->request->data['ids']);
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 5,
+                'modified' => '"'.date('Y-m-d H:i:s').'"'
+            ],
+            [
+                'id' => $ids,
+                'status' => 1
+            ]
+        );
+    }
+
+    public function rejectAll () {
+        $this->ImportItemProperty->updateAll(
+            [
+                'status' => 5,
+                'modified' => '"'.date('Y-m-d H:i:s').'"'
+            ],
+            [
+                'status' => 1
+            ]
+        );
+    }
+
+    public function exportCsv () {
+
+        $importData = $this->ImportItemProperty->find('all', [
+            'fields' => [
+                'ImportItemProperty.id',
+                'ImportItemProperty.item_id',
+                'ImportItemProperty.variation_id',
+                'ImportItemProperty.property_id',
+                'ImportItemProperty.value',
+                'ImportItemProperty.lang',
+                'ImportItemProperty.operation',
+                'ItemsVariation.number',
+            ],
+            'conditions' => [
+                'status' => 1
+            ],
+            'joins' => [
+                [
+                    'table' => Inflector::tableize('ItemsVariation'),
+                    'alias' => 'ItemsVariation',
+                    'conditions' => array(
+                        'ImportItemProperty.variation_id = ItemsVariation.extern_id',
+                    ),
+                    'type' => 'inner'
+                ]
+            ],
+            'order' => 'id DESC'
+        ]);
+
+        $data = [];
+        if ($importData) {
+            foreach ($importData as $im) {
+                $delRow = '';
+                if ($im['ImportItemProperty']['value'] == "") {
+                    if ($im['ImportItemProperty']['operation'] == 2) {
+                        $delRow = 1;
+                    } else if ($im['ImportItemProperty']['operation'] == 0) {
+                        $im['ImportItemProperty']['property_id'] = '';
+                    }
+                }
+
+                $it = [
+                    $im['ItemsVariation']['number'],
+                    $im['ImportItemProperty']['property_id'],
+                    $im['ImportItemProperty']['lang'],
+                    $im['ImportItemProperty']['value'],
+                    $delRow
+                ];
+                $data[] = $it;
+            }
+        }
+
+        $this->set('filename', "export_variation_properties");
+        $this->set('header', ["ItemNo", "ID", "Sprach", "Wert", "DEL"]);
+        $this->set('data', $data);
+        $this->set('separator', "~");
+        $this->set('withQuotes', 0);
+
+        $this->layout = 'csv';
+        $this->render ('/Export/csv');
     }
 }

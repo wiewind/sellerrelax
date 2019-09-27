@@ -67,7 +67,6 @@ class ImportVariationSuppliersController extends AppController
         $row = 0;
         $now = date('Y-m-d H:i:s');
         if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
-            $propertyIds = [];
             while (($data = fgetcsv($handle, 20480, ";")) !== FALSE) {
                 $num = count($data);
                 $row++;
@@ -157,7 +156,6 @@ class ImportVariationSuppliersController extends AppController
         }
         $result = $this->Rest->callAPI('put', 'rest/items', $freeData);
 
-
         //2.2 update variation suppliers
         foreach ($variations as $variationId => $vData) {
             foreach ($vData as $supplierId => $vsDataAll) {
@@ -205,6 +203,33 @@ class ImportVariationSuppliersController extends AppController
                     'status' => 1
                 ]
             );
+
+            $Email = new CakeEmail();
+            $Email->from(Configure::read('system.admin.frommail'));
+            $Email->to(Configure::read('system.admin.tomail'));
+            $Email->cc(Configure::read('system.dev.email'));
+
+            $Email->subject("Fehler bei Import Item Supplier!");
+            $Email->emailFormat('html');
+            $Email->template('resterror');
+
+            if (isset($result->error->message)) {
+                $err = $result->error->message;
+            } else {
+                $err = "unknown error";
+            }
+
+            $d = print_r($result, 1);
+
+            $Email->viewVars(array(
+                'url' => 'ImportVariationSuppliers/import2Plenty',
+                'err' =>$err . '<br />' . $d,
+                'params' => [
+                    'inputData' => $imData,
+                    'result' => $result
+                ]
+            ));
+            $Email->send();
         } else {
             // erledigt
             $this->ImportVariationSupplier->updateAll(
@@ -219,5 +244,43 @@ class ImportVariationSuppliersController extends AppController
                 ]
             );
         }
+    }
+
+    public function renew () {
+        $this->checkLogin();
+        $ids = explode(',', $this->request->data['ids']);
+        $this->ImportVariationSupplier->updateAll(
+            [
+                'status' => 1,
+            ],
+            [
+                'id' => $ids
+            ]
+        );
+    }
+
+    public function reject () {
+        $this->checkLogin();
+        $ids = explode(',', $this->request->data['ids']);
+        $this->ImportVariationSupplier->updateAll(
+            [
+                'status' => 5,
+            ],
+            [
+                'id' => $ids,
+                'status' => 1
+            ]
+        );
+    }
+
+    public function rejectAll () {
+        $this->ImportVariationSupplier->updateAll(
+            [
+                'status' => 5,
+            ],
+            [
+                'status' => 1
+            ]
+        );
     }
 }
