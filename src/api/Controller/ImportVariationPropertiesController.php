@@ -581,8 +581,8 @@ class ImportVariationPropertiesController extends AppController
         $this->set('filename', "export_variation_properties");
         $this->set('header', ["ItemNo", "ID", "Sprach", "Wert", "DEL"]);
         $this->set('data', $data);
-        $this->set('separator', "~");
-        $this->set('withQuotes', 0);
+        $this->set('separator', ";");
+        $this->set('withQuotes', 1);
 
         $this->layout = 'csv';
         $this->render ('/Export/csv');

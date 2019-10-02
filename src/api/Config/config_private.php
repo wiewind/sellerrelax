@@ -8,7 +8,7 @@
 
 $config['system']['name'] = 'SellerRelax';
 
-$config['system']['domain'] = $_SERVER['HTTP_HOST'];
+$config['system']['domain'] = 'daheim-outlet.de';
 $config['system']['app']['dirname'] = 'ext';
 
 $config['system']['rest']['url']            = 'https://www.delychi-group.de/';
