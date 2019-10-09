@@ -30,7 +30,7 @@ Ext.define ('SRX.view.import.itemproperties.SettingWindow', {
         var vm = this.getViewModel(),
             variationCount = vm.get('variationCount'),
             propertyCount = vm.get('propertyCount'),
-            properties = vm.get('properties');
+            properties = vm.get('properties'),
             fields = [
                 {
                     xtype: 'component',

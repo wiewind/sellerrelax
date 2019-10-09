@@ -7,7 +7,9 @@ Ext.define('SRX.view.import.variationsuppliers.Grid', {
 
     requires: [
         'SRX.view.import.variationsuppliers.GridController',
-        'SRX.view.import.variationsuppliers.GridViewModel'
+        'SRX.view.import.variationsuppliers.GridViewModel',
+
+        'SRX.view.import.variationsuppliers.SettingWindow'
     ],
     controller: 'importvariationsuppliersgrid',
     viewModel: {
@@ -195,6 +197,22 @@ Ext.define('SRX.view.import.variationsuppliers.Grid', {
             text: T.__("Free20"),
             dataIndex: 'free20',
             width: 100
+        },
+        {
+            text: T.__("Last Price Query"),
+            dataIndex: 'lastPriceQuery',
+            width: 100,
+            renderer: function (date) {
+                return Glb.Date.displayDateFromString(date);
+            }
+        },
+        {
+            text: T.__("Delete Other"),
+            dataIndex: 'deleteOther',
+            width: 50,
+            renderer: function (deleteOther) {
+                return deleteOther ? T.__('yes') : T.__('no');
+            }
         },
         {
             text: T.__("Imported at"),

@@ -7,7 +7,9 @@ Ext.define('SRX.view.import.itemproperties.Grid', {
 
     requires: [
         'SRX.view.import.itemproperties.GridController',
-        'SRX.view.import.itemproperties.GridViewModel'
+        'SRX.view.import.itemproperties.GridViewModel',
+
+        'SRX.view.import.itemproperties.SettingWindow'
     ],
     controller: 'importitempropertiesgrid',
     viewModel: {

@@ -61,14 +61,46 @@ class ImportVariationSuppliersController extends AppController
         ];
     }
 
-    public function importCsv () {
+    public function uploadCsv () {
         $this->checkLogin();
         $file = $this->request->params['form']['fileToUpload'];
         $row = 0;
-        $now = date('Y-m-d H:i:s');
-        if (($handle = fopen($file['tmp_name'], "r")) !== FALSE) {
+        $propertyIds = [];
+        $tmpFile = $file['tmp_name'];
+        $settings = [];
+
+        $path = Configure::read('system.import.path') . '/variationsuppliers';
+        GlbF::mkDir($path);
+        $newFilename = $path . '/' . date('Ymd_His_') . $file['name'];
+        @rename($tmpFile, $newFilename);
+
+        if (($handle = fopen($newFilename, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 20480, ";")) !== FALSE) {
-                $num = count($data);
+                $row++;
+            }
+        }
+
+        return [
+            'file' => $newFilename,
+            'rows' => $row - 1
+        ];
+    }
+
+    public function deleteCsvFile () {
+        $file = $this->request->data['filename'];
+        if (file_exists($file)) {
+            @unlink($file);
+        }
+    }
+
+    public function importVariationSuppliersCsv () {
+        $this->checkLogin();
+        $file = $this->request->data['filename'];
+        $deleteOther = $this->request->data['delete_other'];
+        $row = 0;
+        $now = date('Y-m-d H:i:s');
+        if (($handle = fopen($file, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 20480, ";")) !== FALSE) {
                 $row++;
                 if ($row > 1) {
                     $variationId = $data[2];
@@ -85,6 +117,7 @@ class ImportVariationSuppliersController extends AppController
                         ]
                     );
                     $this->ImportVariationSupplier->create();
+                    list($d,$m,$y) = explode('.', $data[10]);
                     $this->ImportVariationSupplier->save([
                         'item_id' => $data[1],
                         'variation_id' => $variationId,
@@ -96,6 +129,8 @@ class ImportVariationSuppliersController extends AppController
                         'delivery_time' => $data[7],
                         'packaging_unit' => $data[8],
                         'free20' => $data[9],
+                        'last_price_query' => "$y-$m-$d",
+                        'delete_other' => $deleteOther,
                         'status' => 1,
                         'created' => $now
                     ]);
@@ -168,7 +203,7 @@ class ImportVariationSuppliersController extends AppController
                         "purchasePrice" => $vsData['purchase_price'],
                         "minimumPurchase" => $vsData['min_purchase'],
                         "itemNumber" => $vsData['supplier_item_no'],
-                        "lastPriceQuery" => null,
+                        "lastPriceQuery" => $vsData['last_price_query'],
                         "deliveryTimeInDays" => $vsData['delivery_time'],
                         "discount" => 0,
                         "isDiscountable" => false,

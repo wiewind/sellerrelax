@@ -578,7 +578,7 @@ class ImportVariationPropertiesController extends AppController
             }
         }
 
-        $this->set('filename', "export_variation_properties");
+        $this->set('filename', "merkmalImport");
         $this->set('header', ["ItemNo", "ID", "Sprach", "Wert", "DEL"]);
         $this->set('data', $data);
         $this->set('separator', ";");

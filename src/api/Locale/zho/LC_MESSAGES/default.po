@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SellerRelex\n"
-"POT-Creation-Date: 2019-09-27 10:22+0200\n"
+"POT-Creation-Date: 2019-10-08 11:46+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: B. Zou\n"
 "Language-Team: Wiewind Studio\n"
@@ -26,8 +26,8 @@ msgstr "用户名或密码不正确，请重试。"
 
 #: api/Controller/ImportController.php:120
 #: api/Controller/OutstocksController.php:84
-#: ext/classic/src/view/import/itemproperties/Grid.js:39
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:39
+#: ext/classic/src/view/import/itemproperties/Grid.js:41
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:41
 msgid "All"
 msgstr "全部"
 
@@ -70,10 +70,10 @@ msgid "Zipfile can not be download!"
 msgstr "ZIP文件无法下载！"
 
 #: api/Lib/ErrorCode.php:18 ext/app/ux/AMessageBox.js:44
-#: ext/classic/src/view/import/itemproperties/Grid.js:41
-#: ext/classic/src/view/import/itemproperties/Grid.js:140
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:41
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:132
+#: ext/classic/src/view/import/itemproperties/Grid.js:43
+#: ext/classic/src/view/import/itemproperties/Grid.js:142
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:43
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:134
 msgid "Success"
 msgstr "成功"
 
@@ -214,10 +214,10 @@ msgid "Close"
 msgstr "关闭"
 
 #: ext/app/utils/Global.js:22
-#: ext/classic/src/view/import/itemproperties/Grid.js:40
-#: ext/classic/src/view/import/itemproperties/Grid.js:139
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:40
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:131
+#: ext/classic/src/view/import/itemproperties/Grid.js:42
+#: ext/classic/src/view/import/itemproperties/Grid.js:141
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:42
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:133
 msgid "New"
 msgstr "新建"
 
@@ -226,17 +226,17 @@ msgid "Add"
 msgstr "添加"
 
 #: ext/app/utils/Global.js:26
-#: ext/classic/src/view/import/itemproperties/Grid.js:87
-#: ext/classic/src/view/import/itemproperties/Grid.js:88
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:86
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:87
+#: ext/classic/src/view/import/itemproperties/Grid.js:89
+#: ext/classic/src/view/import/itemproperties/Grid.js:90
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:88
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:89
 msgid "Edit"
 msgstr "编辑"
 
 #: ext/app/utils/Global.js:28 ext/classic/src/ux/SearchText.js:9
-#: ext/classic/src/view/import/itemproperties/Grid.js:81
-#: ext/classic/src/view/import/itemproperties/Grid.js:82
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:81
+#: ext/classic/src/view/import/itemproperties/Grid.js:83
+#: ext/classic/src/view/import/itemproperties/Grid.js:84
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:83
 msgid "Search"
 msgstr "查询"
 
@@ -266,8 +266,8 @@ msgid "Print"
 msgstr "打印"
 
 #: ext/app/utils/Global.js:49 ext/app/utils/Global.js:163
-#: ext/classic/src/view/import/itemproperties/GridController.js:110
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:89
+#: ext/classic/src/view/import/itemproperties/GridController.js:95
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:112
 #: ext/classic/src/view/settings/MainPanelController.js:10
 msgid "Please wait..."
 msgstr "请稍候……"
@@ -369,10 +369,10 @@ msgid "Warning"
 msgstr "警告"
 
 #: ext/app/ux/AMessageBox.js:85
-#: ext/classic/src/view/import/itemproperties/Grid.js:42
-#: ext/classic/src/view/import/itemproperties/Grid.js:141
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:42
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:133
+#: ext/classic/src/view/import/itemproperties/Grid.js:44
+#: ext/classic/src/view/import/itemproperties/Grid.js:143
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:44
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:135
 msgid "Failure"
 msgstr "失败"
 
@@ -425,14 +425,14 @@ msgstr "上传你的照片……"
 #: ext/classic/src/view/export/fbacustomers/Grid.js:31
 #: ext/classic/src/view/export/skuarticles/Grid.js:25
 #: ext/classic/src/view/export/skuarticles/Grid.js:31
-#: ext/classic/src/view/import/itemproperties/Grid.js:28
-#: ext/classic/src/view/import/itemproperties/Grid.js:128
+#: ext/classic/src/view/import/itemproperties/Grid.js:30
+#: ext/classic/src/view/import/itemproperties/Grid.js:130
 #: ext/classic/src/view/import/robots/Grid.js:24
 #: ext/classic/src/view/import/robots/Grid.js:30
 #: ext/classic/src/view/import/tracking/Grid.js:24
 #: ext/classic/src/view/import/tracking/Grid.js:30
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:28
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:120
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:30
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:122
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:25
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:42
 msgid "This list is empty."
@@ -475,7 +475,7 @@ msgid "Old Value"
 msgstr "旧值"
 
 #: ext/classic/src/view/export/EditWindow.js:58
-#: ext/classic/src/view/import/itemproperties/Grid.js:178
+#: ext/classic/src/view/import/itemproperties/Grid.js:180
 msgid "Value"
 msgstr "值"
 
@@ -572,7 +572,6 @@ msgid "Upload file: %s <br /> filesize: %d"
 msgstr "上传文件：%s<br />文件大小：%d"
 
 #: ext/classic/src/view/export/skuarticles/UploadPanelController.js:74
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:70
 #, javascript-format
 msgid "%s record(s) are imported!"
 msgstr "已导入%s条记录！"
@@ -662,176 +661,177 @@ msgstr "商品属性"
 msgid "Variation Suppliers"
 msgstr "商品供应商"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:31
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:31
+#: ext/classic/src/view/import/itemproperties/Grid.js:33
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:33
 msgid "Choose Status"
 msgstr "选择状态"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:43
-#: ext/classic/src/view/import/itemproperties/Grid.js:142
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:43
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:134
+#: ext/classic/src/view/import/itemproperties/Grid.js:45
+#: ext/classic/src/view/import/itemproperties/Grid.js:144
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:45
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:136
 msgid "Overridden"
 msgstr "被覆盖"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:44
-#: ext/classic/src/view/import/itemproperties/Grid.js:143
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:44
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:135
+#: ext/classic/src/view/import/itemproperties/Grid.js:46
+#: ext/classic/src/view/import/itemproperties/Grid.js:145
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:46
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:137
 msgid "Deleted"
 msgstr "已删除"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:51
-#: ext/classic/src/view/import/itemproperties/Grid.js:158
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:51
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:150
+#: ext/classic/src/view/import/itemproperties/Grid.js:53
+#: ext/classic/src/view/import/itemproperties/Grid.js:160
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:53
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:152
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:161
 msgid "Item"
 msgstr "商品"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:60
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:60
+#: ext/classic/src/view/import/itemproperties/Grid.js:62
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:62
 msgid "Created"
 msgstr "创建于"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:70
+#: ext/classic/src/view/import/itemproperties/Grid.js:72
 #: ext/classic/src/view/import/tracking/Grid.js:79
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:70
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:72
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:71
 msgid " - "
 msgstr " - "
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:91
-#: ext/classic/src/view/import/itemproperties/Grid.js:92
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:90
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:91
+#: ext/classic/src/view/import/itemproperties/Grid.js:93
+#: ext/classic/src/view/import/itemproperties/Grid.js:94
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:92
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:93
 msgid "Renew"
 msgstr "重置"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:96
-#: ext/classic/src/view/import/itemproperties/Grid.js:97
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:95
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:96
+#: ext/classic/src/view/import/itemproperties/Grid.js:98
+#: ext/classic/src/view/import/itemproperties/Grid.js:99
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:97
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:98
 msgid "Reject"
 msgstr "拒绝"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:101
-#: ext/classic/src/view/import/itemproperties/Grid.js:102
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:100
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:101
+#: ext/classic/src/view/import/itemproperties/Grid.js:103
+#: ext/classic/src/view/import/itemproperties/Grid.js:104
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:102
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:103
 msgid "Reject all"
 msgstr "全部拒绝"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:108
-#: ext/classic/src/view/import/itemproperties/Grid.js:109
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:107
+#: ext/classic/src/view/import/itemproperties/Grid.js:110
+#: ext/classic/src/view/import/itemproperties/Grid.js:111
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:109
 msgid "to Plenty"
 msgstr "传至Plenty"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:118
-#: ext/classic/src/view/import/itemproperties/Grid.js:119
+#: ext/classic/src/view/import/itemproperties/Grid.js:120
+#: ext/classic/src/view/import/itemproperties/Grid.js:121
 msgid "CSV Download"
 msgstr "下载CSV"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:133
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:125
+#: ext/classic/src/view/import/itemproperties/Grid.js:135
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:127
 msgid "Status"
 msgstr "状态"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:150
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:142
+#: ext/classic/src/view/import/itemproperties/Grid.js:152
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:144
 msgid "Created at"
 msgstr "创建于"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:163
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:155
+#: ext/classic/src/view/import/itemproperties/Grid.js:165
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:157
 #: ext/classic/src/view/stock/outstock/hotsales/Grid.js:166
 msgid "Variation"
 msgstr "商品细类"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:168
+#: ext/classic/src/view/import/itemproperties/Grid.js:170
 msgid "Property"
 msgstr "属性"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:173
+#: ext/classic/src/view/import/itemproperties/Grid.js:175
 msgid "Language"
 msgstr "语言"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:190
+#: ext/classic/src/view/import/itemproperties/Grid.js:192
 msgid "Operation"
 msgstr "操作"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:195
+#: ext/classic/src/view/import/itemproperties/Grid.js:197
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:59
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:85
 msgid "without null value"
 msgstr "不导入空值"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:196
+#: ext/classic/src/view/import/itemproperties/Grid.js:198
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:60
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:86
 msgid "whith null value"
 msgstr "导入空值"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:197
+#: ext/classic/src/view/import/itemproperties/Grid.js:199
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:61
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:87
 msgid "delete null value"
 msgstr "删除空值"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:203
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:200
+#: ext/classic/src/view/import/itemproperties/Grid.js:205
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:215
 msgid "Imported at"
 msgstr "导入于"
 
-#: ext/classic/src/view/import/itemproperties/Grid.js:211
+#: ext/classic/src/view/import/itemproperties/Grid.js:213
 msgid "Modified at"
 msgstr "最后修改"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:115
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:94
+#: ext/classic/src/view/import/itemproperties/GridController.js:100
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:117
 msgid "Finished!"
 msgstr "完成！"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:127
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:106
+#: ext/classic/src/view/import/itemproperties/GridController.js:112
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:129
 msgid "Do you want to renew the selected import?"
 msgstr "是否要重置已选择的导入？"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:146
-#: ext/classic/src/view/import/itemproperties/GridController.js:174
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:125
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:153
+#: ext/classic/src/view/import/itemproperties/GridController.js:131
+#: ext/classic/src/view/import/itemproperties/GridController.js:159
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:148
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:176
 msgid "Please select the records!"
 msgstr "请选择数据！"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:155
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:134
+#: ext/classic/src/view/import/itemproperties/GridController.js:140
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:157
 msgid "Do you want to reject the selected import?"
 msgstr "是否要拒绝已选择的导入？"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:181
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:160
+#: ext/classic/src/view/import/itemproperties/GridController.js:166
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:183
 msgid "Do you want to reject all the import?"
 msgstr "是否要拒绝所有导入？"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:187
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:166
+#: ext/classic/src/view/import/itemproperties/GridController.js:172
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:189
 msgid "The records are denied!"
 msgstr "数据已被拒绝！"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:197
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:111
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:84
+#: ext/classic/src/view/import/itemproperties/GridController.js:182
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:113
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:107
 msgid "CSV Upload"
 msgstr "上传CSV"
 
-#: ext/classic/src/view/import/itemproperties/GridController.js:197
-#: ext/classic/src/view/import/variationsuppliers/GridController.js:84
+#: ext/classic/src/view/import/itemproperties/GridController.js:182
+#: ext/classic/src/view/import/variationsuppliers/GridController.js:107
 msgid "Drag the csv file into the table to upload it."
 msgstr "将csv文件拖曳到表格里就可以实现上传。"
 
 #: ext/classic/src/view/import/itemproperties/SettingWindow.js:15
+#: ext/classic/src/view/import/variationsuppliers/SettingWindow.js:15
 #: ext/classic/src/view/main/Config.js:19
 #: ext/classic/src/view/settings/MainPanel.js:16
 msgid "Settings"
@@ -1023,37 +1023,75 @@ msgstr "数量"
 msgid "Errors"
 msgstr "错误"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:160
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:162
 msgid "Supplier"
 msgstr "供应商"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:165
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:167
 msgid "Item No."
 msgstr "商品编号"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:170
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:172
 msgid "Supplier Item No."
 msgstr "供应商商品编号"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:175
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:177
 msgid "min Order Quantity"
 msgstr "最小订购数量"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:180
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:182
 msgid "Purchase Price"
 msgstr "采购价格"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:185
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:187
 msgid "Delivery Time"
 msgstr "供货时间"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:190
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:192
 msgid "Packaging Unit"
 msgstr "包装内数量"
 
-#: ext/classic/src/view/import/variationsuppliers/Grid.js:195
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:197
 msgid "Free20"
 msgstr "Free20"
+
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:202
+msgid "Last Price Query"
+msgstr "上次询价"
+
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:207
+msgid "Delete Other"
+msgstr "删除其它"
+
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:211
+msgid "yes"
+msgstr "是"
+
+#: ext/classic/src/view/import/variationsuppliers/Grid.js:211
+msgid "no"
+msgstr "否"
+
+#: ext/classic/src/view/import/variationsuppliers/SettingWindow.js:35
+#, javascript-format
+msgid "It would import %d Suppliers!"
+msgstr "即将导入%d位供应商"
+
+#: ext/classic/src/view/import/variationsuppliers/SettingWindow.js:50
+msgid "What do you want to do with another suppliers?"
+msgstr "您要对其他的供应商进行怎样的操作？"
+
+#: ext/classic/src/view/import/variationsuppliers/SettingWindow.js:57
+msgid "don't delete another suppliers"
+msgstr "不删除其他供应商"
+
+#: ext/classic/src/view/import/variationsuppliers/SettingWindow.js:58
+msgid "delete another suppliers"
+msgstr "删除其他供应商"
+
+#: ext/classic/src/view/import/variationsuppliers/SettingWindowController.js:12
+#, javascript-format
+msgid "%s supplier(s) are imported!"
+msgstr "已导入%s位供应商！"
 
 #: ext/classic/src/view/main/Config.js:10
 msgid "Import"

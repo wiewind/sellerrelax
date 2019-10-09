@@ -18,7 +18,9 @@ Ext.define('SRX.store.ImportVariationSuppliers', {
         {name: 'deliveryTime', mapping: 'ImportVariationSupplier.delivery_time'},
         {name: 'packagingUnit', mapping: 'ImportVariationSupplier.packaging_unit'},
         {name: 'free20', mapping: 'ImportVariationSupplier.free20'},
+        {name: 'lastPriceQuery', mapping: 'ImportVariationSupplier.last_price_query', type: 'date'},
         {name: 'status', mapping: 'ImportVariationSupplier.status', type: 'int'},
+        {name: 'deleteOther', mapping: 'ImportVariationSupplier.delete_other', type: 'boolean'},
         {name: 'created', mapping: 'ImportVariationSupplier.created', type: 'date'},
         {name: 'imported', mapping: 'ImportVariationSupplier.imported', type: 'date'}
     ],

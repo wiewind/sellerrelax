@@ -61,19 +61,42 @@ Ext.define('SRX.view.import.variationsuppliers.GridController', {
         fd.append('fileToUpload', files[0]);
 
         Glb.jqAjax({
-            url: Cake.api.path + '/ImportVariationSuppliers/json/importCsv',
+            url: Cake.api.path + '/ImportVariationSuppliers/json/uploadCsv',
             data: fd,
             timeout: 60000,
             success: function (data, status, xhr) {
                 Glb.common.unmask();
-                var res = Ext.decode(data);
-                ABox.info(Wiewind.String.sprintf(T.__('%s record(s) are imported!'), res.data));
-                grid.getStore().loadPage(1);
+                data = Ext.decode(data).data;
+                Ext.create('SRX.view.import.variationsuppliers.SettingWindow', {
+                    viewModel: {
+                        data: {
+                            file: data.file,
+                            rows: data.rows
+                        }
+                    }
+                });
             },
             complete: function () {
                 box.style.padding = 0;
             }
         });
+        return true;
+
+
+        // Glb.jqAjax({
+        //     url: Cake.api.path + '/ImportVariationSuppliers/json/importCsv',
+        //     data: fd,
+        //     timeout: 60000,
+        //     success: function (data, status, xhr) {
+        //         Glb.common.unmask();
+        //         var res = Ext.decode(data);
+        //         ABox.info(Wiewind.String.sprintf(T.__('%s record(s) are imported!'), res.data));
+        //         grid.getStore().loadPage(1);
+        //     },
+        //     complete: function () {
+        //         box.style.padding = 0;
+        //     }
+        // });
     },
 
     onChangeFilter: function () {

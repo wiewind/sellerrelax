@@ -83,22 +83,7 @@ Ext.define('SRX.view.import.itemproperties.GridController', {
             }
         });
 
-        /*
-        Glb.jqAjax({
-            url: Cake.api.path + '/ImportVariationProperties/json/importItemPropertiesCsv',
-            data: fd,
-            timeout: 60000,
-            success: function (data, status, xhr) {
-                Glb.common.unmask();
-                var res = Ext.decode(data);
-                ABox.info(Wiewind.String.sprintf(T.__('%s record(s) are imported!'), res.data));
-                grid.getStore().loadPage(1);
-            },
-            complete: function () {
-                box.style.padding = 0;
-            }
-        });
-        */
+        return true;
     },
 
     onChangeFilter: function () {
