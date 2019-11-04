@@ -159,7 +159,8 @@ class ImportVariationSuppliersController extends AppController
 
         $variations = [];
         foreach ($vsData as $vs) {
-            $variations[$vs['ImportVariationSupplier']['variation_id']][$vs['ImportVariationSupplier']['supplier_id']][$vs['ImportVariationSupplier']['min_purchase']] = $vs['ImportVariationSupplier'];
+            $vs = $vs['ImportVariationSupplier'];
+            $variations[$vs['variation_id']][$vs['supplier_id']][$vs['min_purchase']] = $vs;
         }
 
         // 1. check, if variation exist => yes: set id; no: nothing
@@ -167,11 +168,14 @@ class ImportVariationSuppliersController extends AppController
         $data = $this->Rest->callAPI('GET', $url, ['id' => implode(',', array_keys($variations)) ]);
         $restVariations = json_decode($data)->entries;
 
+        $rest_variations = [];
         foreach($restVariations as $var) {
             $variationId = $var->id;
             foreach ($var->variationSuppliers as $vs) {
                 $supplierId = $vs->supplierId;
                 $minimumPurchase = $vs->minimumPurchase;
+                $rest_variations[$variationId][$supplierId][$minimumPurchase]['vsid'] = $vs->id;
+
                 if (isset($variations[$variationId][$supplierId][$minimumPurchase])) {
                     $variations[$variationId][$supplierId][$minimumPurchase]['vsid'] = $vs->id;
                 }
@@ -209,7 +213,16 @@ class ImportVariationSuppliersController extends AppController
                         "isDiscountable" => false,
                         "packagingUnit" => $vsData['packaging_unit']
                     ];
-                    if (isset($vsData['vsid'])) {
+                    if ($vsData['delete_other']) {
+                        foreach ($rest_variations[$variationId] as $rest_supplierid => $rest_vsData) {
+                            foreach ($rest_vsData as $minD => $rest_vsid) {
+                                $deleteUrl = $url . '/' . $rest_vsid['vsid'];
+                                echo $deleteUrl;
+                                $delete = $this->Rest->callAPI('DELETE', $deleteUrl);
+                                GlbF::printArray($delete);
+                            }
+                        }
+                    } else if (isset($vsData['vsid'])) {
                         $url .= '/'.$vsData['vsid'];
                         $methode = 'put';
                         $importData['id'] = $vsData['vsid'];
