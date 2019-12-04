@@ -130,7 +130,7 @@ class ImportController extends RestAppController
             'type_id'       => ($order->typeId) ? $order->typeId : 0,
             'status_id'     => ($order->statusId) ? $order->statusId : 0,
             'created'       => GlbF::iso2Date($order->createdAt),
-            'deleted'       => $order->deletedDate > 0,
+            //'deleted'       => $order->deletedDate > 0,
             'updated'       => GlbF::iso2Date($order->updatedAt),
             'imported'      => $now
         ];

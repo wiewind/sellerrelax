@@ -160,7 +160,7 @@ class StockManagementController extends RestAppController
     }
 
 
-    function importWarehouses ($deepImport=false) {
+    function importWarehouses ($deepImport=false1) {
         $this->autoRender = false;
         $now = date('Y-m-d H:i:s');
 
@@ -266,11 +266,11 @@ class StockManagementController extends RestAppController
 
         CakeLog::write('import',  "Import Locations of warehouse {$warehouseId} page {$page} beginn...");
 
-        $params['itemsPerPage'] = 3000;
+        $params['itemsPerPage'] = 100;
         $params['page'] = $page;
 
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['locations']);
-        $data = $this->callJsonRest($url);
+        $data = $this->callJsonRest($url, $params);
 
         $errors = [];
         foreach ($data->entries as $item) {
@@ -328,7 +328,7 @@ class StockManagementController extends RestAppController
         CakeLog::write('import', "Import Locations of warehouse {$warehouseId} page {$page} end with " . count($data->entries) . " record(s)!");
 
         if (!$data->isLastPage) {
-            $this->importLocations($warehouseId, ++$page);
+            $this->importLocations($warehouseId, $page+1);
         }
     }
 
@@ -338,7 +338,6 @@ class StockManagementController extends RestAppController
 
         CakeLog::write('import',  "Import dimensions of warehouse {$warehouseId} beginn...");
 
-        $params['itemsPerPage'] = 3000;
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['dimensions']);
         $data = $this->callJsonRest($url);
         $errors = [];
@@ -402,7 +401,6 @@ class StockManagementController extends RestAppController
 
         CakeLog::write('import',  "Import levels of warehouse {$warehouseId} beginn...");
 
-        $params['itemsPerPage'] = 3000;
         $url = str_replace('{warehouseId}', $warehouseId, $this->restAdress['levels']);
         $data = $this->callJsonRest($url);
         $errors = [];

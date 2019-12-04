@@ -54,7 +54,9 @@ class RestAppController extends AppController
         'AddressOptionType',
         'ContactOption',
         'AddressOption',
-        'ContactAddress'
+        'ContactAddress',
+
+        'Movement'
     ];
 
     var $components = ['MySession', 'MyCookie', 'Rest'];
