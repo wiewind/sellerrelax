@@ -63,7 +63,9 @@ class RestAppController extends AppController
 
     var $allowdIPs = [
         '194.172.160.76',
-        '134.119.253.18'
+        '134.119.253.18',
+        '134.119.253.189',
+        '37.201.199.109'
     ];
 
     var $version = '1.02';
@@ -174,6 +176,7 @@ class RestAppController extends AppController
 
     function checkIP () {
         if (!in_array($_SERVER['REMOTE_ADDR'], $this->allowdIPs)) {
+            echo $_SERVER['REMOTE_ADDR'].'<br/>';
             die("Juggler!!!");
         }
     }
